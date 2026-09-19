@@ -16,7 +16,7 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 | ③ Experiment | `figure-plot` | skill | Figure contract → Times New Roman / colorblind-safe palette → vector PDF with embedded-font verification; data plots + schematic diagrams |
 | ④ Write | `paper-polish` | skill | LaTeX language polishing that preserves all markup; ships with a jargon-audit follow-up |
 | ④ Write | `jargon-check` | **subagent** | Isolated-context, independent-model jargon audit — a stranger-reviewer perspective that avoids same-model blind spots |
-| ⑤ Pre-submit | `scientific-review` | skill | Three-role adversarial review: Reviewer challenges → Author defends → Judge rules |
+| ⑤ Pre-submit | `paper-review` | skill | Three-role adversarial review: Reviewer challenges → Author defends → Judge rules |
 | ⑤ Pre-submit | `academic-paper-reviewer` | skill | Five-reviewer (EIC + 3 domain reviewers + Devil's Advocate) full journal-review simulation |
 | ⑥ Rebut | `rebuttal` | skill | Locate each reviewer comment → confirm the revision plan → `\changed{}` markup → compile the PDF → update the response letter |
 | ⑦ Present | `academic-ppt` | skill | Paper (LaTeX/PDF) → Beamer deck with a visual design system (official-template extraction or self-built) → time-budgeted talk script → compliant pptx packaging with speaker notes |
@@ -35,7 +35,7 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 
 ### Choosing Between the Two Review Skills
 
-| | `scientific-review` | `academic-paper-reviewer` |
+| | `paper-review` | `academic-paper-reviewer` |
 |---|---|---|
 | Origin | Self-built | Upstream [academic-research-skills](https://github.com/), original name kept for easier upstream sync |
 | Mechanism | Reviewer/Author/Judge three-role adversarial | 5-reviewer multi-role simulation |
@@ -75,7 +75,7 @@ halter sync --apply   # optional: fan out to all installed assistants
 │   ├── zotero-paper-note/
 │   ├── figure-plot/
 │   ├── paper-polish/
-│   ├── scientific-review/
+│   ├── paper-review/
 │   ├── academic-paper-reviewer/
 │   ├── rebuttal/
 │   └── academic-ppt/
@@ -91,7 +91,7 @@ halter sync --apply   # optional: fan out to all installed assistants
 
 - Edit skills in this repo only; `install.sh` creates symlinks — local changes take effect immediately, and pushing publishes them.
 - `academic-paper-reviewer` has an upstream; diff against it before major changes. All other skills are self-developed and iterate freely.
-- This repo is v3: v1 contained only 4 writing skills (scientific-review / language-polish / jargon-check / rebuttal); v2 expanded to a full research pipeline of 7 skills + 1 subagent and evolved `language-polish` into `paper-polish` (adding the jargon-audit section); v3 adds the discipline layer `research-before-build` (⓪) and the presentation stage `academic-ppt` (⑦) — 9 skills + 1 subagent, repositioned from a paper toolkit to "every task is research".
+- This repo is v3: v1 contained only 4 writing skills (scientific-review / language-polish / jargon-check / rebuttal); v2 expanded to a full research pipeline of 7 skills + 1 subagent and evolved `language-polish` into `paper-polish` (adding the jargon-audit section); v3 adds the discipline layer `research-before-build` (⓪) and the presentation stage `academic-ppt` (⑦), and renames `scientific-review` to `paper-review` — 9 skills + 1 subagent, repositioned from a paper toolkit to "every task is research".
 
 ## License
 

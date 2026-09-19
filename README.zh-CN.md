@@ -16,7 +16,7 @@
 | ③ 实验 | `figure-plot` | skill | 图契约 → Times New Roman / 色盲安全 → 矢量 PDF 嵌字体验证；数据图 + 示意图 |
 | ④ 写作 | `paper-polish` | skill | LaTeX 语言润色，保留全部标记；附术语审计 follow-up |
 | ④ 写作 | `jargon-check` | **subagent** | 隔离上下文 + 独立模型的黑话审计——陌生审稿人视角，避免同模型自我盲区 |
-| ⑤ 投稿前 | `scientific-review` | skill | 三角色对抗审稿：Reviewer 质疑 → Author 辩护 → Judge 判定 |
+| ⑤ 投稿前 | `paper-review` | skill | 三角色对抗审稿：Reviewer 质疑 → Author 辩护 → Judge 判定 |
 | ⑤ 投稿前 | `academic-paper-reviewer` | skill | 五审稿人（EIC + 3 领域审稿 + Devil's Advocate）完整期刊评审模拟 |
 | ⑥ 回复 | `rebuttal` | skill | 逐条定位审稿意见 → 修改方案确认 → `\changed{}` 标注 → 编译 PDF → 更新回复信 |
 | ⑦ 汇报 | `academic-ppt` | skill | 论文（LaTeX/PDF）→ Beamer + 视觉设计系统（官方模板提取或自建）→ 按时长写讲稿 → 合规 pptx 包装与演讲者备注 |
@@ -35,7 +35,7 @@
 
 ### 两个审稿 skill 的边界
 
-| | `scientific-review` | `academic-paper-reviewer` |
+| | `paper-review` | `academic-paper-reviewer` |
 |---|---|---|
 | 来源 | 自建 | [academic-research-skills](https://github.com/) 上游，保留原名便于对齐更新 |
 | 机制 | Reviewer/Author/Judge 三角色对抗 | 5 审稿人多角色模拟 |
@@ -75,7 +75,7 @@ halter sync --apply   # 可选：分发到所有已装助手
 │   ├── zotero-paper-note/
 │   ├── figure-plot/
 │   ├── paper-polish/
-│   ├── scientific-review/
+│   ├── paper-review/
 │   ├── academic-paper-reviewer/
 │   ├── rebuttal/
 │   └── academic-ppt/
@@ -91,7 +91,7 @@ halter sync --apply   # 可选：分发到所有已装助手
 
 - 修改任何 skill 一律改本仓库，`install.sh` 是 symlink——本机即时生效，推送即发布。
 - `academic-paper-reviewer` 有上游，重大改动前先对比上游版本；其余 skill 自研自主迭代。
-- 本仓库为 v3：v1 只含 4 个写作技能（scientific-review / language-polish / jargon-check / rebuttal）；v2 扩展为科研全流程 7 skill + 1 subagent，并将 `language-polish` 演进更名为 `paper-polish`（含术语审计段）；v3 加入纪律层 `research-before-build`（⓪）与汇报层 `academic-ppt`（⑦）——共 9 skill + 1 subagent，定位从「论文工具包」升级为「一切任务皆科学研究」。
+- 本仓库为 v3：v1 只含 4 个写作技能（scientific-review / language-polish / jargon-check / rebuttal）；v2 扩展为科研全流程 7 skill + 1 subagent，并将 `language-polish` 演进更名为 `paper-polish`（含术语审计段）；v3 加入纪律层 `research-before-build`（⓪）与汇报层 `academic-ppt`（⑦），并将 `scientific-review` 更名为 `paper-review`——共 9 skill + 1 subagent，定位从「论文工具包」升级为「一切任务皆科学研究」。
 
 ## License
 

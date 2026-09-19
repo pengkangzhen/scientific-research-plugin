@@ -3,7 +3,7 @@ name: paper-polish
 description: >
   语言润色 (language polishing) — Academic English paper polishing for LaTeX manuscripts.
   Polishes grammar, word choice, sentence structure, logic flow, and academic tone while
-  preserving all LaTeX markup; does NOT judge scientific content (use scientific-review for that).
+  preserving all LaTeX markup; does NOT judge scientific content (use paper-review for that).
   触发词："润色"、"语言润色"、"论文润色"、"改英语"、"帮我改这段的英文"、"检查语言质量"。
   Use this skill whenever the user asks to polish, refine, improve, or proofread a paper,
   manuscript, or LaTeX file, or mentions language editing, writing quality, or English

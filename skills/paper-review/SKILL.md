@@ -1,5 +1,5 @@
 ---
-name: scientific-review
+name: paper-review
 description: 科学审稿 (scientific review) — review the SCIENTIFIC merit of OR/ML+OR papers and experimental results: model validity, algorithmic contribution, experimental rigor; NOT prose quality (use paper-polish for that). 触发词："科学审稿"、"学术审稿"、"审一下这个模型/结果"、"这个结果合理吗"、"投稿前自审"、"review these results"、"pre-submission review"。Automatically detects research domain and applies targeted checklists. Covers mathematical programming, stochastic/robust optimization, decomposition algorithms, combinatorial optimization, and ML+OR intersection (RL for optimization, predict-then-optimize, neural solvers). For top-tier journals (OR, MS, TS, POM, EJOR, etc.).
 license: MIT
 ---
@@ -35,11 +35,11 @@ You provide **incisive, critical academic review** of mathematical models, algor
 
 | 命令 | 用途 | 示例 |
 |------|------|------|
-| `/scientific-review [路径]` | 检查实验结果或代码是否符合学术常识 | `/scientific-review results/pha_vs_dep_S-03-10` |
+| `/paper-review [路径]` | 检查实验结果或代码是否符合学术常识 | `/paper-review results/pha_vs_dep_S-03-10` |
 
 ### 使用说明
 
-用户输入 `/scientific-review [路径]` 后，系统将：
+用户输入 `/paper-review [路径]` 后，系统将：
 1. 读取指定路径下的文件内容（支持文件或目录）
 2. 执行 Phase 1: Domain Detection（领域检测）
 3. 执行 Phase 2: Targeted Review（定向审查）
