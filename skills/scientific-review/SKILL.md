@@ -1,6 +1,6 @@
 ---
 name: scientific-review
-description: 科学审稿 (scientific review) — review the SCIENTIFIC merit of OR/ML+OR papers and experimental results: model validity, algorithmic contribution, experimental rigor; NOT prose quality (use language-polish for that). 触发词："科学审稿"、"学术审稿"、"审一下这个模型/结果"、"这个结果合理吗"、"review these results"。Automatically detects research domain and applies targeted checklists. Covers mathematical programming, stochastic/robust optimization, decomposition algorithms, combinatorial optimization, and ML+OR intersection (RL for optimization, predict-then-optimize, neural solvers). For top-tier journals (OR, MS, TS, POM, EJOR, etc.).
+description: 科学审稿 (scientific review) — review the SCIENTIFIC merit of OR/ML+OR papers and experimental results: model validity, algorithmic contribution, experimental rigor; NOT prose quality (use paper-polish for that). 触发词："科学审稿"、"学术审稿"、"审一下这个模型/结果"、"这个结果合理吗"、"review these results"。Automatically detects research domain and applies targeted checklists. Covers mathematical programming, stochastic/robust optimization, decomposition algorithms, combinatorial optimization, and ML+OR intersection (RL for optimization, predict-then-optimize, neural solvers). For top-tier journals (OR, MS, TS, POM, EJOR, etc.).
 license: MIT
 ---
 
