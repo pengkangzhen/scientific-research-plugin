@@ -131,6 +131,10 @@ If compilation fails, check for LaTeX syntax errors, fix them, and recompile.
 - Add `\textbf{[COMPLETED]}` to the comment title in the response letter
 - Report completion to the user and ask whether to proceed to the next comment
 
+### Step 6: Final Cross-File Terminology Audit (when the last pending comment is completed)
+
+Dispatch the **jargon-check** subagent once in `full` mode to audit terminology consistency between the response letter and the revised manuscript — this is exactly the cross-file drift it is designed to catch (e.g., the manuscript now says "backtracking procedure" while the response letter still says "backtracking chain"). The dispatch brief must include: the response letter path, the manuscript path as the related file (jargon-check's contract requires it for response-letter audits), and the project's terminology whitelist (method/agent/step names). Do not ask the user before dispatching: the audit is read-only. Present the audit report, fix the drift findings the user confirms on both sides, then recompile both PDFs.
+
 ## Key Constraints
 
 1. **One by one**: Process exactly one reviewer comment at a time; move to the next only after completion

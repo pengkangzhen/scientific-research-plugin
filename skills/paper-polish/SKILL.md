@@ -155,10 +155,11 @@ Precision (2):
 3. Analyze the text against all five polishing dimensions
 4. For pasted text: output Changes + Polished version directly
 5. For file edits: present Changes Summary first, then apply edits one by one via Edit tool
+6. Paragraph scale or larger: dispatch the jargon-check follow-up audit automatically (see "Follow-up" below)
 
 ## Follow-up: Terminology Audit
 
-Polishing is a high-risk moment for introducing fresh shorthand: rewording a sentence often swaps in a new label for an existing concept. After completing a polish of paragraph scale or larger, recommend dispatching the **jargon-check** subagent (independent buzzword/terminology auditor) on the polished passage. The dispatch brief must include: the file path or pasted text, audit mode (`phrase`/`passage`/`full`), and the project's terminology whitelist (method/agent/step names). Do not perform this audit yourself in the main session: the independence is the point.
+Polishing is a high-risk moment for introducing fresh shorthand: rewording a sentence often swaps in a new label for an existing concept. After completing a polish of paragraph scale or larger, **automatically dispatch** the **jargon-check** subagent (independent buzzword/terminology auditor) on the polished passage — do not ask the user first: the audit is read-only, and only applying its suggested revisions needs the author's confirmation. Skip the dispatch for `phrase`-scale polish and "light polish" requests. The dispatch brief must include: the file path or pasted text, audit mode (`phrase`/`passage`/`full`), and the project's terminology whitelist (method/agent/step names). Do not perform this audit yourself in the main session: the independence is the point.
 
 ## Edge Cases
 

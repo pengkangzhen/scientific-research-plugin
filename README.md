@@ -2,7 +2,7 @@
 
 **English** | [简体中文](README.zh-CN.md)
 
-An end-to-end research skill pack for OR / ML+OR / supply-chain researchers: literature acquisition → structured reading → paper figures → writing polish → pre-submission review → rebuttal.
+Every task is a piece of research — not just papers. A discipline layer (`research-before-build`) brings prior-art surveying to any project; the paper pipeline — literature acquisition → structured reading → paper figures → writing polish → pre-submission review → rebuttal → conference presentation — is its fullest instantiation. Built for OR / ML+OR / supply-chain researchers.
 
 One `skills/` source of truth, distributed to multiple frontends: the Claude Code / ZCode plugin, the Codex plugin, and any assistant that supports `~/.agents/skills` (via halter).
 
@@ -10,6 +10,7 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 
 | Stage | Skill / Agent | Form | In one sentence |
 |---|---|---|---|
+| ⓪ Survey | `research-before-build` | skill | Discipline layer, fires on **any** non-trivial task: L0–L3 graded trigger — check human prior art (official docs / mature libraries / GitHub issues / literature) before building; decides *whether and what* to research |
 | ① Retrieve | `zotero-paper-fetch` | skill | Reference list → CrossRef enrichment → Zotero intake → tiered PDF download (OA direct links / repository anti-crawler / campus-VPN paywalls) |
 | ② Read | `zotero-paper-note` | skill | Zotero item → deep read → structured notes written back to Zotero + `literature.jsonl` |
 | ③ Experiment | `figure-plot` | skill | Figure contract → Times New Roman / colorblind-safe palette → vector PDF with embedded-font verification; data plots + schematic diagrams |
@@ -18,6 +19,14 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 | ⑤ Pre-submit | `scientific-review` | skill | Three-role adversarial review: Reviewer challenges → Author defends → Judge rules |
 | ⑤ Pre-submit | `academic-paper-reviewer` | skill | Five-reviewer (EIC + 3 domain reviewers + Devil's Advocate) full journal-review simulation |
 | ⑥ Rebut | `rebuttal` | skill | Locate each reviewer comment → confirm the revision plan → `\changed{}` markup → compile the PDF → update the response letter |
+| ⑦ Present | `academic-ppt` | skill | Paper (LaTeX/PDF) → Beamer deck with a visual design system (official-template extraction or self-built) → time-budgeted talk script → compliant pptx packaging with speaker notes |
+
+### Discipline Layer vs. Pipeline Layer
+
+- **Discipline layer (⓪)**: `research-before-build` fires on any non-trivial task — coding, deployment, architecture selection — not only papers. It is the pack's worldview: prior art before building, search graded by risk, sources accepted by trust, verified by decision impact.
+- **Pipeline layer (①–⑦)**: the paper lifecycle, the discipline's most complete instantiation — from a reference list to the conference talk.
+
+⓪ → ① is a hand-off, not containment: `research-before-build` decides *whether and what* to survey; `zotero-paper-fetch` acquires the decided references into Zotero.
 
 ### Skill vs. Subagent
 
@@ -60,14 +69,16 @@ halter sync --apply   # optional: fan out to all installed assistants
 ## Repository Layout
 
 ```
-├── skills/                      # 7 auto-triggered skills (single source of truth)
+├── skills/                      # 9 auto-triggered skills (single source of truth)
+│   ├── research-before-build/
 │   ├── zotero-paper-fetch/
 │   ├── zotero-paper-note/
 │   ├── figure-plot/
 │   ├── paper-polish/
 │   ├── scientific-review/
 │   ├── academic-paper-reviewer/
-│   └── rebuttal/
+│   ├── rebuttal/
+│   └── academic-ppt/
 ├── agents/
 │   └── jargon-check.md          # isolated-audit subagent
 ├── .claude-plugin/plugin.json   # Claude Code / ZCode plugin manifest
@@ -80,7 +91,7 @@ halter sync --apply   # optional: fan out to all installed assistants
 
 - Edit skills in this repo only; `install.sh` creates symlinks — local changes take effect immediately, and pushing publishes them.
 - `academic-paper-reviewer` has an upstream; diff against it before major changes. All other skills are self-developed and iterate freely.
-- This repo is v2: v1 contained only 4 writing skills (scientific-review / language-polish / jargon-check / rebuttal); v2 expands to a full research pipeline of 7 skills + 1 subagent, and evolved `language-polish` into `paper-polish` (adding the jargon-audit section).
+- This repo is v3: v1 contained only 4 writing skills (scientific-review / language-polish / jargon-check / rebuttal); v2 expanded to a full research pipeline of 7 skills + 1 subagent and evolved `language-polish` into `paper-polish` (adding the jargon-audit section); v3 adds the discipline layer `research-before-build` (⓪) and the presentation stage `academic-ppt` (⑦) — 9 skills + 1 subagent, repositioned from a paper toolkit to "every task is research".
 
 ## License
 
