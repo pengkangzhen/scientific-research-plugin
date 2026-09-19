@@ -1,4 +1,4 @@
-# Academic Research Plugin
+# Scientific Research Plugin
 
 **English** | [简体中文](README.zh-CN.md)
 
@@ -38,21 +38,21 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 ### Option 1: Plugin (Claude Code / ZCode)
 
 ```bash
-claude plugin install pengkangzhen/academic-research-plugin
+claude plugin install pengkangzhen/scientific-research-plugin
 ```
 
 On the Codex side, enable it in `~/.codex/config.toml`:
 
 ```toml
-[plugins."academic-research-plugin@academic-research-plugin"]
+[plugins."scientific-research-plugin@scientific-research-plugin"]
 enabled = true
 ```
 
 ### Option 2: Bare install (works with every assistant)
 
 ```bash
-git clone https://github.com/pengkangzhen/academic-research-plugin.git
-cd academic-research-plugin
+git clone https://github.com/pengkangzhen/scientific-research-plugin.git
+cd scientific-research-plugin
 ./install.sh          # skills/agents -> ~/.agents/{skills,agents}, idempotent
 halter sync --apply   # optional: fan out to all installed assistants
 ```

@@ -1,11 +1,11 @@
 {
-  "name": "academic-research-plugin",
+  "name": "scientific-research-plugin",
   "interface": {
-    "displayName": "Academic Research Plugin"
+    "displayName": "Scientific Research Plugin"
   },
   "plugins": [
     {
-      "name": "academic-research-plugin",
+      "name": "scientific-research-plugin",
       "source": {
         "source": "url",
         "url": "./"

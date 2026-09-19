@@ -1,15 +1,15 @@
 {
-  "name": "academic-research-plugin",
+  "name": "scientific-research-plugin",
   "version": "0.1.0",
   "description": "Research pipeline skills for OR / ML+OR / supply chain: literature fetch (Zotero), structured reading notes, publication figures, LaTeX polishing, scientific review, full journal-review simulation, and rebuttal.",
   "author": { "name": "pengkangzhen", "url": "https://github.com/pengkangzhen" },
-  "homepage": "https://github.com/pengkangzhen/academic-research-plugin#readme",
-  "repository": "https://github.com/pengkangzhen/academic-research-plugin",
+  "homepage": "https://github.com/pengkangzhen/scientific-research-plugin#readme",
+  "repository": "https://github.com/pengkangzhen/scientific-research-plugin",
   "license": "MIT",
   "keywords": ["academic", "research", "zotero", "latex", "peer-review", "rebuttal", "figures"],
   "skills": "./skills/",
   "interface": {
-    "displayName": "Academic Research Plugin",
+    "displayName": "Scientific Research Plugin",
     "shortDescription": "OR/ML+OR research pipeline: fetch, read, plot, polish, review, rebut",
     "developerName": "pengkangzhen",
     "category": "Research"

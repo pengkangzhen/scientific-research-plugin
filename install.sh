@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Install academic-research-plugin:
+# Install scientific-research-plugin:
 #   skills/*  -> ~/.agents/skills/<name>   (auto-triggered skills)
 #   agents/*  -> ~/.agents/agents/<name>   (explicitly invoked subagents)
 # Idempotent: re-running relinks stale links; refuses to overwrite real

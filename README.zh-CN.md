@@ -1,4 +1,4 @@
-# Academic Research Plugin
+# Scientific Research Plugin
 
 [English](README.md) | **简体中文**
 
@@ -38,21 +38,21 @@ OR / ML+OR / 供应链方向的科研全流程技能包：文献获取 → 结�
 ### 方式一：插件（Claude Code / ZCode）
 
 ```bash
-claude plugin install pengkangzhen/academic-research-plugin
+claude plugin install pengkangzhen/scientific-research-plugin
 ```
 
 Codex 侧在 `~/.codex/config.toml` 启用：
 
 ```toml
-[plugins."academic-research-plugin@academic-research-plugin"]
+[plugins."scientific-research-plugin@scientific-research-plugin"]
 enabled = true
 ```
 
 ### 方式二：裸装（全部助手通用）
 
 ```bash
-git clone https://github.com/pengkangzhen/academic-research-plugin.git
-cd academic-research-plugin
+git clone https://github.com/pengkangzhen/scientific-research-plugin.git
+cd scientific-research-plugin
 ./install.sh          # skills/agents -> ~/.agents/{skills,agents}，幂等
 halter sync --apply   # 可选：分发到所有已装助手
 ```
