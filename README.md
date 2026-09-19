@@ -49,7 +49,7 @@ enabled = true
 ### 方式二：裸装（全部助手通用）
 
 ```bash
-git clone git@github.com:pengkangzhen/academic-writing-toolkit.git
+git clone https://github.com/pengkangzhen/academic-writing-toolkit.git
 cd academic-writing-toolkit
 ./install.sh          # skills/agents -> ~/.agents/{skills,agents}，幂等
 halter sync --apply   # 可选：分发到所有已装助手
