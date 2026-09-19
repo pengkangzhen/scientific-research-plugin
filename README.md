@@ -1,4 +1,4 @@
-# Academic Writing Toolkit
+# Academic Research Plugin
 
 **English** | [简体中文](README.zh-CN.md)
 
@@ -38,21 +38,21 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 ### Option 1: Plugin (Claude Code / ZCode)
 
 ```bash
-claude plugin install pengkangzhen/academic-writing-toolkit
+claude plugin install pengkangzhen/academic-research-plugin
 ```
 
 On the Codex side, enable it in `~/.codex/config.toml`:
 
 ```toml
-[plugins."academic-writing-toolkit@academic-writing-toolkit"]
+[plugins."academic-research-plugin@academic-research-plugin"]
 enabled = true
 ```
 
 ### Option 2: Bare install (works with every assistant)
 
 ```bash
-git clone https://github.com/pengkangzhen/academic-writing-toolkit.git
-cd academic-writing-toolkit
+git clone https://github.com/pengkangzhen/academic-research-plugin.git
+cd academic-research-plugin
 ./install.sh          # skills/agents -> ~/.agents/{skills,agents}, idempotent
 halter sync --apply   # optional: fan out to all installed assistants
 ```
