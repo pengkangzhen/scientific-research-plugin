@@ -1,4 +1,4 @@
-# Academic Research Toolkit
+# Academic Writing Toolkit
 
 OR / ML+OR / 供应链方向的科研全流程技能包：文献获取 → 结构化阅读 → 论文出图 → 写作润色 → 投稿前评审 → 审稿回复。
 
@@ -36,21 +36,21 @@ OR / ML+OR / 供应链方向的科研全流程技能包：文献获取 → 结�
 ### 方式一：插件（Claude Code / ZCode）
 
 ```bash
-claude plugin install pengkangzhen/academic-research-toolkit
+claude plugin install pengkangzhen/academic-writing-toolkit
 ```
 
 Codex 侧在 `~/.codex/config.toml` 启用：
 
 ```toml
-[plugins."academic-research-toolkit@academic-research-toolkit"]
+[plugins."academic-writing-toolkit@academic-writing-toolkit"]
 enabled = true
 ```
 
 ### 方式二：裸装（全部助手通用）
 
 ```bash
-git clone git@github.com:pengkangzhen/academic-research-toolkit.git
-cd academic-research-toolkit
+git clone git@github.com:pengkangzhen/academic-writing-toolkit.git
+cd academic-writing-toolkit
 ./install.sh          # skills/agents -> ~/.agents/{skills,agents}，幂等
 halter sync --apply   # 可选：分发到所有已装助手
 ```
@@ -78,7 +78,7 @@ halter sync --apply   # 可选：分发到所有已装助手
 
 - 修改任何 skill 一律改本仓库，`install.sh` 是 symlink——本机即时生效，推送即发布。
 - `academic-paper-reviewer` 有上游，重大改动前先对比上游版本；其余 skill 自研自主迭代。
-- `scientific-review` 与 [academic-writing-toolkit](https://github.com/pengkangzhen/academic-writing-toolkit) 中的同名 skill 同源；`paper-polish` 是后者 `language-polish` 的演进超集（含术语审计段），以本仓库为准。
+- 本仓库为 v2：v1 只含 4 个写作技能（scientific-review / language-polish / jargon-check / rebuttal）；v2 扩展为科研全流程 7 skill + 1 subagent，并将 `language-polish` 演进更名为 `paper-polish`（含术语审计段）。
 
 ## License
 

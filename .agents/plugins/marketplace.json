@@ -1,11 +1,11 @@
 {
-  "name": "academic-research-toolkit",
+  "name": "academic-writing-toolkit",
   "interface": {
     "displayName": "Academic Research Toolkit"
   },
   "plugins": [
     {
-      "name": "academic-research-toolkit",
+      "name": "academic-writing-toolkit",
       "source": {
         "source": "url",
         "url": "./"
