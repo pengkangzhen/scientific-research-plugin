@@ -44,18 +44,28 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 
 ## Installation
 
-### Option 1: Plugin (Claude Code / ZCode)
+### Option 1: Plugin (Claude Code / Codex / ZCode)
+
+Claude Code:
 
 ```bash
 claude plugin install pengkangzhen/scientific-research-plugin
 ```
 
-On the Codex side, enable it in `~/.codex/config.toml`:
+Codex — enable in `~/.codex/config.toml`:
 
 ```toml
 [plugins."scientific-research-plugin@scientific-research-plugin"]
 enabled = true
 ```
+
+ZCode — this repository doubles as its own plugin marketplace (`.claude-plugin/marketplace.json`, source resolves to the repo root):
+
+1. Clone the repo locally and take its root path.
+2. Plugin Marketplace → Add → Add Plugin Marketplace, paste the repo root directory.
+3. Personal → scientific-research-plugin → Scientific Research Plugin → Install.
+
+The `jargon-check` subagent is not part of the ZCode plugin package (ZCode plugin manifests currently declare skills / commands / hooks / MCP servers, not subagents) — run `./install.sh` if you need it there.
 
 ### Option 2: Bare install (works with every assistant)
 
@@ -81,15 +91,19 @@ halter sync --apply   # optional: fan out to all installed assistants
 │   └── academic-ppt/
 ├── agents/
 │   └── jargon-check.md          # isolated-audit subagent
-├── .claude-plugin/plugin.json   # Claude Code / ZCode plugin manifest
+├── .claude-plugin/
+│   ├── plugin.json              # Claude Code plugin manifest
+│   └── marketplace.json         # Claude Code / ZCode marketplace catalog (source ./)
+├── .zcode-plugin/plugin.json    # ZCode plugin manifest
 ├── .codex-plugin/plugin.json    # Codex plugin manifest
-├── .agents/plugins/marketplace.json
+├── .agents/plugins/marketplace.json  # Codex (~/.agents) marketplace catalog
 └── install.sh                   # bare-install fallback
 ```
 
 ## Maintenance Conventions
 
 - Edit skills in this repo only; `install.sh` creates symlinks — local changes take effect immediately, and pushing publishes them.
+- Version bumps touch all three plugin manifests (`.claude-plugin/`, `.zcode-plugin/`, `.codex-plugin/`) and the `.claude-plugin/marketplace.json` entry in lockstep.
 - `academic-paper-reviewer` has an upstream; diff against it before major changes. All other skills are self-developed and iterate freely.
 - This repo is v3: v1 contained only 4 writing skills (scientific-review / language-polish / jargon-check / rebuttal); v2 expanded to a full research pipeline of 7 skills + 1 subagent and evolved `language-polish` into `paper-polish` (adding the jargon-audit section); v3 adds the discipline layer `research-before-build` (⓪) and the presentation stage `academic-ppt` (⑦), and renames `scientific-review` to `paper-review` — 9 skills + 1 subagent, repositioned from a paper toolkit to "every task is research".
 

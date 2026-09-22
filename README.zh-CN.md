@@ -44,7 +44,9 @@
 
 ## 安装
 
-### 方式一：插件（Claude Code / ZCode）
+### 方式一：插件（Claude Code / Codex / ZCode）
+
+Claude Code：
 
 ```bash
 claude plugin install pengkangzhen/scientific-research-plugin
@@ -56,6 +58,14 @@ Codex 侧在 `~/.codex/config.toml` 启用：
 [plugins."scientific-research-plugin@scientific-research-plugin"]
 enabled = true
 ```
+
+ZCode——本仓库自带插件市场清单（`.claude-plugin/marketplace.json`，source 解析到仓库根）：
+
+1. 克隆仓库到本地，取其根目录路径。
+2. 插件市场 → 添加 → 添加插件市场，粘贴仓库根目录。
+3. 个人 → scientific-research-plugin → 科研流水线插件 → 安装。
+
+`jargon-check` subagent 不随 ZCode 插件包分发（ZCode 插件清单目前只声明 skills / commands / hooks / MCP servers，不含 subagent）——需要时执行 `./install.sh` 安装。
 
 ### 方式二：裸装（全部助手通用）
 
@@ -81,15 +91,19 @@ halter sync --apply   # 可选：分发到所有已装助手
 │   └── academic-ppt/
 ├── agents/
 │   └── jargon-check.md          # 隔离审计 subagent
-├── .claude-plugin/plugin.json   # Claude Code / ZCode 插件清单
+├── .claude-plugin/
+│   ├── plugin.json              # Claude Code 插件清单
+│   └── marketplace.json         # Claude Code / ZCode 市场清单（source 指向仓库根）
+├── .zcode-plugin/plugin.json    # ZCode 插件清单
 ├── .codex-plugin/plugin.json    # Codex 插件清单
-├── .agents/plugins/marketplace.json
+├── .agents/plugins/marketplace.json  # Codex（~/.agents）市场清单
 └── install.sh                   # 裸装回退
 ```
 
 ## 维护约定
 
 - 修改任何 skill 一律改本仓库，`install.sh` 是 symlink——本机即时生效，推送即发布。
+- 版本号变更需同步四处并保持一致：三个插件清单（`.claude-plugin/`、`.zcode-plugin/`、`.codex-plugin/`）与 `.claude-plugin/marketplace.json` 条目。
 - `academic-paper-reviewer` 有上游，重大改动前先对比上游版本；其余 skill 自研自主迭代。
 - 本仓库为 v3：v1 只含 4 个写作技能（scientific-review / language-polish / jargon-check / rebuttal）；v2 扩展为科研全流程 7 skill + 1 subagent，并将 `language-polish` 演进更名为 `paper-polish`（含术语审计段）；v3 加入纪律层 `research-before-build`（⓪）与汇报层 `academic-ppt`（⑦），并将 `scientific-review` 更名为 `paper-review`——共 9 skill + 1 subagent，定位从「论文工具包」升级为「一切任务皆科学研究」。
 
