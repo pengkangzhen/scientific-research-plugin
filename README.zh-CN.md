@@ -86,7 +86,7 @@ halter sync --apply   # 可选：分发到所有已装助手
 │   ├── figure-plot/
 │   ├── paper-polish/
 │   ├── paper-review/
-│   ├── academic-paper-reviewer/
+│   ├── academic-paper-review/
 │   ├── rebuttal/
 │   └── academic-ppt/
 ├── agents/

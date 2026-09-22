@@ -86,7 +86,7 @@ halter sync --apply   # optional: fan out to all installed assistants
 │   ├── figure-plot/
 │   ├── paper-polish/
 │   ├── paper-review/
-│   ├── academic-paper-reviewer/
+│   ├── academic-paper-review/
 │   ├── rebuttal/
 │   └── academic-ppt/
 ├── agents/
