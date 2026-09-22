@@ -1,13 +1,15 @@
 ---
 name: zotero-paper-fetch
-description: 批量检索文献、下载 PDF 并入库 Zotero 的完整管线。当用户提供文献/引用列表（Markdown 编号列表、参考文献节选、DOI 清单等），要求"搜索下载入库 Zotero""把这些文献加到 Zotero""下载 PDF 并归类"时使用。覆盖：CrossRef 补全元数据 → Zotero 入库归类打标 → 按出版商分层下载 PDF（OA 直链 / 仓库反爬 / 校园 VPN 付费墙）→ 挂载或落盘报告。适用于运筹学、供应链韧性、物流网络、风险建模等领域。
+description: 批量检索文献、下载 PDF 并入库 Zotero 的完整管线。当用户提供文献/引用列表（Markdown 编号列表、参考文献节选、DOI 清单、arXiv ID 等），要求"搜索下载入库 Zotero""把这些文献加到 Zotero""下载 PDF 并归类""下载 arXiv 预印本"时使用。覆盖：CrossRef / arXiv / OpenAlex 检索补全元数据 → Zotero 入库归类打标 → 按出版商分层下载 PDF（OA 直链 / 仓库反爬 / 校园 VPN 付费墙）→ 挂载或落盘报告。适用于运筹学、供应链韧性、物流网络、风险建模等领域。
 ---
 
 # 文献批量下载入库 Zotero 管线
 
 五个阶段：**检索补全 → 入库归类 → PDF 下载 → 挂载 → 报告**。逐阶段执行、每阶段核验，不要攒到最后。
 
-**核心原则（防幻觉）**：禁止凭记忆生成参考文献——AI 幻觉文献的根因是「从训练数据中回忆引用」。任何文献推荐、检索、引用都必须走 CrossRef / OpenAlex 等权威 API 拿到真实 DOI（可在 doi.org 验证）；禁止不经 API 验证就断言某篇论文的存在，禁止凭记忆手写 BibTeX 条目。
+**核心原则（防幻觉）**：禁止凭记忆生成参考文献——AI 幻觉文献的根因是「从训练数据中回忆引用」。任何文献推荐、检索、引用都必须走 CrossRef / arXiv / OpenAlex 等权威 API 拿到真实 DOI（可在 doi.org 验证）；禁止不经 API 验证就断言某篇论文的存在，禁止凭记忆手写 BibTeX 条目。
+
+**API 调用纪律**：arXiv 检索一律走 `scripts/search_arxiv.py`、OpenAlex 一律走 `scripts/openalex_cli.py`（两者内置限速、退避重试与 ID 校验），不要临时手写 curl 拼请求；禁止凭记忆编造 OpenAlex ID（形如 W2741809807）或 DOI，作者名/期刊名先用 `resolve` 解析成 ID 再过滤；最终报告列出所用文献的 URL（doi.org / arxiv.org/abs/…）供用户核验。
 
 ## 阶段 0：前置确认
 
@@ -26,6 +28,7 @@ url = "https://api.crossref.org/works?rows=2&query.bibliographic=" + quote(标�
 # 每条提取: title / container-title / issued / author / DOI，人工核对候选（注意排除 erratum）
 ```
 
+- **预印本（arXiv ID / OR/ML 预印本引注）**：`uv run scripts/search_arxiv.py --id_list <ID>`（或 `--query 'ti:… AND au:…'`）取元数据；结果先重定向到文件再解析，防撑爆上下文。返回字段含 title/authors/published/doi/pdf_url。注意 arXiv 的 DOI 是 DataCite 注册的 `10.48550/arXiv.<ID>`，CrossRef 查不到——入库走阶段 2 的 arXiv 分支。
 - **书籍/无 DOI 条目**：手工构造 BibTeX 添加（作者/年份/出版社信息可控），不要走 ISBN（OpenLibrary 元数据 noisy）。
 - **勘误上报**：CrossRef 结果与用户引注冲突时（如期刊名、卷期不符），以 CrossRef 为准入库，并在最终报告中列出勘误供用户改文档。
 
@@ -47,6 +50,8 @@ zotero_add_item(
 - 每篇添加后可顺手 `get_item_children` 检查：同名 PDF ×2 即重复附件，删一份（Trash 可恢复）。
 - 全部完成后 `zotero_update_search_database` 更新语义索引（超时正常，等 60–90s 后用 `zotero_get_search_database_status` 看 Last Update）。
 
+**arXiv 条目入库**：先试 `zotero_add_item(source=10.48550/arXiv.<ID>, source_type='doi')` 并核验元数据抓全（作者/年份/标题）；DataCite DOI 抓取失败时，用 search_arxiv.py 返回的元数据构造 `@misc` BibTeX（含 `eprint=<ID>, archivePrefix={arXiv}` 与 doi/url 字段）入库——不要因 DOI 路径失败就放弃元数据质量。
+
 ## 阶段 3：PDF 下载（按源分层，从低成本到高成本）
 
 ### 层 0 —— OA 直链，curl 直接下（Bash 需非沙箱）
@@ -54,6 +59,7 @@ zotero_add_item(
 | 来源 | 直链模式 |
 |---|---|
 | MDPI | `https://res.mdpi.com/d_attachment/<journal>/<id>/article_deploy/<id>.pdf`（主站拦 curl，res 子域不拦） |
+| arXiv | 检索结果自带 `pdf_url`（`export.arxiv.org/pdf/<ID>`），全 OA，curl 直接下 |
 | eScholarship | 文章页直链 |
 | 大学仓库（DSpace/edoc） | 从落地页找到 bitstream 真实 URL 后 curl；DOI 落地页本身常无直链 |
 
@@ -152,26 +158,40 @@ for i, item in enumerate(data['message']['items'], 1):
 
 参数：`query` 关键词用 `+` 连接；`filter=from-pub-date:2020` 限年份；`sort=relevance` 或 `sort=published`；`rows` 建议 10–15。
 
-### OpenAlex API（备选，覆盖 2.5 亿+ 文献）
+### arXiv API（OR/ML 预印本首选，走脚本）
 
 ```bash
-curl -s "https://api.openalex.org/works?search=KEYWORD&filter=publication_year:2020-2026,type:article&per-page=15&sort=cited_by_count:desc" \
-  | python3 -c "
-import json, sys
-data = json.load(sys.stdin)
-for i, w in enumerate(data['results'], 1):
-    title = w.get('title', '(no title)')
-    authors = w.get('authorships', [])
-    author_str = '; '.join(a['author']['display_name'].rsplit(' ',1)[0] + ' ' + a['author']['display_name'].split()[-1][0]+'.' for a in authors[:3])
-    if len(authors) > 3: author_str += ' et al.'
-    year = w.get('publication_year', '')
-    doi = w.get('doi', '').replace('https://doi.org/', '') if w.get('doi') else ''
-    cited = w.get('cited_by_count', 0)
-    print(f'{i:2}. [{cited:>4} cites] {title}')
-    print(f'    {author_str} ({year})')
-    print(f'    DOI: {doi}')
+uv run scripts/search_arxiv.py \
+  --query 'ti:"supply chain resilience"' \
+  --max_results 10 --sort_by submittedDate --sort_order descending \
+  > /tmp/arxiv.json
+python3 -c "
+import json
+data = json.load(open('/tmp/arxiv.json'))
+for i, p in enumerate(data['papers'], 1):
+    authors = '; '.join(p['authors'][:3]) + (' et al.' if len(p['authors']) > 3 else '')
+    print(f\"{i:2}. {p['title']}\")
+    print(f'    {authors} ({p[\"published\"][:4]})  arXiv:{p[\"id\"]}')
+    print(f'    DOI: {p.get(\"doi\",\"\")}  PDF: {p.get(\"pdf_url\",\"\")}')
 "
 ```
+
+字段前缀 `all:/ti:/au:/abs:/cat:`，短语加引号，布尔 `AND/OR/ANDNOT`；限速已内置（1 次/3 秒），不要并行跑多个实例。
+
+### OpenAlex API（备选，覆盖 2.5 亿+ 文献；一律走 CLI）
+
+```bash
+uv run scripts/openalex_cli.py filter works \
+  --search 'supply chain resilience' \
+  --filter publication_year:2020-2026,type:article \
+  --sort cited_by_count:desc --per-page 15 \
+  --select id,doi,title,publication_year,cited_by_count,authorships \
+  > /tmp/openalex.json
+```
+
+- 名字 → ID：`resolve authors 'John Doe'`；单条详情：`get works W2741809807 --select id,doi,title`；配额自查：`rate-limit`。
+- 429 或高频使用：`--api-key`（默认读 `~/.env` 的 `OPENALEX_API_KEY`；无 key 时配额很低）。
+- `download-pdf` 子命令走 OpenAlex 付费内容服务（$0.01/次且需 key）——非必要不用，OA PDF 优先走阶段 3 分层。
 
 ### Semantic Scholar API（语义搜索，适合主题发现）
 
@@ -201,11 +221,17 @@ CrossRef/OpenAlex 对中文文献覆盖有限：CNKI / 万方通过浏览器搜�
 - 文献综述先 `zotero_synthesize_annotations` 汇总高亮与笔记，再动笔综合。
 - 检索 GitHub 仓库 / 网页调研用 zread、web_reader；引用代码带 file:line。
 
+## 脚本与来源
+
+- `scripts/search_arxiv.py`、`scripts/openalex_cli.py` 收编自 [google-deepmind/science-skills](https://github.com/google-deepmind/science-skills)（Apache 2.0，Copyright Google LLC）。用 `uv run` 直接执行，依赖（polite-http、python-dotenv）由 uv 按脚本内联声明自动解析；首次运行需联网装依赖，在 ZCode 里用非沙箱 Bash。
+- 遵守两端 API 条款：arXiv 限 1 req/3s（脚本已内置），OpenAlex 无 key 走 polite pool；检索结果遵守各数据源使用条款。
+
 ## 故障速查
 
 | 症状 | 处置 |
 |---|---|
 | add_item 超时/Connection closed | 等 45–60s → get_recent 核验 → 未写入才重试 |
+| OpenAlex 429 / 配额低 | `rate-limit` 查配额；`~/.env` 配 `OPENALEX_API_KEY` 后自动携带 |
 | attach 413 quota | 全部落 ~/Downloads，报告说明 |
 | SD/Wiley 403 + 页面标题"请稍候" | 真导航等待 10–25s；仍 403 查 IPv6 是否绕过隧道 |
 | fetch 拿到 text/html 中介页 | 挑战未过，改真导航后再 fetch |
