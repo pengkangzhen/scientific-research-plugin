@@ -1,7 +1,7 @@
 {
   "name": "scientific-research-plugin",
-  "version": "0.2.1",
-  "description": "Research pipeline skills for OR / ML+OR / supply chain: prior-art research discipline for any task, literature fetch (Zotero), structured reading notes, publication figures, LaTeX polishing, scientific review, full journal-review simulation, rebuttal, and conference presentation slides.",
+  "version": "0.3.0",
+  "description": "Research pipeline skills for OR / ML+OR / supply chain: prior-art research discipline for any task, literature fetch (Zotero), structured reading notes, publication figures, LaTeX polishing, three-blind adversarial review, rebuttal, and conference presentation slides.",
   "author": { "name": "pengkangzhen", "url": "https://github.com/pengkangzhen" },
   "homepage": "https://github.com/pengkangzhen/scientific-research-plugin#readme",
   "repository": "https://github.com/pengkangzhen/scientific-research-plugin",

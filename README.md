@@ -16,8 +16,7 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 | ③ Experiment | `figure-plot` | skill | Figure contract → Times New Roman / colorblind-safe palette → vector PDF with embedded-font verification; data plots + schematic diagrams |
 | ④ Write | `paper-polish` | skill | LaTeX language polishing that preserves all markup; ships with a jargon-audit follow-up |
 | ④ Write | `jargon-check` | **subagent** | Isolated-context, independent-model jargon audit — a stranger-reviewer perspective that avoids same-model blind spots |
-| ⑤ Pre-submit | `paper-review` | skill | Three-role adversarial review: Reviewer challenges → Author defends → Judge rules |
-| ⑤ Pre-submit | `academic-paper-reviewer` | skill | Five-reviewer (EIC + 3 domain reviewers + Devil's Advocate) full journal-review simulation |
+| ⑤ Pre-submit | `paper-review` | skill | Three-blind adversarial panel: 3 isolated reviewers (methodology rigor / domain contribution / adversarial attack) → author-defense arbitration → cross-review synthesis; claim-evidence anchoring, journal-profile axes, C/M/N issue list feeds `rebuttal`. Domain-agnostic engine with gates detected per manuscript and composed freely (built-in: OR families, ML+OR, LLM/agents; extensible) |
 | ⑥ Rebut | `rebuttal` | skill | Locate each reviewer comment → confirm the revision plan → `\changed{}` markup → compile the PDF → update the response letter |
 | ⑦ Present | `academic-ppt` | skill | Paper (LaTeX/PDF) → Beamer deck with a visual design system (official-template extraction or self-built) → time-budgeted talk script → compliant pptx packaging with speaker notes |
 
@@ -32,15 +31,6 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 
 - **skill**: triggered automatically by its description, runs in the main conversation — suited to workflow orchestration (retrieval, polishing, review, rebuttal).
 - **subagent**: invoked explicitly by name, runs in an isolated session — suited to audits that need an outsider's perspective (the core value of `jargon-check`: a different model in a different context, built to catch the writing model's wording blind spots).
-
-### Choosing Between the Two Review Skills
-
-| | `paper-review` | `academic-paper-reviewer` |
-|---|---|---|
-| Origin | Self-built | Upstream [academic-research-skills](https://github.com/), original name kept for easier upstream sync |
-| Mechanism | Reviewer/Author/Judge three-role adversarial | 5-reviewer multi-role simulation |
-| Positioning | Single-dimension scientific check, focused on OR/ML+OR | Full journal review workflow, cross-domain |
-| Weight | 32K, quick daily use | 336K, full pre-submission pass |
 
 ## Installation
 
@@ -79,16 +69,17 @@ halter sync --apply   # optional: fan out to all installed assistants
 ## Repository Layout
 
 ```
-├── skills/                      # 9 auto-triggered skills (single source of truth)
+├── skills/                      # 8 auto-triggered skills (single source of truth)
 │   ├── research-before-build/
 │   ├── zotero-paper-fetch/
 │   ├── zotero-paper-note/
 │   ├── figure-plot/
 │   ├── paper-polish/
 │   ├── paper-review/
-│   ├── academic-paper-review/
 │   ├── rebuttal/
 │   └── academic-ppt/
+├── attic/                       # retired skills, kept for provenance
+│   └── academic-paper-review/   # 7-agent journal-review simulation (upstream: academic-research-skills)
 ├── agents/
 │   └── jargon-check.md          # isolated-audit subagent
 ├── .claude-plugin/
@@ -104,8 +95,8 @@ halter sync --apply   # optional: fan out to all installed assistants
 
 - Edit skills in this repo only; `install.sh` creates symlinks — local changes take effect immediately, and pushing publishes them.
 - Version bumps touch all three plugin manifests (`.claude-plugin/`, `.zcode-plugin/`, `.codex-plugin/`) and the `.claude-plugin/marketplace.json` entry in lockstep.
-- `academic-paper-reviewer` has an upstream; diff against it before major changes. All other skills are self-developed and iterate freely.
-- This repo is v3: v1 contained only 4 writing skills (scientific-review / language-polish / jargon-check / rebuttal); v2 expanded to a full research pipeline of 7 skills + 1 subagent and evolved `language-polish` into `paper-polish` (adding the jargon-audit section); v3 adds the discipline layer `research-before-build` (⓪) and the presentation stage `academic-ppt` (⑦), and renames `scientific-review` to `paper-review` — 9 skills + 1 subagent, repositioned from a paper toolkit to "every task is research".
+- `academic-paper-review` is retired into `attic/` (upstream: academic-research-skills); its useful mechanisms (fatal-flaw criteria, red flags, Devil's-Advocate attack dimensions) live on inside `paper-review`. See `skills/paper-review/references/source-basis.md` for full provenance.
+- This repo is v4: v1 contained only 4 writing skills; v2 expanded to a research pipeline and evolved `language-polish` into `paper-polish`; v3 added the discipline layer `research-before-build` (⓪) and `academic-ppt` (⑦) and renamed `scientific-review` to `paper-review`; v4 rebuilds `paper-review` as a three-blind adversarial panel (nature-reviewer-style architecture, OR/ML+OR domain gates, author-defense arbitration) and retires `academic-paper-review` — 8 skills + 1 subagent.
 
 ## License
 

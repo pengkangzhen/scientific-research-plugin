@@ -4,8 +4,8 @@
     {
       "name": "scientific-research-plugin",
       "source": "./",
-      "version": "0.2.1",
-      "description": "Research pipeline skills for OR / ML+OR / supply chain: prior-art research discipline for any task, literature fetch (Zotero), structured reading notes, publication figures, LaTeX polishing, scientific review, full journal-review simulation, rebuttal, and conference presentation slides.",
+      "version": "0.3.0",
+      "description": "Research pipeline skills for OR / ML+OR / supply chain: prior-art research discipline for any task, literature fetch (Zotero), structured reading notes, publication figures, LaTeX polishing, three-blind adversarial review, rebuttal, and conference presentation slides.",
       "description_i18n": {
         "zh-CN": "面向运筹学 / 机器学习+运筹交叉研究的科研流水线技能包：任何任务先调研（先例检索纪律层）、文献检索入库（Zotero）、结构化阅读笔记、论文出图、LaTeX 润色、投稿前评审（三角色对抗与五审稿人模拟）、审稿回复、会议汇报 PPT。"
       },
