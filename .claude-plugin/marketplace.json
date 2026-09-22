@@ -1,5 +1,6 @@
 {
   "name": "scientific-research-plugin",
+  "owner": { "name": "pengkangzhen", "url": "https://github.com/pengkangzhen" },
   "plugins": [
     {
       "name": "scientific-research-plugin",
