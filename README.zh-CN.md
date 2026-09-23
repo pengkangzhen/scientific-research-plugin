@@ -123,6 +123,7 @@ cd scientific-research-plugin
 
 - 修改任何 skill 一律改本仓库，`install.sh` 是 symlink——本机即时生效，推送即发布。
 - 版本号变更需同步四处并保持一致：三个插件清单（`.claude-plugin/`、`.zcode-plugin/`、`.codex-plugin/`）与 `.claude-plugin/marketplace.json` 条目。
+- 官方 ZCode 市场（zai-org/zcode-plugins 的 `plugins/scientific-research-plugin/`）是本仓库的打包镜像；每次发版需向其提同步 PR，`version` 与 `description_i18n` 必须逐字一致（官方 `validate.py` 强制校验）。
 - `academic-paper-review` 已退役归档至 `attic/`（上游：academic-research-skills）；其有效机制（致命缺陷四标准、实验红线、Devil's Advocate 攻击维度）已并入 `paper-review`。完整来源谱系见 `skills/paper-review/references/source-basis.md`。
 - 本仓库为 v5：v1 只含 4 个写作技能；v2 扩展为科研全流程；v3 加入纪律层 `research-before-build`（⓪）与汇报层 `academic-ppt`（⑦）并将 `scientific-review` 更名为 `paper-review`；v4 将 `paper-review` 重构为三盲审对抗评审团（nature-reviewer 式架构、OR/ML+OR 领域 gate、作者辩护仲裁），并退役 `academic-paper-review`；v5 新增 `reference-verify`（⑤ 投稿前参考文献体检，从一次全稿引用核查实战凝练的三层核查法）——共 9 skill + 1 subagent。
 
