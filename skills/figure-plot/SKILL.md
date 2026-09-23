@@ -1,6 +1,6 @@
 ---
 name: figure-plot
-description: 数据可视化与绘图技能。用户要求画图、绘图、出图、作图、重画，或提到 figure、plot、matplotlib、数据图、示意图、算法流程图、框架图、拓扑图、柱状图、折线图、热力图、帕累托前沿、网络图、收敛曲线、中文图、学位论文图、海运航线、地理网络、世界地图、避陆，或问 drawio/math/数学公式/数学符号/LaTeX 渲染等任何图形与公式渲染问题时使用。覆盖数据图（Python/matplotlib）与示意图/流程图（drawio/TikZ）的完整规范：图契约、Times New Roman 字体（中文宋体回退）、色盲安全配色、图例强制审计（序列缺图例导出即报错）、矢量 PDF 导出与字体嵌入验证、脚本落盘与迭代约定、海运航线 searoute 避陆生成与穿陆检测。
+description: 数据可视化与绘图技能。用户要求画图、绘图、出图、作图、重画，或提到 figure、plot、matplotlib、数据图、示意图、算法流程图、框架图、拓扑图、柱状图、折线图、热力图、帕累托前沿、网络图、收敛曲线、中文图、学位论文图、海运航线、地理网络、世界地图、避陆，或问 drawio/math/数学公式/数学符号/LaTeX 渲染等任何图形与公式渲染问题时使用。覆盖数据图（Python/matplotlib）与示意图/流程图（drawio）的完整规范：图契约、Times New Roman 字体（中文宋体回退）、色盲安全配色、图例强制审计（序列缺图例导出即报错）、矢量 PDF 导出与字体嵌入验证、脚本落盘与迭代约定、海运航线 searoute 避陆生成与穿陆检测。
 license: MIT
 ---
 
@@ -21,12 +21,12 @@ license: MIT
 
 | 章节 | 图型 | 首选工具 | 要点 |
 |---|---|---|---|
-| 第三章 问题描述 | 示意图：网络拓扑（港口/枢纽/弧）、供应链结构、时间窗 | drawio；需与正文数学符号严格一致时用 TikZ | 节点/弧/集合用论文记号（如 G=(N,A)）；决策变量、参数、扰动用色块区分并加图例 |
+| 第三章 问题描述 | 示意图：网络拓扑（港口/枢纽/弧）、供应链结构、时间窗 | drawio | 节点/弧/集合用论文记号（如 G=(N,A)）；决策变量、参数、扰动用色块区分并加图例 |
 | 第四章 算法设计 | 算法流程图：C&CG/Benders 迭代、启发式主循环 | drawio（矩形=步骤、菱形=判断、圆角=起止，迭代用 loop frame） | 一个流程图只讲一个算法骨架；与伪代码行号对应（如有） |
 | 第五章 实验分析 | 数据图：收敛曲线、方法对比、灵敏度、Pareto 等 | Python（matplotlib + figstyle 共享样式） | 见下方数据图规范与图型速查 |
-| 跨章 | 方法总览/框架图 | drawio 或 TikZ | 同第三章要点 |
+| 跨章 | 方法总览/框架图 | drawio | 同第三章要点 |
 
-drawio/TikZ 示意图与流程图同样遵守硬性规范：Times 风字体（TikZ 经 `newtxtext` / `mathptmx` 宏包匹配）、矢量导出、最终印刷尺寸下字号不低于 6 pt。drawio 的完整工作流（凸包工具、导出、视觉验收）见下节。
+drawio 示意图与流程图同样遵守硬性规范：Times 风字体、矢量导出、最终印刷尺寸下字号不低于 6 pt；与正文数学符号严格一致的需求由 drawio 内置 LaTeX（math=1 + 反引号语法）承担。完整工作流（凸包工具、导出、视觉验收）见下节。
 
 ## drawio 示意图工作流（第三章拓扑 / 第四章流程 / 框架图）
 
@@ -153,14 +153,14 @@ save_fig(fig, "fig5_convergence", outdir="figures")
 
 - **脚本落盘**：生成脚本保存到项目内 `figures/scripts/<fig_name>.py`，不要只在临时目录跑一次性命令。
 - **运行方式**：项目内有 pyproject.toml 用 `uv run --no-sync python figures/scripts/<fig_name>.py`；否则用 `python3`。
-- **输出验证**：数据图统一走 `save_fig`（内置图例审计、非空与字体嵌入校验）；drawio/TikZ 导出后须 `ls -la` 确认存在且非空，drawio 图另走上方工作流的视觉验收闭环。两类都在回复中报告**绝对路径**，再让用户查看。
+- **输出验证**：数据图统一走 `save_fig`（内置图例审计、非空与字体嵌入校验）；drawio 导出后须 `ls -la` 确认存在且非空，另走上方工作流的视觉验收闭环。两类都在回复中报告**绝对路径**，再让用户查看。
 - **迭代请求**（改字号、配色、图例位置等）：先读 `figures/scripts/` 下的原脚本 → 修改 → 重跑；文件名保持不变，保证 LaTeX 中的 `\includegraphics` 引用稳定。
 
 ## 交付前检查清单
 
 - [ ] 矢量 PDF；任何情况下不用 JPEG（有压缩伪影）
 - [ ] Times New Roman（中文图：中文宋体），最终印刷尺寸下字号 ≥ 6 pt
-- [ ] 字体已嵌入：pdffonts 核对 emb 全 yes（drawio/TikZ 导出的 PDF 同样检查；无 pdffonts 环境用 `mutool info -F`）
+- [ ] 字体已嵌入：pdffonts 核对 emb 全 yes（drawio 导出的 PDF 同样检查；无 pdffonts 环境用 `mutool info -F`）
 - [ ] 图内无标题——标题只写在 LaTeX `\caption{}`，删除 `plt.title`
 - [ ] 色盲安全配色 + 灰度可辨
 - [ ] 轴标签齐全、带单位
