@@ -8,6 +8,7 @@ description: >
   with professional tone templates. 触发词："回复审稿意见"、"逐条回应审稿人"、"rebuttal"、
   "response letter"、"审稿修改"、"改稿回应审稿人"。Use when the user receives reviewer
   comments and needs to revise the manuscript and write the response letter.
+license: MIT
 ---
 
 # Rebuttal Skill — Point-by-Point Rebuttal Agent

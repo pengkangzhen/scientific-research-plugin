@@ -1,6 +1,7 @@
 ---
 name: reference-verify
 description: 论文参考文献真实性与书目准确性核查（投稿前体检）。当用户要求「检查参考文献」「核查引用是否真实存在」「这些引用是不是编造的/幻觉的」「文献体检」「citation check」「verify references」，或提到预印本要不要升级为正式版、arXiv 链接要不要换官方链接时使用。输入支持 LaTeX 手稿（外部 .bib 或内嵌 thebibliography）与纯引用清单；三层方法：官方 API 机核（CrossRef / arXiv / OpenAlex / PMLR / OpenReview / ACL Anthology / NeurIPS，命令取事实、零模型回忆）→ 机核未决条目联网核查（证据必须带可访问 URL）→ 存疑结论独立复核；输出字段级核对表、严重度分级与预印本升级建议。学科不限。
+license: MIT
 ---
 
 # 参考文献真实性核查（投稿前体检）

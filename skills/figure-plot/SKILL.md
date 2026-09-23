@@ -1,6 +1,7 @@
 ---
 name: figure-plot
 description: 数据可视化与绘图技能。用户要求画图、绘图、出图、作图、重画，或提到 figure、plot、matplotlib、数据图、示意图、算法流程图、框架图、拓扑图、柱状图、折线图、热力图、帕累托前沿、网络图、收敛曲线、中文图、学位论文图、海运航线、地理网络、世界地图、避陆，或问 drawio/math/数学公式/数学符号/LaTeX 渲染等任何图形与公式渲染问题时使用。覆盖数据图（Python/matplotlib）与示意图/流程图（drawio/TikZ）的完整规范：图契约、Times New Roman 字体（中文宋体回退）、色盲安全配色、矢量 PDF 导出与字体嵌入验证、脚本落盘与迭代约定、海运航线 searoute 避陆生成与穿陆检测。
+license: MIT
 ---
 
 # 绘图技能（figure-plot）

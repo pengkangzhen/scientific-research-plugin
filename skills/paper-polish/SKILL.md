@@ -9,6 +9,7 @@ description: >
   manuscript, or LaTeX file, or mentions language editing, writing quality, or English
   improvement for academic writing. Also trigger on phrases like "check my English",
   "improve the writing", "make it more academic", "fix the language", "polish this section".
+license: MIT
 ---
 
 # Paper Polish Skill

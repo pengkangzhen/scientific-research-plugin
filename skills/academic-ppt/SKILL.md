@@ -8,10 +8,11 @@ description: >
   触发词："会议PPT"、"演讲PPT"、"做幻灯片"、"把论文做成PPT"、"presentation"、"slides"、
   "Beamer"、"会议模板"、"讲稿"、"演讲稿"、"presentation speech"、"演讲者备注"、"贴回模板"。
   Use this skill whenever the user wants to turn a paper/manuscript into conference or seminar
-  presentation slides, build or adjust a Beamer deck, fit slides into an official conference
-  template, write or trim a talk script against a time budget, or package a slide PDF back into
+  presentation slides, build a Beamer deck, fit slides into the official template,
+  write a time-budgeted talk script, or package a slide PDF back into
   a pptx with speaker notes — even if they never say "PPT" (e.g. "下周要用这篇论文做口头报告",
   "15 分钟的 talk 怎么准备").
+license: MIT
 ---
 
 # Academic PPT Skill（论文 → 会议演讲）

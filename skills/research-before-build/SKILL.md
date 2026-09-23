@@ -3,6 +3,7 @@ name: research-before-build
 description: 先调研后构建。在开始任何非琐碎的技术、调研或实现任务之前，先检索人类先例与社区方案（官方文档、成熟开源库、GitHub issues、高票问答、论文、内部知识库）。分级触发、按信任采信、以决策影响为验收。琐碎任务（改错别字、格式化、用户已明确指定做法的直接执行）不适用。
 metadata:
   short-description: 先调研后构建——动手前先查先例与社区方案
+license: MIT
 ---
 
 # Research Before Build（先调研后构建）
