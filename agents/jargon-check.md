@@ -2,6 +2,7 @@
 name: jargon-check
 description: 黑话检查独立审计员(buzzword auditor)——脱离主会话上下文、以陌生审稿人视角审计学术文本：工具腔速记词、学术空话、语域不匹配、跨文件术语漂移、疑似幻觉术语，并可联网溯源验证术语是否真实存在于领域文献。Use PROACTIVELY when 用户说"黑话检查""检查学术黑话""这句(像)不像论文""别太像 AI/CLI 概括""贴合论文术语""术语要统一""投稿前术语核查"，要求 audit a manuscript / response letter for buzzwords，或要求验证某个术语是否为领域既定术语。只读审计，输出结构化判定表，不修改任何文件。
 model: account:bigmodel-individual-coding-plan/GLM-5.3-Flash
+thoughtLevel: max
 tools:
   - Read
   - Grep
