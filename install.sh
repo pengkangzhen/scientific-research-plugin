@@ -2,8 +2,13 @@
 # Install scientific-research-plugin:
 #   skills/*  -> ~/.agents/skills/<name>   (auto-triggered skills)
 #   agents/*  -> ~/.agents/agents/<name>   (explicitly invoked subagents)
-# Idempotent: re-running relinks stale links; refuses to overwrite real
-# directories (resolve manually with diff, then remove and re-run).
+#   skills/*  -> <harness>/skills/<name>   (fan-out for harnesses that do NOT
+#                 read ~/.agents/skills: Cursor, Crush, Copilot, Amp, Grok,
+#                 Qwen, Droid, Kiro)
+# Harnesses reading ~/.agents/skills natively (Gemini CLI, Goose, opencode,
+# Kimi Code, pi) need no extra link. Idempotent: re-running relinks stale
+# links; refuses to overwrite real directories (resolve manually with diff,
+# then remove and re-run).
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -37,4 +42,31 @@ link_group() {
 
 link_group "$REPO_ROOT/skills" "${HOME}/.agents/skills" "skill"
 link_group "$REPO_ROOT/agents" "${HOME}/.agents/agents" "agent"
-echo "Done. Distribute to all harnesses with: halter sync --apply"
+
+# Fan out to harnesses with their own skills directory: name:marker:target.
+# Only touched when the harness looks installed (marker dir exists), so $HOME
+# stays clean; after installing a new harness, just re-run this script.
+FANOUT_TARGETS=(
+  "cursor:${HOME}/.cursor:${HOME}/.cursor/skills"
+  "crush:${HOME}/.config/crush:${HOME}/.config/crush/skills"
+  "copilot:${HOME}/.copilot:${HOME}/.copilot/skills"
+  # Amp's own config marks it installed, but it reads user-level skills from ~/.config/agents/skills.
+  "amp:${HOME}/.config/amp:${HOME}/.config/agents/skills"
+  "grok:${HOME}/.grok:${HOME}/.grok/skills"
+  "qwen:${HOME}/.qwen:${HOME}/.qwen/skills"
+  "droid:${HOME}/.factory:${HOME}/.factory/skills"
+  "kiro:${HOME}/.kiro:${HOME}/.kiro/skills"
+)
+
+for target in "${FANOUT_TARGETS[@]}"; do
+  harness="${target%%:*}"
+  rest="${target#*:}"
+  marker_dir="${rest%%:*}"
+  skills_dir="${rest#*:}"
+  if [ -d "$marker_dir" ]; then
+    link_group "$REPO_ROOT/skills" "$skills_dir" "skill/$harness"
+  else
+    echo "- $harness: not found (no $marker_dir), skipped"
+  fi
+done
+echo "Done. Harnesses beyond the fan-out list: halter sync --apply"
