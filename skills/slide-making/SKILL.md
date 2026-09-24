@@ -4,7 +4,7 @@ description: >
   学术演讲 PPT/slides 制作 — 从论文稿件（LaTeX/PDF）到可现场演讲的完整流程：
   LaTeX Beamer 路线 + 视觉设计系统（有官方模板则提取背景复用，无模板则自建色板/版式）+
   数学公式与论文原图复用 + 讲稿撰写与时长控制 + PDF→图片→官方模板交付包装 + 演讲者备注与现场预案。
-  内置两套可复用模板按需加载：学术会议路线 beamer-deck-template（IMHFC 2026 实战沉淀）、
+  内置两套可复用模板按需加载：学术会议路线 conference-beamer（IMHFC 2026 实战沉淀）、
   学位开题/答辩/组会路线 defense-beamer 通用主题包（横幅 + 进度条 + 轻量组件）。
   触发词："会议PPT"、"演讲PPT"、"做幻灯片"、"把论文做成PPT"、"presentation"、"slides"、
   "Beamer"、"会议模板"、"讲稿"、"演讲稿"、"presentation speech"、"演讲者备注"、"贴回模板"、
@@ -29,7 +29,7 @@ license: MIT
 1. 收集输入：论文源文件（manuscript.tex）、会议官方模板（若有）、时长档位、语言（通常英文）。
 2. 按 §1 定路线（结论优先，勿从零调研工具）。
 3. Beamer 路线：§2 确立视觉设计系统——**整份复制 §8 对应模板再改内容**（会议报告 →
-   beamer-deck-template.tex；开题/答辩/组会 → defense-beamer/defense.tex；有官方 pptx
+   conference-beamer/conference.tex；开题/答辩/组会 → defense-beamer/defense.tex；有官方 pptx
    模板则提取背景替换）→ 写 tex → §4 验证循环 → §3 排版修法随改随查。
 4. 讲稿：§5 配合时长撰写/精简，术语与幻灯片、论文三方一致。
 5. 交付：§6 按会议要求包装（合规 pptx / 备注栏 / 现场预案）。
@@ -82,14 +82,14 @@ license: MIT
 - 色板来源：学校 VI、论文图表既有配色、或高对比经典组合；上面 IMHFC 那套五色已实战验证，可直接沿用换色值。
 - 明度对比全局一致：反白字色块只用于少量强调且成体系出现，不要与白底黑字正文大面积混排（可读性冲突，用户实测提出过）。
 - 可选起点：成熟 Beamer 主题（如 metropolis，可选字体一律 `\IfFontExistsTF` 守护、缺字体自动回退）；
-  或直接整份复制 `assets/beamer-deck-template.tex`——preamble 与 17 类帧型全套已验证，改五处色值即换风格。
+  或直接整份复制 `assets/conference-beamer/conference.tex`——preamble 与 17 类帧型全套已验证，改五处色值即换风格。
 - 无背景图就**不挂** `\usebackgroundtemplate`：白底是 Beamer 默认，天然避开 2.1 的优先级坑与单位换算坑；分隔页用主色纯填充即可。
 
 ### 2.3 版式基座（两条路通用）
 
 - 去导航符号 `\setbeamertemplate{navigation symbols}{}`、`\usefonttheme{professionalfonts}`；amsmath + unicode-math，数学字体（如 Fira Math）用 `\IfFontExistsTF` 守护。
 - frametitle 自定义模板：主色粗体大标题 + 强调色细线（如 13mm×1.1pt），眉注见 §3。
-- `\divider`（分隔页：大编号 + 标题）与 `\callout`（强调卡片）已沉淀为模板内置宏（beamer-deck-template.tex），宽度规则见 §3。
+- `\divider`（分隔页：大编号 + 标题）与 `\callout`（强调卡片）已沉淀为模板内置宏（conference-beamer/conference.tex），宽度规则见 §3。
 
 ### 2.4 内置现成主题：defense-beamer（学位开题 / 答辩 / 组会）
 
@@ -177,15 +177,15 @@ pdftoppm -png -r 300 presentation.pdf /tmp/slide-png       # 300dpi，1890×1063
 
 两套模板对应两条路线，开工时按场合**整份复制对应文件**再改内容，不要从零写：
 
-- **学术会议路线** `assets/beamer-deck-template.tex`：IMHFC 2026 实战 deck 泛化的完整骨架——
+- **学术会议路线** `assets/conference-beamer/`：conference.tex（IMHFC 2026 实战 deck 泛化的完整骨架）+
+  figs/beamer_bg/ 背景投放点 + README——
   preamble 设计系统（五处色值、frametitle 眉注、footline 条带避让、`\divider`/`\callout` 宏）
   + 17 类帧型（封面/目录/转场/要点/三卡片/通栏纵排/左文右图/示意图/表格/数学×2/总览/
   路由表/结果大数字/对比结果/构成启示/结论/封底），占位内容即填写说明；
   自建模式零外部资产直接可编译，官方模板模式改 `\BgCover`/`\BgContent`/`\BgClosing` 三个宏。
 - **学位开题/答辩/组会路线** `assets/defense-beamer/`：beamerthemeDefense.sty +
   defense.tex/.pdf（脱敏骨架）+ README（详见 §2.4）。
-- **会议汇报接线包** `assets/conference-beamer/`：官方模板提取流程、`figs/beamer_bg/`
-  背景投放点、与 beamer-deck-template 的三行接线、条带避让参数与封底印字避坑
+- 官方模板的提取流程、三行接线、条带避让参数与封底印字避坑，见 conference-beamer/README
   （背景图与官方 pptx 属会议方版权物，不入仓库，自备）。
 - **讲稿骨架** `assets/speech-template.md`：节奏表 + 关键数字表 + `[Slide:]` 逐页标记 +
   累计检查点 + Q&A 预案库，配合 §5 方法论使用。

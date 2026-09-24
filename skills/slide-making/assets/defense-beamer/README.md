@@ -9,7 +9,7 @@
 
 | 文件 | 说明 |
 |------|------|
-| `beamerthemeDefense.sty` | 主题文件 v2.0（横幅/进度条/目录/分节页/封面/组件，字体已全量守护） |
+| `beamerthemeDefense.sty` | 主题文件 v2.1（横幅/进度条/目录/分节页/封面/组件，字体已全量守护；西文 Helvetica Neue、数学 Fira Math 均守护回退） |
 | `defense.tex` | 开题答辩骨架（脱敏，25 页：封面/目录/5 节转场/三卡卡片/要点+警示综述/研究框架 tikz/技术路线/进度表/结束页） |
 | `defense.pdf` | 上者编译预览（WSL 回退字体版：正文黑体、横幅楷体；macOS 编译出鸿蒙+行楷原版效果） |
 | `campus-emblem.png` | **不入包，自备**：把自己的校徽 PNG 放文稿同目录即自动入横幅（高 5mm，反白效果最佳）；不放则横幅纯文字字标 |
@@ -108,6 +108,9 @@
 | macOS（原版效果） | HarmonyOS Sans SC | Xingkai SC Bold 行楷 | Zapfino 花体 |
 | Windows | SimHei 或 HarmonyOS Sans SC | KaiTi 楷体（仿粗） | 当前西文字体 |
 | Linux/WSL | SimHei（仿粗） | KaiTi 楷体（仿粗） | 当前西文字体 |
+
+西文/数字用 Helvetica Neue、数学用 Fira Math（借鉴实战 deck 设置，`\IfFontExistsTF`
+守护；缺失时西文随上表链条、数学回退默认数学字体）。
 
 手动替换改 `beamerthemeDefense.sty` 中「字体」一节。**注意**：探测单词名字体（如 `Zapfino`）
 缺失时 fontspec 会在日志留 kpathsea 错误，主题已用多词名 `HarmonyOS Sans SC` 做平台探测规避。

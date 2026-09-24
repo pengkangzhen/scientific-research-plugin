@@ -26,7 +26,7 @@
 % 手动替换仍改该节对应行。回退链：HarmonyOS Sans SC → PingFang SC →
 % Noto Sans CJK SC → SimHei；行楷 → KaiTi → FandolKai；Zapfino → 当前西文。
 % =========================================================================
-\ProvidesPackage{beamerthemeDefense}[2026/09/24 Generic academic defense beamer theme v2.0]
+\ProvidesPackage{beamerthemeDefense}[2026/09/24 Generic academic defense beamer theme v2.1]
 
 \RequirePackage{tikz}
 \usetikzlibrary{calc}
@@ -34,6 +34,8 @@
 \RequirePackage[most]{tcolorbox}
 \RequirePackage{fontspec}
 \RequirePackage{xeCJK}
+\RequirePackage{amsmath}
+\RequirePackage{unicode-math}   % 数学字体接管（配下方 Fira Math 守护，借鉴实战 deck 设置）
 
 % -------------------------------------------------------------------------
 % 颜色：三色制（科研演示规范：主色 + 强调色 + 中性灰，蓝橙互补、色盲友好）
@@ -143,6 +145,11 @@
   }{\newCJKfontfamily\df@wmcn{SimSun}}%
   \newcommand{\df@wmen}{}% 花体仅 macOS 常见：回退当前西文字体
 }
+% 链后统一叠加（借鉴实战 deck 字体设置，均守护、缺失静默回退）：
+%   西文/数字 → Helvetica Neue（macOS 命中；缺则维持上面链条结果，CJK 不受影响）
+%   数学字体 → Fira Math（配 unicode-math；缺则默认数学字体）
+\IfFontExistsTF{Helvetica Neue}{\setsansfont{Helvetica Neue}}{}
+\IfFontExistsTF{Fira Math}{\setmathfont{Fira Math}}{}
 
 % -------------------------------------------------------------------------
 % 版式几何：横幅高默认 8.3mm，页码底栏；校徽可选（有则字标右移让位）
