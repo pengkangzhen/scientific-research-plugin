@@ -1,5 +1,5 @@
 ---
-name: paper-polish
+name: paper-polishing
 description: >
   语言润色 (language polishing) — Academic English paper polishing for LaTeX manuscripts.
   Polishes grammar, word choice, sentence structure, logic flow, and academic tone while

@@ -1,4 +1,4 @@
-# figure-plotter 出版样式（唯一事实源）
+# figure-plotting 出版样式（唯一事实源）
 # 修改样式只改本文件；图脚本一律经 scripts/figstyle.py 加载，禁止复制 rcParams 到图脚本。
 # 字体回退链：Times New Roman → Times（macOS 备选）→ Liberation Serif / Nimbus Roman（Linux 度量兼容），
 # 保证 WSL/Linux 上不再静默替换为 DejaVu。中文模式（宋体回退）见 figstyle.load_style(zh=True)。

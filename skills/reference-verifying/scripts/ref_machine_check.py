@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""reference-verify 机核层：清单门控 + CrossRef/arXiv 官方事实抽取 + 链接活性检查。
+"""reference-verifying 机核层：清单门控 + CrossRef/arXiv 官方事实抽取 + 链接活性检查。
 
 用法:
   uv run ref_machine_check.py manuscript.tex                     # 内嵌 thebibliography
@@ -231,7 +231,7 @@ def main() -> int:
         results.append(r)
 
     lines = [
-        "# 机核事实表（reference-verify 阶段 1 产出）",
+        "# 机核事实表（reference-verifying 阶段 1 产出）",
         "",
         f"- 源：`{args.source}`（{mode}，{len(entries)} 条）；引用键 {len(cites)} 个",
     ]

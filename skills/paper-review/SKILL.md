@@ -1,6 +1,6 @@
 ---
 name: paper-review
-description: "科学审稿 (scientific review) — three-blind adversarial review of the SCIENTIFIC merit of papers and experimental results in any technical domain: 3 isolated reviewers (methodology rigor / domain contribution / adversarial attack) + author-defense arbitration + cross-review synthesis, with claim-evidence anchoring and journal-profile axes. Domain-conditional gates are detected per manuscript and composed freely (built-in: mathematical programming, stochastic/robust, decomposition, network/combinatorial, application domains, ML+OR, LLM/agents; extensible). NOT prose quality (use paper-polish). 触发词：\"科学审稿\"、\"学术审稿\"、\"审一下这个模型/结果\"、\"这个结果合理吗\"、\"投稿前自审\"、\"review these results\"、\"pre-submission review\"、\"simulate review\"。"
+description: "科学审稿 (scientific review) — three-blind adversarial review of the SCIENTIFIC merit of papers and experimental results in any technical domain: 3 isolated reviewers (methodology rigor / domain contribution / adversarial attack) + author-defense arbitration + cross-review synthesis, with claim-evidence anchoring and journal-profile axes. Domain-conditional gates are detected per manuscript and composed freely (built-in: mathematical programming, stochastic/robust, decomposition, network/combinatorial, application domains, ML+OR, LLM/agents; extensible). NOT prose quality (use paper-polishing). 触发词：\"科学审稿\"、\"学术审稿\"、\"审一下这个模型/结果\"、\"这个结果合理吗\"、\"投稿前自审\"、\"review these results\"、\"pre-submission review\"、\"simulate review\"。"
 license: MIT
 ---
 
@@ -8,7 +8,7 @@ license: MIT
 
 Simulate a referee-side review panel: **3 mutually blind reviewers** work from non-overlapping emphasis briefs, then a **synthesis pass** runs an **author-defense arbitration** on disputed concerns before issuing the final C/M/N issue list that `rebuttal` consumes.
 
-This skill evaluates scientific merit only. For rebuttal drafting route to `rebuttal`; for language polish route to `paper-polish`.
+This skill evaluates scientific merit only. For rebuttal drafting route to `rebuttal`; for language polish route to `paper-polishing`.
 
 ## Default stance
 
@@ -85,7 +85,7 @@ The C/M/N numbering is stable across the report and is designed as direct input 
 - Do not soften a judgment when the defense scores <4; no consecutive downgrades; a >50% downgrade rate triggers an explicit sycophancy warning for human re-check.
 - A confirmed Critical (fatal-flaw criteria in `references/concern-taxonomy.md`) caps the overall assessment at Weak; decorative strengths cannot lift it.
 - Do not silently turn reviewer assessment into rebuttal drafting, and do not emit an editorial decision letter.
-- Writing/language issues are out of scope except where they obscure meaning (route to `paper-polish`).
+- Writing/language issues are out of scope except where they obscure meaning (route to `paper-polishing`).
 
 ## Related files
 

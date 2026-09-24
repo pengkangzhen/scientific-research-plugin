@@ -1,5 +1,5 @@
 ---
-name: reference-verify
+name: reference-verifying
 description: 论文参考文献真实性与书目准确性核查（投稿前体检）。当用户要求「检查参考文献」「核查引用是否真实存在」「这些引用是不是编造的/幻觉的」「文献体检」「citation check」「verify references」，或提到预印本要不要升级为正式版、arXiv 链接要不要换官方链接时使用。输入支持 LaTeX 手稿（外部 .bib 或内嵌 thebibliography）与纯引用清单；三层方法：官方 API 机核（CrossRef / arXiv / OpenAlex / PMLR / OpenReview / ACL Anthology / NeurIPS，命令取事实、零模型回忆）→ 机核未决条目联网核查（证据必须带可访问 URL）→ 存疑结论独立复核；输出字段级核对表、严重度分级与预印本升级建议。学科不限。
 license: MIT
 ---
@@ -25,8 +25,8 @@ license: MIT
 ## 阶段 1：官方 API 机核（脚本）
 
 ```bash
-uv run skills/reference-verify/scripts/ref_machine_check.py manuscript.tex            # 内嵌 thebibliography
-uv run skills/reference-verify/scripts/ref_machine_check.py refs.bib --tex manuscript.tex   # 外部 bib
+uv run skills/reference-verifying/scripts/ref_machine_check.py manuscript.tex            # 内嵌 thebibliography
+uv run skills/reference-verifying/scripts/ref_machine_check.py refs.bib --tex manuscript.tex   # 外部 bib
 ```
 
 脚本产出（markdown + JSON）：每条的 DOI/arXiv 编号、CrossRef 官方记录（题名 / 首作者 / 年份 / 期刊）、arXiv 官方记录（题名 / 首作者 / 发布年 / **journal_ref / comment**——预印本升级检查的关键字段）、条目内全部 URL 的 HTTP 状态。请求全部经 curl（尊重代理环境变量），单条重试、逐条串行。
@@ -68,7 +68,7 @@ uv run skills/reference-verify/scripts/ref_machine_check.py refs.bib --tex manus
 
 本 skill 跨多端分发，编排是执行形态而非方法的一部分——三层核查与证据纪律在任何环境都不变。判定标准：**需联网核查的条目 ≥10 条**时，主会话逐条串行既慢又占上下文，应扇出。
 
-- **ZCode（动态工作流）**：优先直接运行随附骨架 `references/reference-verify-audit.dwf.ts`——主会话先加载 `dynamic-workflows` 技能，然后 `CreateWorkflow` 以 `path` 提交该文件并传 `args: { manuscript: <手稿路径> }`。骨架即本 skill 的实战版本：阶段 1 解析门控（1 个解析子代理 + 脚本正则闭环校验，≤3 轮）→ 阶段 2 机核（`world.run` curl CrossRef / arXiv / PMLR，命令判定不经模型；arXiv **逐条单查**，批量 id_list 会截断）→ 阶段 3 每条机核未决条目一个 `联网核查员-<key>` 子代理，非 verified 结论在同一回调内链一个全新 `独立复核员-<key>`；`report()` 逐条出进度表，`artifact.markdown` 发布最终报告。注意工作流沙箱内 Zotero 本地 API 不可达、OpenReview api2 会 SSL 失败（此类条目直接交核查员走网页检索）。
+- **ZCode（动态工作流）**：优先直接运行随附骨架 `references/reference-verifying-audit.dwf.ts`——主会话先加载 `dynamic-workflows` 技能，然后 `CreateWorkflow` 以 `path` 提交该文件并传 `args: { manuscript: <手稿路径> }`。骨架即本 skill 的实战版本：阶段 1 解析门控（1 个解析子代理 + 脚本正则闭环校验，≤3 轮）→ 阶段 2 机核（`world.run` curl CrossRef / arXiv / PMLR，命令判定不经模型；arXiv **逐条单查**，批量 id_list 会截断）→ 阶段 3 每条机核未决条目一个 `联网核查员-<key>` 子代理，非 verified 结论在同一回调内链一个全新 `独立复核员-<key>`；`report()` 逐条出进度表，`artifact.markdown` 发布最终报告。注意工作流沙箱内 Zotero 本地 API 不可达、OpenReview api2 会 SSL 失败（此类条目直接交核查员走网页检索）。
 - **Claude Code / 其他有子代理的环境**：用 Task/Agent 工具做同样的扇出——每条一个核查子代理，独立复核必须换新子代理，禁止同上下文自查自证。
 - **无编排环境或条目少（<10）**：主会话按阶段 3–4 逐条执行；独立复核尽量仍用子代理，实在没有时至少更换检索路径与证据源，并在报告 notCovered 里注明「复核非隔离上下文」。
 

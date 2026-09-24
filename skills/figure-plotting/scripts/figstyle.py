@@ -1,4 +1,4 @@
-"""figure-plot 共享样式模块。
+"""figure-plotting 共享样式模块。
 
 唯一事实源是 ../assets/publication.mplstyle；本模块只负责加载、
 中文模式切换与强制导出验证。图脚本禁止再复制 rcParams 块。
@@ -8,7 +8,7 @@
     import sys
     from pathlib import Path
 
-    sys.path.insert(0, str(Path.home() / ".agents/skills/figure-plot/scripts"))
+    sys.path.insert(0, str(Path.home() / ".agents/skills/figure-plotting/scripts"))
     from figstyle import load_style, save_fig
 
     load_style()            # 中文图：load_style(zh=True)

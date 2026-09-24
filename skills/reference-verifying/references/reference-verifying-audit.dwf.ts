@@ -6,7 +6,7 @@ args:
     required: true
     description: 手稿路径（工作区相对，.tex 需含内嵌 thebibliography）
 */
-// reference-verify 的 ZCode 动态工作流版本：阶段 1 解析门控 → 阶段 2 官方 API 机核 →
+// reference-verifying 的 ZCode 动态工作流版本：阶段 1 解析门控 → 阶段 2 官方 API 机核 →
 // 阶段 3 联网核查 + 链式独立复核。方法与纪律见同目录 ../SKILL.md。
 // 实测教训已内建：arXiv 逐条单查（批量 id_list 会截断）；CrossRef 不加 select；
 // OpenReview api2 在沙箱 SSL 失败、Zotero 本地 API 不可达——这两类条目全部交联网核查员。
