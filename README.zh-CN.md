@@ -3,7 +3,7 @@
 [English](README.md) | **简体中文**
 
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Skills](https://img.shields.io/badge/skills-9_+_1_subagent-blue)
+![Skills](https://img.shields.io/badge/skills-10_+_1_subagent-blue)
 ![Harnesses](https://img.shields.io/badge/harnesses-16-orange)
 
 任何任务都是一次科学研究，论文只是最完整的实例。`research-before-build` 纪律层把先例调研带到一切项目；论文管线——文献获取 → 结构化阅读 → 论文出图 → 写作润色 → 参考文献核查 → 投稿前评审 → 审稿回复 → 会议汇报——是它的完整落地。面向运筹学与机器学习研究者。
@@ -12,7 +12,7 @@
 
 ## 亮点
 
-- **一套技能包覆盖全生命周期。** 从一份原始文献清单到会议演讲：Zotero 入库 → 结构化阅读笔记 → 期刊级出图 → LaTeX 润色 → 引用核查 → 对抗式投稿前评审 → 逐条审稿回复 → 控时 Beamer 幻灯。9 个技能 + 1 个 subagent 按一条管线设计，不是九个散装工具。
+- **一套技能包覆盖全生命周期。** 从一份原始文献清单到会议演讲：Zotero 入库 → 结构化阅读笔记 → 期刊级出图 → LaTeX 润色 → 名词术语黑话审查 → 引用核查 → 对抗式投稿前评审 → 逐条审稿回复 → 控时 Beamer 幻灯。10 个技能 + 1 个 subagent 按一条管线设计，不是十个散装工具。
 - **取事实，不靠模型回忆。** `reference-verify` 的每条引用事实都来自官方 API 机核（CrossRef / arXiv / PMLR / OpenReview / ACL Anthology / NeurIPS）——命令取数，零模型记忆。机核未决的条目联网核查，证据必须带可访问 URL；每条存疑结论再独立复核一遍。
 - **局外人审计，拒绝自我评分。** `paper-review` 运行三名相互隔离的审稿人（方法严谨 / 领域贡献 / 对抗攻击）加作者辩护仲裁——它针对的失效模式正是"模型给自己打的分"。`jargon-check` 更进一步：隔离 subagent 换独立模型，像陌生人一样读润色后的文本。
 - **纪律层，不只是论文工具。** `research-before-build` 作用于任何非琐碎任务——写代码、选架构、做部署——按风险分级（L0–L3）决定调研深度。论文管线是它最完整的实例化，不是它的边界。
@@ -30,6 +30,7 @@
 | ③ `figure-plot` | skill | 图契约 → Times New Roman / 色盲安全 → 矢量 PDF 嵌字体验证；数据图 + 示意图 |
 | ④ `paper-polish` | skill | LaTeX 语言润色，保留全部标记；附术语审计 follow-up |
 | ④ `jargon-check` | **subagent** | 隔离上下文 + 独立模型的黑话审计——陌生审稿人视角，避免同模型自我盲区 |
+| ④ `term-audit` | skill | 名词术语黑话批量审计漏斗：确定性提取 + 五信号排序 → `jargon-check` terms 模式分批并行 → 变体分组 + 漂移合并 |
 | ⑤ `paper-review` | skill | 三盲审对抗评审团：3 名相互隔离的审稿人（方法严谨 / 领域贡献 / 对抗攻击）→ 作者辩护仲裁 → 交叉综合；主张-证据锚定、期刊画像评分轴，C/M/N 意见清单直供 `rebuttal`。引擎领域无关，领域 gate 按稿检测、自由组合（内置：OR 各族、ML+OR、LLM/agent；可扩展） |
 | ⑤ `reference-verify` | skill | 参考文献体检：官方 API 机核（CrossRef / arXiv / PMLR / OpenReview / ACL Anthology / NeurIPS，命令取事实、零模型回忆）→ 机核未决条目联网核查（证据必须带可访问 URL）→ 存疑结论独立复核；字段级核对表 + 严重度分级 + 预印本升级建议 |
 | ⑥ `rebuttal` | skill | 逐条定位审稿意见 → 修改方案确认 → `\changed{}` 标注 → 编译 PDF → 更新回复信 |
@@ -58,6 +59,7 @@
 | "画这张帕累托前沿 / 供应链网络拓扑图" | `figure-plot` | 矢量 PDF，Times New Roman，字体已嵌入 |
 | "润色一下 Introduction" | `paper-polish` | 修改后的 LaTeX，标记原样保留 |
 | "审一遍用词"（润色之后） | `jargon-check`（点名调用） | 陌生审稿人视角的黑话审计 |
+| "把全篇名词术语都审一遍" | `term-audit` | 排序候选表、分批判定报告、变体/漂移表 |
 | "投稿前把参考文献全查一遍" | `reference-verify` | 字段级核对表 + 严重度分级 |
 | "像审稿人一样审这篇稿子" | `paper-review` | 三审稿人评审报告 + C/M/N 意见清单 |
 | "按审稿意见逐条写回复" | `rebuttal` | `\changed{}` 标注、编译后的 PDF、更新的回复信 |
@@ -110,7 +112,7 @@ cd scientific-research-plugin
 验证：
 
 ```bash
-ls ~/.agents/skills    # 9 个技能
+ls ~/.agents/skills    # 10 个技能
 ls ~/.agents/agents    # jargon-check subagent
 ```
 
@@ -139,12 +141,13 @@ ls ~/.agents/agents    # jargon-check subagent
 ## 目录结构
 
 ```
-├── skills/                      # 9 个自动触发技能（唯一事实源）
+├── skills/                      # 10 个自动触发技能（唯一事实源）
 │   ├── research-before-build/
 │   ├── zotero-paper-fetch/
 │   ├── zotero-paper-note/
 │   ├── figure-plot/
 │   ├── paper-polish/
+│   ├── term-audit/
 │   ├── paper-review/
 │   ├── reference-verify/
 │   ├── rebuttal/
@@ -168,7 +171,7 @@ ls ~/.agents/agents    # jargon-check subagent
 - 版本号变更需同步四处并保持一致：三个插件清单（`.claude-plugin/`、`.zcode-plugin/`、`.codex-plugin/`）与 `.claude-plugin/marketplace.json` 条目。
 - 官方 ZCode 市场通道（zai-org/zcode-plugins 的 `plugins/scientific-research-plugin/`）自 2026-09-24 起**暂停**——恢复前不做 fork 同步、不提 PR。若恢复：每次发版提同步 PR，`version` 与 `description_i18n` 逐字一致（官方 `validate.py` 强制校验），公告前先确认对方 `marketplace.json` 确实列出了新版本。
 - `academic-paper-review` 已退役归档至 `attic/`（上游：academic-research-skills）；其有效机制（致命缺陷四标准、实验红线、Devil's Advocate 攻击维度）已并入 `paper-review`。完整来源谱系见 `skills/paper-review/references/source-basis.md`。
-- 本仓库为 v5：v1 只含 4 个写作技能；v2 扩展为科研全流程；v3 加入纪律层 `research-before-build`（⓪）与汇报层 `academic-ppt`（⑦）并将 `scientific-review` 更名为 `paper-review`；v4 将 `paper-review` 重构为三盲审对抗评审团（nature-reviewer 式架构、OR/ML+OR 领域 gate、作者辩护仲裁），并退役 `academic-paper-review`；v5 新增 `reference-verify`（⑤ 投稿前参考文献体检，从一次全稿引用核查实战凝练的三层核查法）——共 9 skill + 1 subagent。
+- 本仓库为 v6：v1 只含 4 个写作技能；v2 扩展为科研全流程；v3 加入纪律层 `research-before-build`（⓪）与汇报层 `academic-ppt`（⑦）并将 `scientific-review` 更名为 `paper-review`；v4 将 `paper-review` 重构为三盲审对抗评审团（nature-reviewer 式架构、OR/ML+OR 领域 gate、作者辩护仲裁），并退役 `academic-paper-review`；v5 新增 `reference-verify`（⑤ 投稿前参考文献体检，从一次全稿引用核查实战凝练的三层核查法）；v6 新增 `term-audit`（名词术语黑话批量审计：确定性提取 → 五信号排序 → `jargon-check` terms 模式分批并行 → 变体/漂移合并，种子词表源自 Kobak et al. 2025 超额词汇研究）并为 `jargon-check` 增加 `terms` 审计模式——共 10 skill + 1 subagent。
 
 ## License
 

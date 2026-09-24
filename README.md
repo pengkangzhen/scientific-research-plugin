@@ -3,7 +3,7 @@
 **English** | [简体中文](README.zh-CN.md)
 
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Skills](https://img.shields.io/badge/skills-9_+_1_subagent-blue)
+![Skills](https://img.shields.io/badge/skills-10_+_1_subagent-blue)
 ![Harnesses](https://img.shields.io/badge/harnesses-16-orange)
 
 Every task is a piece of research — not just papers. A discipline layer (`research-before-build`) brings prior-art surveying to any project; the paper pipeline — literature acquisition → structured reading → paper figures → writing polish → reference verification → pre-submission review → rebuttal → conference presentation — is its fullest instantiation. Built for OR & ML researchers.
@@ -12,7 +12,7 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 
 ## Highlights
 
-- **Full lifecycle in one pack.** From a raw reference list to the conference talk: Zotero intake → structured reading notes → journal-grade figures → LaTeX polishing → citation audit → adversarial pre-submission review → point-by-point rebuttal → timed Beamer deck. 9 skills + 1 subagent designed as one pipeline, not nine loose utilities.
+- **Full lifecycle in one pack.** From a raw reference list to the conference talk: Zotero intake → structured reading notes → journal-grade figures → LaTeX polishing → noun-term jargon sweep → citation audit → adversarial pre-submission review → point-by-point rebuttal → timed Beamer deck. 10 skills + 1 subagent designed as one pipeline, not ten loose utilities.
 - **Facts over model recall.** `reference-verify` fetches citation facts from official APIs (CrossRef / arXiv / PMLR / OpenReview / ACL Anthology / NeurIPS) — commands, not memory. Undecidable entries get web checks whose evidence must carry accessible URLs, and every adverse finding is independently re-checked.
 - **Outsider audits, not self-grading.** `paper-review` runs three mutually isolated reviewers (methodology rigor / domain contribution / adversarial attack) plus author-defense arbitration — the failure mode it targets is a model grading its own output. `jargon-check` goes further: an isolated subagent on an independent model reads the polished text as a stranger would.
 - **A discipline layer, not just paper tools.** `research-before-build` fires on any non-trivial task — coding, architecture, deployment — and grades the prior-art survey by risk (L0–L3). The paper pipeline is its fullest instantiation, not its boundary.
@@ -30,6 +30,7 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 | ③ `figure-plot` | skill | Figure contract → Times New Roman / colorblind-safe palette → vector PDF with embedded-font verification; data plots + schematic diagrams |
 | ④ `paper-polish` | skill | LaTeX language polishing that preserves all markup; ships with a jargon-audit follow-up |
 | ④ `jargon-check` | **subagent** | Isolated-context, independent-model jargon audit — a stranger-reviewer perspective that avoids same-model blind spots |
+| ④ `term-audit` | skill | Batch noun-term jargon funnel: deterministic candidate extraction + five-signal ranking → parallel `jargon-check` `terms`-mode batches → variant grouping + drift merger |
 | ⑤ `paper-review` | skill | Three-blind adversarial panel: 3 isolated reviewers (methodology rigor / domain contribution / adversarial attack) → author-defense arbitration → cross-review synthesis; claim-evidence anchoring, journal-profile axes, C/M/N issue list feeds `rebuttal`. Domain-agnostic engine with gates detected per manuscript and composed freely (built-in: OR families, ML+OR, LLM/agents; extensible) |
 | ⑤ `reference-verify` | skill | Reference audit: official-API machine check (CrossRef / arXiv / PMLR / OpenReview / ACL Anthology / NeurIPS — facts fetched by commands, zero model recall) → web verification of undecidable entries (evidence must carry accessible URLs) → independent re-check of adverse findings; field-level table, severity grading, preprint-upgrade suggestions |
 | ⑥ `rebuttal` | skill | Locate each reviewer comment → confirm the revision plan → `\changed{}` markup → compile the PDF → update the response letter |
@@ -58,6 +59,7 @@ Skills auto-trigger from their descriptions — no slash commands to memorize. T
 | "Plot the Pareto front / the supply-network topology" | `figure-plot` | vector PDF, Times New Roman, embedded fonts |
 | "Polish the Introduction" | `paper-polish` | edited LaTeX, all markup untouched |
 | "Audit the wording" (after polishing) | `jargon-check` — by name | outsider-perspective jargon audit |
+| "Audit every noun term in the manuscript" | `term-audit` | ranked candidate table, batched verdict reports, variant/drift table |
 | "Verify every reference before I submit" | `reference-verify` | field-level audit table with severity grades |
 | "Review this manuscript the way reviewers would" | `paper-review` | 3-reviewer panel report + C/M/N issue list |
 | "Draft point-by-point responses to the reviews" | `rebuttal` | `\changed{}` markup, compiled PDF, updated letter |
@@ -110,7 +112,7 @@ cd scientific-research-plugin
 Verify:
 
 ```bash
-ls ~/.agents/skills    # the 9 skills
+ls ~/.agents/skills    # the 10 skills
 ls ~/.agents/agents    # the jargon-check subagent
 ```
 
@@ -139,12 +141,13 @@ Not covered: iFlow CLI (project-scoped `.iflow/` layout with its own skill marke
 ## Repository Layout
 
 ```
-├── skills/                      # 9 auto-triggered skills (single source of truth)
+├── skills/                      # 10 auto-triggered skills (single source of truth)
 │   ├── research-before-build/
 │   ├── zotero-paper-fetch/
 │   ├── zotero-paper-note/
 │   ├── figure-plot/
 │   ├── paper-polish/
+│   ├── term-audit/
 │   ├── paper-review/
 │   ├── reference-verify/
 │   ├── rebuttal/
@@ -168,7 +171,7 @@ Not covered: iFlow CLI (project-scoped `.iflow/` layout with its own skill marke
 - Version bumps touch all three plugin manifests (`.claude-plugin/`, `.zcode-plugin/`, `.codex-plugin/`) and the `.claude-plugin/marketplace.json` entry in lockstep.
 - The official ZCode marketplace channel (zai-org/zcode-plugins, `plugins/scientific-research-plugin/`) is **paused as of 2026-09-24** — no fork syncs or PRs until resumed. If resumed: sync every release via PR, keeping `version` and `description_i18n` identical (their `validate.py` enforces it), and confirm their `marketplace.json` actually lists the new version before announcing.
 - `academic-paper-review` is retired into `attic/` (upstream: academic-research-skills); its useful mechanisms (fatal-flaw criteria, red flags, Devil's-Advocate attack dimensions) live on inside `paper-review`. See `skills/paper-review/references/source-basis.md` for full provenance.
-- This repo is v5: v1 contained only 4 writing skills; v2 expanded to a research pipeline and evolved `language-polish` into `paper-polish`; v3 added the discipline layer `research-before-build` (⓪) and `academic-ppt` (⑦) and renamed `scientific-review` to `paper-review`; v4 rebuilds `paper-review` as a three-blind adversarial panel (nature-reviewer-style architecture, OR/ML+OR domain gates, author-defense arbitration) and retires `academic-paper-review`; v5 adds `reference-verify` (⑤ pre-submission reference audit, three-layer verification distilled from a full-manuscript citation check) — 9 skills + 1 subagent.
+- This repo is v6: v1 contained only 4 writing skills; v2 expanded to a research pipeline and evolved `language-polish` into `paper-polish`; v3 added the discipline layer `research-before-build` (⓪) and `academic-ppt` (⑦) and renamed `scientific-review` to `paper-review`; v4 rebuilds `paper-review` as a three-blind adversarial panel (nature-reviewer-style architecture, OR/ML+OR domain gates, author-defense arbitration) and retires `academic-paper-review`; v5 adds `reference-verify` (⑤ pre-submission reference audit, three-layer verification distilled from a full-manuscript citation check); v6 adds `term-audit` (batch noun-term jargon audit: extraction → five-signal ranking → parallel `jargon-check` terms-mode batches → variant/drift merger, seeded by Kobak et al. 2025 excess vocabulary) and the matching `terms` mode on `jargon-check` — 10 skills + 1 subagent.
 
 ## License
 
