@@ -24,17 +24,17 @@
 
 | Skill / Agent | 形态 | 一句话 |
 |---|---|---|
-| ⓪ `research-before-build` | skill | 纪律层，适用于**任何**非琐碎任务：L0–L3 分级触发，动手前先查人类先例（官方文档 / 成熟开源 / GitHub issues / 文献）；决定"是否调研、调研什么" |
-| ① `zotero-paper-fetch` | skill | 文献清单 → CrossRef 补全 → Zotero 入库 → 分层下载 PDF（OA 直链 / 仓库反爬 / 校园 VPN 付费墙）|
-| ② `zotero-paper-note` | skill | Zotero 条目 → 深度阅读 → 结构化笔记回写 Zotero + `literature.jsonl` |
-| ③ `figure-plot` | skill | 图契约 → Times New Roman / 色盲安全 → 矢量 PDF 嵌字体验证；数据图 + 示意图 |
-| ④ `paper-polish` | skill | LaTeX 语言润色，保留全部标记；附术语审计 follow-up |
-| ④ `jargon-check` | **subagent** | 隔离上下文 + 独立模型的黑话审计——陌生审稿人视角，避免同模型自我盲区 |
+| ⓪ `research-before-build` | skill | 动手前先查现有方案：官方文档、成熟库与文献，按风险分级调研 |
+| ① `zotero-paper-fetch` | skill | 自动检索全网相关文献，补全元数据，下载 PDF，并分层导入 Zotero 库 |
+| ② `zotero-paper-note` | skill | 逐篇精读产出结构化笔记，写回 Zotero 条目 |
+| ③ `figure-plot` | skill | 基于论文手稿设计可视化图表，内置科研配色方案，导出高清矢量图 |
+| ④ `paper-polish` | skill | LaTeX 学术润色：语法、用词、句式、逻辑、语气五维改到可发表 |
+| ④ `jargon-check` | **subagent** | 针对 AI 写作“AI 腔”与“学术黑话”，脱离上下文单独审查术语套话 |
 | ④ `term-audit` | skill | 名词术语黑话批量审计漏斗：确定性提取 + 五信号排序 → `jargon-check` terms 模式分批并行 → 变体分组 + 漂移合并 |
-| ⑤ `paper-review` | skill | 三盲审对抗评审团：3 名相互隔离的审稿人（方法严谨 / 领域贡献 / 对抗攻击）→ 作者辩护仲裁 → 交叉综合；主张-证据锚定、期刊画像评分轴，C/M/N 意见清单直供 `rebuttal`。引擎领域无关，领域 gate 按稿检测、自由组合（内置：OR 各族、ML+OR、LLM/agent；可扩展） |
-| ⑤ `reference-verify` | skill | 参考文献体检：官方 API 机核（CrossRef / arXiv / PMLR / OpenReview / ACL Anthology / NeurIPS，命令取事实、零模型回忆）→ 机核未决条目联网核查（证据必须带可访问 URL）→ 存疑结论独立复核；字段级核对表 + 严重度分级 + 预印本升级建议 |
-| ⑥ `rebuttal` | skill | 逐条定位审稿意见 → 修改方案确认 → `\changed{}` 标注 → 编译 PDF → 更新回复信 |
-| ⑦ `academic-ppt` | skill | 论文（LaTeX/PDF）→ Beamer + 视觉设计系统（官方模板提取或自建）→ 按时长写讲稿 → 合规 pptx 包装与演讲者备注 |
+| ⑤ `paper-review` | skill | 三位隔离评审 + 作者答辩仲裁，输出 C/M/N 问题清单 |
+| ⑤ `reference-verify` | skill | 通过官方 API 机器核查文献引用，而非模型记忆，防止幻觉引用 |
+| ⑥ `rebuttal` | skill | 根据审稿意见逐条修订论文手稿，并同步 Response Letter |
+| ⑦ `academic-ppt` | skill | 把论文稿件做成会议演讲 PPT |
 
 ### 纪律层与管线层
 

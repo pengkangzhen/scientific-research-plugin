@@ -24,17 +24,17 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 
 | Skill / Agent | Form | In one sentence |
 |---|---|---|
-| ⓪ `research-before-build` | skill | Discipline layer, fires on **any** non-trivial task: L0–L3 graded trigger — check human prior art (official docs / mature libraries / GitHub issues / literature) before building; decides *whether and what* to research |
-| ① `zotero-paper-fetch` | skill | Reference list → CrossRef enrichment → Zotero intake → tiered PDF download (OA direct links / repository anti-crawler / campus-VPN paywalls) |
-| ② `zotero-paper-note` | skill | Zotero item → deep read → structured notes written back to Zotero + `literature.jsonl` |
-| ③ `figure-plot` | skill | Figure contract → Times New Roman / colorblind-safe palette → vector PDF with embedded-font verification; data plots + schematic diagrams |
-| ④ `paper-polish` | skill | LaTeX language polishing that preserves all markup; ships with a jargon-audit follow-up |
-| ④ `jargon-check` | **subagent** | Isolated-context, independent-model jargon audit — a stranger-reviewer perspective that avoids same-model blind spots |
+| ⓪ `research-before-build` | skill | Check existing solutions before you build: official docs, mature libraries and literature, with risk-graded survey depth |
+| ① `zotero-paper-fetch` | skill | Searches the web for relevant literature, completes metadata, downloads PDFs, and files them into your Zotero library in tiers |
+| ② `zotero-paper-note` | skill | Close-reads papers one by one into structured notes, written back to the Zotero items |
+| ③ `figure-plot` | skill | Designs figures from your manuscript with built-in scientific color schemes, exported as high-resolution vector graphics |
+| ④ `paper-polish` | skill | Academic LaTeX polishing: grammar, word choice, syntax, logic and tone — five dimensions to publication-ready |
+| ④ `jargon-check` | **subagent** | Targets the "AI accent" and academic buzzwords of AI writing — audits stock phrases in an isolated context |
 | ④ `term-audit` | skill | Batch noun-term jargon funnel: deterministic candidate extraction + five-signal ranking → parallel `jargon-check` `terms`-mode batches → variant grouping + drift merger |
-| ⑤ `paper-review` | skill | Three-blind adversarial panel: 3 isolated reviewers (methodology rigor / domain contribution / adversarial attack) → author-defense arbitration → cross-review synthesis; claim-evidence anchoring, journal-profile axes, C/M/N issue list feeds `rebuttal`. Domain-agnostic engine with gates detected per manuscript and composed freely (built-in: OR families, ML+OR, LLM/agents; extensible) |
-| ⑤ `reference-verify` | skill | Reference audit: official-API machine check (CrossRef / arXiv / PMLR / OpenReview / ACL Anthology / NeurIPS — facts fetched by commands, zero model recall) → web verification of undecidable entries (evidence must carry accessible URLs) → independent re-check of adverse findings; field-level table, severity grading, preprint-upgrade suggestions |
-| ⑥ `rebuttal` | skill | Locate each reviewer comment → confirm the revision plan → `\changed{}` markup → compile the PDF → update the response letter |
-| ⑦ `academic-ppt` | skill | Paper (LaTeX/PDF) → Beamer deck with a visual design system (official-template extraction or self-built) → time-budgeted talk script → compliant pptx packaging with speaker notes |
+| ⑤ `paper-review` | skill | Three isolated reviewers + author-defense arbitration, outputting a C/M/N issue list |
+| ⑤ `reference-verify` | skill | Verifies citations against official APIs — machine checks, not model memory — to prevent hallucinated references |
+| ⑥ `rebuttal` | skill | Revises the manuscript point by point against reviewer comments, keeping the response letter in sync |
+| ⑦ `academic-ppt` | skill | Turns your paper into a conference presentation deck |
 
 ### Discipline Layer vs. Pipeline Layer
 
