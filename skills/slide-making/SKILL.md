@@ -1,5 +1,5 @@
 ---
-name: academic-ppt
+name: slide-making
 description: >
   学术演讲 PPT/slides 制作 — 从论文稿件（LaTeX/PDF）到可现场演讲的完整流程：
   LaTeX Beamer 路线 + 视觉设计系统（有官方模板则提取背景复用，无模板则自建色板/版式）+

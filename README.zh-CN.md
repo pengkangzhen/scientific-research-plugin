@@ -34,7 +34,7 @@
 | ⑤ `paper-review` | skill | 三位隔离评审 + 作者答辩仲裁，输出 C/M/N 问题清单 |
 | ⑤ `reference-verifying` | skill | 通过官方 API 机器核查文献引用，而非模型记忆，防止幻觉引用 |
 | ⑥ `rebuttal` | skill | 根据审稿意见逐条修订论文手稿，并同步 Response Letter |
-| ⑦ `academic-ppt` | skill | 把论文稿件做成会议演讲 PPT 或开题/答辩 Beamer |
+| ⑦ `slide-making` | skill | 把论文稿件做成会议演讲 PPT 或开题/答辩 Beamer |
 
 ### 纪律层与管线层
 
@@ -63,7 +63,7 @@
 | "投稿前把参考文献全查一遍" | `reference-verifying` | 字段级核对表 + 严重度分级 |
 | "像审稿人一样审这篇稿子" | `paper-review` | 三审稿人评审报告 + C/M/N 意见清单 |
 | "按审稿意见逐条写回复" | `rebuttal` | `\changed{}` 标注、编译后的 PDF、更新的回复信 |
-| "把这篇论文改成 15 分钟的报告" | `academic-ppt` | Beamer 幻灯、控时讲稿、演讲者备注 |
+| "把这篇论文改成 15 分钟的报告" | `slide-making` | Beamer 幻灯、控时讲稿、演讲者备注 |
 
 ## 安装
 
@@ -151,7 +151,7 @@ ls ~/.agents/agents    # jargon-check subagent
 │   ├── paper-review/
 │   ├── reference-verifying/
 │   ├── rebuttal/
-│   └── academic-ppt/
+│   └── slide-making/
 ├── attic/                       # 退役技能，保留溯源
 │   └── academic-paper-review/   # 7-agent 期刊评审模拟（上游：academic-research-skills）
 ├── agents/
@@ -171,7 +171,7 @@ ls ~/.agents/agents    # jargon-check subagent
 - 版本号变更需同步四处并保持一致：三个插件清单（`.claude-plugin/`、`.zcode-plugin/`、`.codex-plugin/`）与 `.claude-plugin/marketplace.json` 条目。
 - 官方 ZCode 市场通道（zai-org/zcode-plugins 的 `plugins/scientific-research-plugin/`）自 2026-09-24 起**暂停**——恢复前不做 fork 同步、不提 PR。若恢复：每次发版提同步 PR，`version` 与 `description_i18n` 逐字一致（官方 `validate.py` 强制校验），公告前先确认对方 `marketplace.json` 确实列出了新版本。
 - `academic-paper-review` 已退役归档至 `attic/`（上游：academic-research-skills）；其有效机制（致命缺陷四标准、实验红线、Devil's Advocate 攻击维度）已并入 `paper-review`。完整来源谱系见 `skills/paper-review/references/source-basis.md`。
-- 本仓库为 v6：v1 只含 4 个写作技能；v2 扩展为科研全流程；v3 加入纪律层 `research-before-build`（⓪）与汇报层 `academic-ppt`（⑦）并将 `scientific-review` 更名为 `paper-review`；v4 将 `paper-review` 重构为三盲审对抗评审团（nature-reviewer 式架构、OR/ML+OR 领域 gate、作者辩护仲裁），并退役 `academic-paper-review`；v5 新增 `reference-verify`（⑤ 投稿前参考文献体检，从一次全稿引用核查实战凝练的三层核查法）；v6 新增 `term-audit`（名词术语黑话批量审计：确定性提取 → 五信号排序 → `jargon-check` terms 模式分批并行 → 变体/漂移合并，种子词表源自 Kobak et al. 2025 超额词汇研究）并为 `jargon-check` 增加 `terms` 审计模式；v7 按官方技能命名最佳实践（动名词形式）将四个技能更名：`figure-plot` → `figure-plotting`、`paper-polish` → `paper-polishing`、`reference-verify` → `reference-verifying`、`zotero-paper-fetch` → `zotero-paper-fetching`——共 10 skill + 1 subagent。
+- 本仓库为 v6：v1 只含 4 个写作技能；v2 扩展为科研全流程；v3 加入纪律层 `research-before-build`（⓪）与汇报层 `academic-ppt`（⑦）并将 `scientific-review` 更名为 `paper-review`；v4 将 `paper-review` 重构为三盲审对抗评审团（nature-reviewer 式架构、OR/ML+OR 领域 gate、作者辩护仲裁），并退役 `academic-paper-review`；v5 新增 `reference-verify`（⑤ 投稿前参考文献体检，从一次全稿引用核查实战凝练的三层核查法）；v6 新增 `term-audit`（名词术语黑话批量审计：确定性提取 → 五信号排序 → `jargon-check` terms 模式分批并行 → 变体/漂移合并，种子词表源自 Kobak et al. 2025 超额词汇研究）并为 `jargon-check` 增加 `terms` 审计模式；v7 按官方技能命名最佳实践（动名词形式）将五个技能更名：`figure-plot` → `figure-plotting`、`paper-polish` → `paper-polishing`、`reference-verify` → `reference-verifying`、`zotero-paper-fetch` → `zotero-paper-fetching`、`academic-ppt` → `slide-making`——共 10 skill + 1 subagent。
 
 ## License
 
