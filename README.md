@@ -13,12 +13,12 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 ## Highlights
 
 - **Full lifecycle in one pack.** From a raw reference list to the conference talk: Zotero intake → structured reading notes → journal-grade figures → LaTeX polishing → noun-term jargon sweep → citation audit → adversarial pre-submission review → point-by-point rebuttal → timed Beamer deck. 10 skills + 1 subagent designed as one pipeline, not ten loose utilities.
-- **Facts over model recall.** `reference-verify` fetches citation facts from official APIs (CrossRef / arXiv / PMLR / OpenReview / ACL Anthology / NeurIPS) — commands, not memory. Undecidable entries get web checks whose evidence must carry accessible URLs, and every adverse finding is independently re-checked.
+- **Facts over model recall.** `reference-verifying` fetches citation facts from official APIs (CrossRef / arXiv / PMLR / OpenReview / ACL Anthology / NeurIPS) — commands, not memory. Undecidable entries get web checks whose evidence must carry accessible URLs, and every adverse finding is independently re-checked.
 - **Outsider audits, not self-grading.** `paper-review` runs three mutually isolated reviewers (methodology rigor / domain contribution / adversarial attack) plus author-defense arbitration — the failure mode it targets is a model grading its own output. `jargon-check` goes further: an isolated subagent on an independent model reads the polished text as a stranger would.
 - **A discipline layer, not just paper tools.** `research-before-build` fires on any non-trivial task — coding, architecture, deployment — and grades the prior-art survey by risk (L0–L3). The paper pipeline is its fullest instantiation, not its boundary.
-- **Skills that hand off.** `paper-review`'s C/M/N issue list feeds `rebuttal` directly; `paper-polish` ships a jargon-audit follow-up; `research-before-build` hands the decided reading list to `zotero-paper-fetch`. The chain is designed, not incidental.
+- **Skills that hand off.** `paper-review`'s C/M/N issue list feeds `rebuttal` directly; `paper-polishing` ships a jargon-audit follow-up; `research-before-build` hands the decided reading list to `zotero-paper-fetch`. The chain is designed, not incidental.
 - **One source of truth, 16 frontends.** A single `skills/` tree serves three plugin marketplaces (Claude Code, ZCode, Codex), five harnesses reading `~/.agents/skills` natively (Gemini CLI, Goose, opencode, Kimi Code, pi), and eight more via idempotent fan-out (Cursor, Crush, Copilot, Amp, Grok Build, Qwen Code, Droid, Kiro). Symlinks only; `$HOME` stays clean.
-- **OR & ML depth, domain-agnostic engine.** Built by a supply-chain-resilience researcher: `figure-plot` ships recipes for Pareto fronts, network topologies and convergence curves with embedded-font verification; `paper-review` detects domain gates per manuscript (OR families, ML+OR, LLM/agents) and composes freely beyond them.
+- **OR & ML depth, domain-agnostic engine.** Built by a supply-chain-resilience researcher: `figure-plotting` ships recipes for Pareto fronts, network topologies and convergence curves with embedded-font verification; `paper-review` detects domain gates per manuscript (OR families, ML+OR, LLM/agents) and composes freely beyond them.
 
 ## Research Pipeline
 
@@ -27,14 +27,14 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 | ⓪ `research-before-build` | skill | Check existing solutions before you build: official docs, mature libraries and literature, with risk-graded survey depth |
 | ① `zotero-paper-fetch` | skill | Searches the web for relevant literature, completes metadata, downloads PDFs, and files them into your Zotero library in tiers |
 | ② `zotero-paper-note` | skill | Close-reads papers one by one into structured notes, written back to the Zotero items |
-| ③ `figure-plot` | skill | Designs figures from your manuscript with built-in scientific color schemes, exported as high-resolution vector graphics |
-| ④ `paper-polish` | skill | Academic LaTeX polishing: grammar, word choice, syntax, logic and tone — five dimensions to publication-ready |
+| ③ `figure-plotting` | skill | Designs figures from your manuscript with built-in scientific color schemes, exported as high-resolution vector graphics |
+| ④ `paper-polishing` | skill | Academic LaTeX polishing: grammar, word choice, syntax, logic and tone — five dimensions to publication-ready |
 | ④ `jargon-check` | **subagent** | Targets the "AI accent" and academic buzzwords of AI writing — audits stock phrases in an isolated context |
 | ④ `term-audit` | skill | Batch noun-term jargon funnel: deterministic candidate extraction + five-signal ranking → parallel `jargon-check` `terms`-mode batches → variant grouping + drift merger |
 | ⑤ `paper-review` | skill | Three isolated reviewers + author-defense arbitration, outputting a C/M/N issue list |
-| ⑤ `reference-verify` | skill | Verifies citations against official APIs — machine checks, not model memory — to prevent hallucinated references |
+| ⑤ `reference-verifying` | skill | Verifies citations against official APIs — machine checks, not model memory — to prevent hallucinated references |
 | ⑥ `rebuttal` | skill | Revises the manuscript point by point against reviewer comments, keeping the response letter in sync |
-| ⑦ `academic-ppt` | skill | Turns your paper into a conference presentation deck |
+| ⑦ `academic-ppt` | skill | Turns your paper into a conference presentation deck or a thesis-proposal/defense Beamer |
 
 ### Discipline Layer vs. Pipeline Layer
 
@@ -56,11 +56,11 @@ Skills auto-trigger from their descriptions — no slash commands to memorize. T
 |---|---|---|
 | "Add these 30 references to Zotero and download the PDFs" | `zotero-paper-fetch` | metadata-enriched Zotero items, PDFs filed by publisher |
 | "Read this paper and take structured notes" | `zotero-paper-note` | note written back to the Zotero item + `literature.jsonl` |
-| "Plot the Pareto front / the supply-network topology" | `figure-plot` | vector PDF, Times New Roman, embedded fonts |
-| "Polish the Introduction" | `paper-polish` | edited LaTeX, all markup untouched |
+| "Plot the Pareto front / the supply-network topology" | `figure-plotting` | vector PDF, Times New Roman, embedded fonts |
+| "Polish the Introduction" | `paper-polishing` | edited LaTeX, all markup untouched |
 | "Audit the wording" (after polishing) | `jargon-check` — by name | outsider-perspective jargon audit |
 | "Audit every noun term in the manuscript" | `term-audit` | ranked candidate table, batched verdict reports, variant/drift table |
-| "Verify every reference before I submit" | `reference-verify` | field-level audit table with severity grades |
+| "Verify every reference before I submit" | `reference-verifying` | field-level audit table with severity grades |
 | "Review this manuscript the way reviewers would" | `paper-review` | 3-reviewer panel report + C/M/N issue list |
 | "Draft point-by-point responses to the reviews" | `rebuttal` | `\changed{}` markup, compiled PDF, updated letter |
 | "Turn this paper into a 15-minute talk" | `academic-ppt` | Beamer deck, timed script, speaker notes |
@@ -145,11 +145,11 @@ Not covered: iFlow CLI (project-scoped `.iflow/` layout with its own skill marke
 │   ├── research-before-build/
 │   ├── zotero-paper-fetch/
 │   ├── zotero-paper-note/
-│   ├── figure-plot/
-│   ├── paper-polish/
+│   ├── figure-plotting/
+│   ├── paper-polishing/
 │   ├── term-audit/
 │   ├── paper-review/
-│   ├── reference-verify/
+│   ├── reference-verifying/
 │   ├── rebuttal/
 │   └── academic-ppt/
 ├── attic/                       # retired skills, kept for provenance
@@ -171,7 +171,7 @@ Not covered: iFlow CLI (project-scoped `.iflow/` layout with its own skill marke
 - Version bumps touch all three plugin manifests (`.claude-plugin/`, `.zcode-plugin/`, `.codex-plugin/`) and the `.claude-plugin/marketplace.json` entry in lockstep.
 - The official ZCode marketplace channel (zai-org/zcode-plugins, `plugins/scientific-research-plugin/`) is **paused as of 2026-09-24** — no fork syncs or PRs until resumed. If resumed: sync every release via PR, keeping `version` and `description_i18n` identical (their `validate.py` enforces it), and confirm their `marketplace.json` actually lists the new version before announcing.
 - `academic-paper-review` is retired into `attic/` (upstream: academic-research-skills); its useful mechanisms (fatal-flaw criteria, red flags, Devil's-Advocate attack dimensions) live on inside `paper-review`. See `skills/paper-review/references/source-basis.md` for full provenance.
-- This repo is v6: v1 contained only 4 writing skills; v2 expanded to a research pipeline and evolved `language-polish` into `paper-polish`; v3 added the discipline layer `research-before-build` (⓪) and `academic-ppt` (⑦) and renamed `scientific-review` to `paper-review`; v4 rebuilds `paper-review` as a three-blind adversarial panel (nature-reviewer-style architecture, OR/ML+OR domain gates, author-defense arbitration) and retires `academic-paper-review`; v5 adds `reference-verify` (⑤ pre-submission reference audit, three-layer verification distilled from a full-manuscript citation check); v6 adds `term-audit` (batch noun-term jargon audit: extraction → five-signal ranking → parallel `jargon-check` terms-mode batches → variant/drift merger, seeded by Kobak et al. 2025 excess vocabulary) and the matching `terms` mode on `jargon-check` — 10 skills + 1 subagent.
+- This repo is v6: v1 contained only 4 writing skills; v2 expanded to a research pipeline and evolved `language-polish` into `paper-polish`; v3 added the discipline layer `research-before-build` (⓪) and `academic-ppt` (⑦) and renamed `scientific-review` to `paper-review`; v4 rebuilds `paper-review` as a three-blind adversarial panel (nature-reviewer-style architecture, OR/ML+OR domain gates, author-defense arbitration) and retires `academic-paper-review`; v5 adds `reference-verify` (⑤ pre-submission reference audit, three-layer verification distilled from a full-manuscript citation check); v6 adds `term-audit` (batch noun-term jargon audit: extraction → five-signal ranking → parallel `jargon-check` terms-mode batches → variant/drift merger, seeded by Kobak et al. 2025 excess vocabulary) and the matching `terms` mode on `jargon-check`; v7 renames three skills to gerund forms per Anthropic's skill-naming best practice (`figure-plot` → `figure-plotting`, `paper-polish` → `paper-polishing`, `reference-verify` → `reference-verifying`) — 10 skills + 1 subagent.
 
 ## License
 
