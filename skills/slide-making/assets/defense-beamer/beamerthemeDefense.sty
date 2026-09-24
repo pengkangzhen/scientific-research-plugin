@@ -1,7 +1,7 @@
 % =========================================================================
 % beamerthemeDefense.sty — 学术答辩 / 开题 / 组会通用 Beamer 主题
 % -------------------------------------------------------------------------
-% 版式：顶部深蓝横幅（可选校徽 + 校名/院名字标：中文行楷 + 西文花体 +
+% 版式：顶部深蓝横幅（可选校徽 + 校名/院名字标：中文行楷 + 西文 Zapfino 花体 +
 %       细竖线分隔，竖线经 tikz calc 锚定字标实际宽度，改文案无需重算坐标）
 %       + 底部章节进度条（当前节高亮）+ 目录/转场页/封面
 % 视觉规格：三色制科研配色（主色深海军蓝 #1F3864 + 强调暖橙 #E87722 +
@@ -24,9 +24,9 @@
 %
 % 字体已全部 \IfFontExistsTF 守护（见下方【字体】一节），跨平台自动回退；
 % 手动替换仍改该节对应行。回退链：HarmonyOS Sans SC → PingFang SC →
-% Noto Sans CJK SC → SimHei；行楷 → KaiTi → FandolKai；Zapfino → 当前西文。
+% 中文无衬线链：HarmonyOS Sans SC → Noto Sans CJK SC → SimHei。
 % =========================================================================
-\ProvidesPackage{beamerthemeDefense}[2026/09/24 Generic academic defense beamer theme v2.1]
+\ProvidesPackage{beamerthemeDefense}[2026/09/24 Generic academic defense beamer theme v2.2]
 
 \RequirePackage{tikz}
 \usetikzlibrary{calc}
@@ -35,7 +35,6 @@
 \RequirePackage{fontspec}
 \RequirePackage{xeCJK}
 \RequirePackage{amsmath}
-\RequirePackage{unicode-math}   % 数学字体接管（配下方 Fira Math 守护，借鉴实战 deck 设置）
 
 % -------------------------------------------------------------------------
 % 颜色：三色制（科研演示规范：主色 + 强调色 + 中性灰，蓝橙互补、色盲友好）
@@ -116,20 +115,20 @@
   {\end{tcolorbox}}
 
 % -------------------------------------------------------------------------
-% 字体（xelatex + fontspec/xeCJK）——平台探测 + 自动回退（字体必须守护）。
-% 探测规则：多词名走 fontconfig（静默），单词名缺失时 fontspec
-% 会走 kpathsea 文件查找并在日志留错，故用多词名 HarmonyOS Sans SC 探测，
-% 非 macOS 分支只探测常见已装字体、花体不再探测。
-%   macOS/已装鸿蒙：原版规格（HarmonyOS Sans SC + Songti SC + 行楷 + Zapfino）
-%   其他平台：正文 SimHei→Noto Sans CJK SC；宋体 SimSun；行楷 KaiTi（仿粗）；
-%             花体→当前西文
+% 字体（xelatex + fontspec/xeCJK）——保留实战开题 deck 的原版字体设置
+% （全 \IfFontExistsTF 守护；平台探测用多词名，单词名缺失时 fontspec
+% 会走 kpathsea 文件查找并在日志留错）：
+%   macOS/已装鸿蒙：原版规格（正文/西文 HarmonyOS Sans SC + Songti SC +
+%                   横幅字标中文行楷 Xingkai SC Bold + 西文 Zapfino 花体）
+%   其他平台：正文 SimHei→Noto Sans CJK SC→FandolHei；宋体 SimSun→FandolSong；
+%             行楷 KaiTi→AR PL KaitiM GB→FandolKai→SimSun（仿粗）；花体→当前西文
 % -------------------------------------------------------------------------
 \IfFontExistsTF{HarmonyOS Sans SC}{%
   \setsansfont[BoldFont={HarmonyOS Sans SC Bold}]{HarmonyOS Sans SC}%
   \setCJKsansfont[BoldFont={HarmonyOS Sans SC Bold}]{HarmonyOS Sans SC}%
   \IfFontExistsTF{Songti SC}{\setCJKfamilyfont{zhsong}{Songti SC}}{}%
   \IfFontExistsTF{Xingkai SC Bold}{%
-    \newCJKfontfamily\df@wmcn{Xingkai SC Bold}%
+    \newCJKfontfamily\df@wmcn{Xingkai SC Bold}% 行楷-简
   }{\newCJKfontfamily\df@wmcn{KaiTi}}%
   \IfFontExistsTF{Zapfino}{\newfontfamily\df@wmen{Zapfino}}{\newcommand{\df@wmen}{}}%
 }{%
@@ -145,11 +144,6 @@
   }{\newCJKfontfamily\df@wmcn{SimSun}}%
   \newcommand{\df@wmen}{}% 花体仅 macOS 常见：回退当前西文字体
 }
-% 链后统一叠加（借鉴实战 deck 字体设置，均守护、缺失静默回退）：
-%   西文/数字 → Helvetica Neue（macOS 命中；缺则维持上面链条结果，CJK 不受影响）
-%   数学字体 → Fira Math（配 unicode-math；缺则默认数学字体）
-\IfFontExistsTF{Helvetica Neue}{\setsansfont{Helvetica Neue}}{}
-\IfFontExistsTF{Fira Math}{\setmathfont{Fira Math}}{}
 
 % -------------------------------------------------------------------------
 % 版式几何：横幅高默认 8.3mm，页码底栏；校徽可选（有则字标右移让位）
@@ -177,7 +171,7 @@
 
 % -------------------------------------------------------------------------
 % headline：深蓝横幅（可选校徽 + 校名/院名字标 + 竖线）
-% 字标均为文字排版（中文行楷 + 西文 Zapfino 花体，同字号同规格），
+% 字标均为文字排版（与正文同字体，中英文同字号同规格），
 % 两侧竖线经 calc 锚定字标节点实际宽度；改字号/文案无需重算坐标
 % -------------------------------------------------------------------------
 \newcommand{\df@wm@cn}[1]{\color{white}{\df@wmcn\fontsize{9.4}{10.2}\selectfont #1}}

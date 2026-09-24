@@ -100,8 +100,10 @@ license: MIT
   校徽自备：`campus-emblem.png` 放同目录即自动入横幅，不放则纯文字字标。
   四个内容组件覆盖高频版式——`point`（左橙竖条要点分组）、`warn`（不足/风险警示条）、
   `card`（多列并排卡片）、`band`（深蓝底白字结论横幅）。
-- 字体已全量 `\IfFontExistsTF` 守护：macOS 出原版效果（鸿蒙黑体 + 行楷 + Zapfino 花体），
-  缺字体的平台（Windows/WSL/Overleaf）自动回退仍可编译。
+- 字体**保留实战开题 deck 的原版设置**（全 `\IfFontExistsTF` 守护）：macOS 出原版效果
+  （正文鸿蒙黑体 + 横幅字标行楷 + Zapfino 花体），缺字体的平台（Windows/WSL/Overleaf）
+  自动回退仍可编译；conference 包则采用实战会议 deck 的字体（西文 Helvetica Neue +
+  数学 Fira Math，同样守护）——两包各自沿用其来源 deck 的字体，不混用。
 
 ## 3. Beamer 排版坑与修法（实际发生过的问题）
 

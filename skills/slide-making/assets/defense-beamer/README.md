@@ -99,7 +99,7 @@
 | 标题下横线 | 强调橙，0.7pt 全宽 |
 | 底部进度条 | 主色，当前节白字高亮、其余灰字；页码在右端 |
 
-## 字体（自动回退）
+## 字体（保留实战 deck 原版设置，自动回退）
 
 主题字体已全量 `\IfFontExistsTF` 守护，按平台自动回退，缺字体也能编译：
 
@@ -109,8 +109,8 @@
 | Windows | SimHei 或 HarmonyOS Sans SC | KaiTi 楷体（仿粗） | 当前西文字体 |
 | Linux/WSL | SimHei（仿粗） | KaiTi 楷体（仿粗） | 当前西文字体 |
 
-西文/数字用 Helvetica Neue、数学用 Fira Math（借鉴实战 deck 设置，`\IfFontExistsTF`
-守护；缺失时西文随上表链条、数学回退默认数学字体）。
+西文/数学不单独设字体（沿用 beamer 默认）；横幅字标中文行楷、英文 Zapfino 花体为
+实战 deck 原版规格。
 
 手动替换改 `beamerthemeDefense.sty` 中「字体」一节。**注意**：探测单词名字体（如 `Zapfino`）
 缺失时 fontspec 会在日志留 kpathsea 错误，主题已用多词名 `HarmonyOS Sans SC` 做平台探测规避。
