@@ -6,7 +6,7 @@
 ![Skills](https://img.shields.io/badge/skills-9_+_1_subagent-blue)
 ![Harnesses](https://img.shields.io/badge/harnesses-16-orange)
 
-Every task is a piece of research — not just papers. A discipline layer (`research-before-build`) brings prior-art surveying to any project; the paper pipeline — literature acquisition → structured reading → paper figures → writing polish → reference verification → pre-submission review → rebuttal → conference presentation — is its fullest instantiation. Built for OR / ML+OR / supply-chain researchers.
+Every task is a piece of research — not just papers. A discipline layer (`research-before-build`) brings prior-art surveying to any project; the paper pipeline — literature acquisition → structured reading → paper figures → writing polish → reference verification → pre-submission review → rebuttal → conference presentation — is its fullest instantiation. Built for OR & ML researchers.
 
 One `skills/` source of truth, distributed to multiple frontends: the Claude Code / ZCode / Codex plugins, the assistants that read `~/.agents/skills` natively (Gemini CLI, Goose, opencode, Kimi Code, pi), and the harness-specific directories that `install.sh` fans out to (Cursor, Crush, Copilot, Amp, Grok Build, Qwen Code, Droid, Kiro).
 
@@ -18,7 +18,7 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 - **A discipline layer, not just paper tools.** `research-before-build` fires on any non-trivial task — coding, architecture, deployment — and grades the prior-art survey by risk (L0–L3). The paper pipeline is its fullest instantiation, not its boundary.
 - **Skills that hand off.** `paper-review`'s C/M/N issue list feeds `rebuttal` directly; `paper-polish` ships a jargon-audit follow-up; `research-before-build` hands the decided reading list to `zotero-paper-fetch`. The chain is designed, not incidental.
 - **One source of truth, 16 frontends.** A single `skills/` tree serves three plugin marketplaces (Claude Code, ZCode, Codex), five harnesses reading `~/.agents/skills` natively (Gemini CLI, Goose, opencode, Kimi Code, pi), and eight more via idempotent fan-out (Cursor, Crush, Copilot, Amp, Grok Build, Qwen Code, Droid, Kiro). Symlinks only; `$HOME` stays clean.
-- **OR / ML+OR depth, domain-agnostic engine.** Built by a supply-chain-resilience researcher: `figure-plot` ships recipes for Pareto fronts, network topologies and convergence curves with embedded-font verification; `paper-review` detects domain gates per manuscript (OR families, ML+OR, LLM/agents) and composes freely beyond them.
+- **OR & ML depth, domain-agnostic engine.** Built by a supply-chain-resilience researcher: `figure-plot` ships recipes for Pareto fronts, network topologies and convergence curves with embedded-font verification; `paper-review` detects domain gates per manuscript (OR families, ML+OR, LLM/agents) and composes freely beyond them.
 
 ## Research Pipeline
 
@@ -166,7 +166,7 @@ Not covered: iFlow CLI (project-scoped `.iflow/` layout with its own skill marke
 
 - Edit skills in this repo only; `install.sh` creates symlinks — local changes take effect immediately, and pushing publishes them.
 - Version bumps touch all three plugin manifests (`.claude-plugin/`, `.zcode-plugin/`, `.codex-plugin/`) and the `.claude-plugin/marketplace.json` entry in lockstep.
-- Every release must be synced to the official ZCode marketplace (zai-org/zcode-plugins, `plugins/scientific-research-plugin/`) via PR, with `version` and `description_i18n` kept identical (their `validate.py` enforces it); confirm their `marketplace.json` actually lists the new version before announcing.
+- The official ZCode marketplace channel (zai-org/zcode-plugins, `plugins/scientific-research-plugin/`) is **paused as of 2026-09-24** — no fork syncs or PRs until resumed. If resumed: sync every release via PR, keeping `version` and `description_i18n` identical (their `validate.py` enforces it), and confirm their `marketplace.json` actually lists the new version before announcing.
 - `academic-paper-review` is retired into `attic/` (upstream: academic-research-skills); its useful mechanisms (fatal-flaw criteria, red flags, Devil's-Advocate attack dimensions) live on inside `paper-review`. See `skills/paper-review/references/source-basis.md` for full provenance.
 - This repo is v5: v1 contained only 4 writing skills; v2 expanded to a research pipeline and evolved `language-polish` into `paper-polish`; v3 added the discipline layer `research-before-build` (⓪) and `academic-ppt` (⑦) and renamed `scientific-review` to `paper-review`; v4 rebuilds `paper-review` as a three-blind adversarial panel (nature-reviewer-style architecture, OR/ML+OR domain gates, author-defense arbitration) and retires `academic-paper-review`; v5 adds `reference-verify` (⑤ pre-submission reference audit, three-layer verification distilled from a full-manuscript citation check) — 9 skills + 1 subagent.
 

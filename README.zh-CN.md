@@ -6,7 +6,7 @@
 ![Skills](https://img.shields.io/badge/skills-9_+_1_subagent-blue)
 ![Harnesses](https://img.shields.io/badge/harnesses-16-orange)
 
-任何任务都是一次科学研究，论文只是最完整的实例。`research-before-build` 纪律层把先例调研带到一切项目；论文管线——文献获取 → 结构化阅读 → 论文出图 → 写作润色 → 参考文献核查 → 投稿前评审 → 审稿回复 → 会议汇报——是它的完整落地。面向 OR / ML+OR / 供应链研究者。
+任何任务都是一次科学研究，论文只是最完整的实例。`research-before-build` 纪律层把先例调研带到一切项目；论文管线——文献获取 → 结构化阅读 → 论文出图 → 写作润色 → 参考文献核查 → 投稿前评审 → 审稿回复 → 会议汇报——是它的完整落地。面向运筹学与机器学习研究者。
 
 一份 `skills/` 事实源，多端分发：Claude Code / ZCode / Codex 插件、原生读取 `~/.agents/skills` 的助手（Gemini CLI、Goose、opencode、Kimi Code、pi），以及由 `install.sh` 扇出到各自专属目录的 Harness（Cursor、Crush、Copilot、Amp、Grok Build、Qwen Code、Droid、Kiro）。
 
@@ -18,7 +18,7 @@
 - **纪律层，不只是论文工具。** `research-before-build` 作用于任何非琐碎任务——写代码、选架构、做部署——按风险分级（L0–L3）决定调研深度。论文管线是它最完整的实例化，不是它的边界。
 - **技能之间会接力。** `paper-review` 的 C/M/N 意见清单直接供 `rebuttal` 使用；`paper-polish` 自带术语审计 follow-up；`research-before-build` 把确定的阅读清单交给 `zotero-paper-fetch`。这条链是设计出来的，不是巧合。
 - **一份事实源，16 个前端。** 单一 `skills/` 树同时服务三个插件市场（Claude Code、ZCode、Codex）、五个原生读取 `~/.agents/skills` 的 Harness（Gemini CLI、Goose、opencode、Kimi Code、pi），以及八个经幂等扇出接入的 Harness（Cursor、Crush、Copilot、Amp、Grok Build、Qwen Code、Droid、Kiro）。只落符号链接，不污染 `$HOME`。
-- **OR / ML+OR 深耕，引擎领域无关。** 出自供应链韧性研究者之手：`figure-plot` 内置帕累托前沿、网络拓扑、收敛曲线等运筹学图型配方，并做嵌字体验证；`paper-review` 按稿检测领域 gate（OR 各族、ML+OR、LLM/agent），引擎本身可自由扩展到任何领域。
+- **OR & ML 深耕，引擎领域无关。** 出自供应链韧性研究者之手：`figure-plot` 内置帕累托前沿、网络拓扑、收敛曲线等运筹学图型配方，并做嵌字体验证；`paper-review` 按稿检测领域 gate（OR 各族、ML+OR、LLM/agent），引擎本身可自由扩展到任何领域。
 
 ## 科研流水线
 
@@ -166,7 +166,7 @@ ls ~/.agents/agents    # jargon-check subagent
 
 - 修改任何 skill 一律改本仓库，`install.sh` 是 symlink——本机即时生效，推送即发布。
 - 版本号变更需同步四处并保持一致：三个插件清单（`.claude-plugin/`、`.zcode-plugin/`、`.codex-plugin/`）与 `.claude-plugin/marketplace.json` 条目。
-- 每次发版需向官方 ZCode 市场（zai-org/zcode-plugins 的 `plugins/scientific-research-plugin/`）提同步 PR，`version` 与 `description_i18n` 必须逐字一致（官方 `validate.py` 强制校验）；公告发布前先确认对方 `marketplace.json` 确实列出了新版本。
+- 官方 ZCode 市场通道（zai-org/zcode-plugins 的 `plugins/scientific-research-plugin/`）自 2026-09-24 起**暂停**——恢复前不做 fork 同步、不提 PR。若恢复：每次发版提同步 PR，`version` 与 `description_i18n` 逐字一致（官方 `validate.py` 强制校验），公告前先确认对方 `marketplace.json` 确实列出了新版本。
 - `academic-paper-review` 已退役归档至 `attic/`（上游：academic-research-skills）；其有效机制（致命缺陷四标准、实验红线、Devil's Advocate 攻击维度）已并入 `paper-review`。完整来源谱系见 `skills/paper-review/references/source-basis.md`。
 - 本仓库为 v5：v1 只含 4 个写作技能；v2 扩展为科研全流程；v3 加入纪律层 `research-before-build`（⓪）与汇报层 `academic-ppt`（⑦）并将 `scientific-review` 更名为 `paper-review`；v4 将 `paper-review` 重构为三盲审对抗评审团（nature-reviewer 式架构、OR/ML+OR 领域 gate、作者辩护仲裁），并退役 `academic-paper-review`；v5 新增 `reference-verify`（⑤ 投稿前参考文献体检，从一次全稿引用核查实战凝练的三层核查法）——共 9 skill + 1 subagent。
 
