@@ -1,8 +1,7 @@
 ---
 name: term-audit
-description: 名词黑话批量审计（term audit）——两段式漏斗审一篇 LaTeX 手稿的名词术语：确定性脚本提取候选名词短语并按五信号排序，分批派 jargon-check terms 模式并行审计，归一化变体分组 + 合并复查术语漂移。当用户说"审一下术语""检查黑话/名词""术语要统一""投稿前术语核查"，或要把 jargon-check 跑在全篇论文上（而不只是一段话）时使用。黑话病理单位是高度凝练的多词复合名词（controller-level execution 类），本技能就是为它们设计的批量漏斗。
+description: 学术黑话批量审计（term audit）——两段式漏斗审一篇 LaTeX 手稿的名词术语：确定性脚本提取候选名词短语并按五信号排序，分批派 jargon-check terms 模式并行审计，归一化变体分组 + 合并复查术语漂移。当用户说"审一下术语""检查黑话/名词""术语要统一""投稿前术语核查"，或要把 jargon-check 跑在全篇论文上（而不只是一段话）时使用。黑话病理单位是高度凝练的多词复合名词（controller-level execution 类），本技能就是为它们设计的批量漏斗。
 ---
-
 # term-audit：名词黑话批量审计
 
 ## 定位与边界

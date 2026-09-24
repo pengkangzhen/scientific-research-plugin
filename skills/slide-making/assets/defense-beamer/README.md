@@ -106,8 +106,22 @@
 | 平台 | 正文中西文 | 横幅字标中文 | 横幅字标英文 |
 |------|-----------|--------------|--------------|
 | macOS（原版效果） | HarmonyOS Sans SC | Xingkai SC Bold 行楷 | Zapfino 花体 |
-| Windows | SimHei 或 HarmonyOS Sans SC | KaiTi 楷体（仿粗） | 当前西文字体 |
-| Linux/WSL | SimHei（仿粗） | KaiTi 楷体（仿粗） | 当前西文字体 |
+| Windows | SimHei 或 HarmonyOS Sans SC | 华文行楷 STXingkai（仿粗） | 当前西文字体 |
+| Linux | SimHei（仿粗） | KaiTi 楷体（仿粗） | 当前西文字体 |
+| WSL（已索引 Windows 字体） | SimHei（仿粗） | 华文行楷 STXingkai（仿粗） | 当前西文字体 |
+
+WSL 索引 Windows 字体（一次性配置，之后横幅字标即得华文行楷）：
+
+```bash
+mkdir -p ~/.config/fontconfig && cat > ~/.config/fontconfig/fonts.conf <<'CONF'
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+  <dir>/mnt/c/Windows/Fonts</dir>
+</fontconfig>
+CONF
+fc-cache -f   # 之后 fc-list | grep -i xingkai 应能看到 STXingkai,华文行楷
+```
 
 西文/数学不单独设字体（沿用 beamer 默认）；横幅字标中文行楷、英文 Zapfino 花体为
 实战 deck 原版规格。

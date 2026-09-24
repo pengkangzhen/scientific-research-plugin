@@ -2,10 +2,9 @@
 name: slide-making
 description: >
   学术演讲 PPT/slides 制作 — 从论文稿件（LaTeX/PDF）到可现场演讲的完整流程：
-  LaTeX Beamer 路线 + 视觉设计系统（有官方模板则提取背景复用，无模板则自建色板/版式）+
-  数学公式与论文原图复用 + 讲稿撰写与时长控制 + PDF→图片→官方模板交付包装 + 演讲者备注与现场预案。
-  内置两套可复用模板按需加载：学术会议路线 conference-beamer（实战沉淀）、
-  学位开题/答辩/组会路线 defense-beamer 通用主题包（横幅 + 进度条 + 轻量组件）。
+  LaTeX Beamer 路线 + 视觉设计系统（官方模板提取或自建）+ 公式与论文原图复用
+  + 讲稿撰写与时长控制 + 包装回官方 pptx（含演讲者备注）。
+  内置两套模板：学术会议 conference-beamer、开题/答辩/组会 defense-beamer。
   触发词："会议PPT"、"演讲PPT"、"做幻灯片"、"把论文做成PPT"、"presentation"、"slides"、
   "Beamer"、"会议模板"、"讲稿"、"演讲稿"、"presentation speech"、"演讲者备注"、"贴回模板"、
   "开题报告"、"答辩PPT"、"组会汇报"、"组会pre"、"开题Beamer"。
@@ -15,7 +14,6 @@ description: >
   a pptx with speaker notes — also for thesis proposal/defense/group-meeting decks
   (defense theme bundled) — even if they never say "PPT" (e.g. "下周要用这篇论文做口头报告",
   "15 分钟的 talk 怎么准备").
-license: MIT
 ---
 
 # Academic PPT Skill（论文 → 学术演讲）
@@ -61,7 +59,8 @@ license: MIT
 
 - pptx 即 zip：解压取 `ppt/media/` 内整页背景图，一般三张（封面 bg_cover / 内容页 bg_content / 封底 bg_closing）。
   - ⚠️ logo 和真页脚在 slide master 里，**不在**背景图片里；提取图可能带无意义淡色伪影条带。
-- 用 analyze_image（或目测）标定安全区：正文可放区域、条带占页面高度的百分比。
+- 用当前环境的读图能力（如 Read 工具直接读提取出的背景图；或目测）标定安全区：
+  正文可放区域、条带占页面高度的百分比。
 - Beamer 挂背景：
   ```latex
   \documentclass[aspectratio=169,11pt]{beamer}   % pptx 13.33″×7.5″ = 16:9 = aspectratio=169，两边吻合无变形
@@ -123,10 +122,10 @@ license: MIT
 ## 4. 视觉验证循环（每次改版的标准动作）
 
 1. `latexmk -pdfxe presentation_beamer.tex`（或 xelatex ×3）编译至 0 error。
-2. `pdftoppm -png -r 120` 渲染全部页；用 PIL 拼成 contact sheet。
-3. analyze_image 先扫 contact sheet（prompt 只要求报问题：溢出/截断/压条带/空页），
-   再对最密几页（数学、表格、图页）全分辨率逐页复核。
-   - analyze_image 报 1210 图片解析错误 = 文件刚被刷新重传，重传即可。
+2. `pdftoppm -png -r 120` 渲染全部页；运行 `scripts/contact_sheet.py` 拼成 contact sheet。
+3. 用当前环境的读图能力（如 Read 工具直接读 PNG）先扫 contact sheet（只要求报问题：
+   溢出/截断/压条带/空页），再对最密几页（数学、表格、图页）读原图全分辨率逐页复核。
+   - 读图报错且该页 PNG 刚被脚本刷新 = 文件尚在重写，等刷新完成重读即可。
 4. 结论给量化证据（像素测量、MSE 对比背景一致性），不凭印象说"好了"。
 
 ## 5. 讲稿方法论（配合演讲时长）
@@ -153,11 +152,12 @@ license: MIT
 ### 6.1 合规 pptx 包装（PDF→图片→官方模板）
 ```bash
 pdftoppm -png -r 300 presentation.pdf /tmp/slide-png       # 300dpi，1890×1063
+python scripts/package_pptx.py 官方模板.pptx /tmp/slide-png -o packaged.pptx
 ```
-再用 python-pptx：备份原模板 → 从备份打开 → 删模板示例页 → 选空白版式（占位符最少）→
-逐页贴整幅图片于 (0,0) 满幅 → 覆盖保存 → 重开验证页数与图片位置。
-- 宽高比两边必须同为 16:9 才无变形。
-- 目录里有 `~$xxx.pptx` 锁文件 = PowerPoint 正开着该文件，**不要写入**（会被旧窗口重存冲掉）。
+脚本固化了全套流程与红线：`~$` 锁文件检查（PowerPoint 正开着即拒绝写入）→ 自动备份原模板
+→ 删模板示例页 → 选占位符最少的空白版式 → 逐页贴整幅图片于 (0,0) 满幅 → 保存输出
+→ 重开验证页数与满幅位置；出图目录混入杂图（如 contact sheet）会因尺寸不齐被拒。
+- 宽高比两边必须同为 16:9 才无变形（脚本会校验）。
 - 此形态文字不可再编辑——只作为定稿交付，内容修改回到 Beamer 源。
 
 ### 6.2 备注
@@ -182,8 +182,8 @@ pdftoppm -png -r 300 presentation.pdf /tmp/slide-png       # 300dpi，1890×1063
 - **学术会议路线** `assets/conference-beamer/`：conference.tex（实战 deck 泛化的完整骨架）+
   figs/beamer_bg/ 背景投放点 + README——
   preamble 设计系统（五处色值、frametitle 眉注、footline 条带避让、`\divider`/`\callout` 宏）
-  + 17 类帧型（封面/目录/转场/要点/三卡片/通栏纵排/左文右图/示意图/表格/数学×2/总览/
-  路由表/结果大数字/对比结果/构成启示/结论/封底），占位内容即填写说明；
+  + 17 类帧型共 18 页（数学页一类占两页：封面/目录/转场/要点/三卡片/通栏纵排/左文右图/
+  示意图/表格/数学×2/总览/路由表/结果大数字/对比结果/构成启示/结论/封底），占位内容即填写说明；
   自建模式零外部资产直接可编译，官方模板模式改 `\BgCover`/`\BgContent`/`\BgClosing` 三个宏。
 - **学位开题/答辩/组会路线** `assets/defense-beamer/`：beamerthemeDefense.sty +
   defense.tex/.pdf（脱敏骨架）+ README（详见 §2.4）。
@@ -191,6 +191,9 @@ pdftoppm -png -r 300 presentation.pdf /tmp/slide-png       # 300dpi，1890×1063
   （背景图与官方 pptx 属会议方版权物，不入仓库，自备）。
 - **讲稿骨架** `assets/speech-template.md`：节奏表 + 关键数字表 + `[Slide:]` 逐页标记 +
   累计检查点 + Q&A 预案库，配合 §5 方法论使用。
+- **验证与交付脚本** `scripts/`：`contact_sheet.py`（§4 第 2 步拼总览图）与
+  `package_pptx.py`（§6.1 全流程：锁文件检查 → 备份 → 删示例页 → 空白版式 → 满幅贴图 → 复核），
+  依赖 Pillow / python-pptx，临时环境用 `uv run --with` 即装即用。
 - 实战实例（模板的来源与填好的参照）：填好的会议 deck 与开题 deck 原稿均留在
   各自来源项目中，不入仓库；找回路径见 assets 对应包 README 的「来源」节。
 - 最快复用路径：会议有官方模板 → 按 conference-beamer README 提取三张背景 + 三行接线 + 换五处色值；

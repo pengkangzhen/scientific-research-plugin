@@ -26,7 +26,7 @@
 % 手动替换仍改该节对应行。回退链：HarmonyOS Sans SC → PingFang SC →
 % 中文无衬线链：HarmonyOS Sans SC → Noto Sans CJK SC → SimHei。
 % =========================================================================
-\ProvidesPackage{beamerthemeDefense}[2026/09/24 Generic academic defense beamer theme v2.2]
+\ProvidesPackage{beamerthemeDefense}[2026/09/24 Generic academic defense beamer theme v2.3]
 
 \RequirePackage{tikz}
 \usetikzlibrary{calc}
@@ -120,8 +120,10 @@
 % 会走 kpathsea 文件查找并在日志留错）：
 %   macOS/已装鸿蒙：原版规格（正文/西文 HarmonyOS Sans SC + Songti SC +
 %                   横幅字标中文行楷 Xingkai SC Bold + 西文 Zapfino 花体）
-%   其他平台：正文 SimHei→Noto Sans CJK SC→FandolHei；宋体 SimSun→FandolSong；
-%             行楷 KaiTi→AR PL KaitiM GB→FandolKai→SimSun（仿粗）；花体→当前西文
+%   其他平台：正文 SimHei→Noto Sans CJK SC→FandolHei；宋体 SimSun；
+%             行楷 STXingkai（华文行楷，Windows/Office 中文组件；WSL 可经
+%             fontconfig 索引 /mnt/c/Windows/Fonts 使用）→KaiTi→SimSun（仿粗）；
+%             花体→当前西文
 % -------------------------------------------------------------------------
 \IfFontExistsTF{HarmonyOS Sans SC}{%
   \setsansfont[BoldFont={HarmonyOS Sans SC Bold}]{HarmonyOS Sans SC}%
@@ -139,9 +141,11 @@
     \setCJKsansfont[BoldFont={Noto Sans CJK SC Bold}]{Noto Sans CJK SC}%
   }}%
   \IfFontExistsTF{SimSun}{\setCJKfamilyfont{zhsong}{SimSun}}{}%
-  \IfFontExistsTF{KaiTi}{%
+  \IfFontExistsTF{STXingkai}{% 华文行楷（Windows/Office 中文组件，WSL 经 fontconfig 索引 Windows 字体后可用）
+    \newCJKfontfamily\df@wmcn[AutoFakeBold=2.5]{STXingkai}%
+  }{\IfFontExistsTF{KaiTi}{%
     \newCJKfontfamily\df@wmcn[AutoFakeBold=2.5]{KaiTi}%
-  }{\newCJKfontfamily\df@wmcn{SimSun}}%
+  }{\newCJKfontfamily\df@wmcn{SimSun}}}%
   \newcommand{\df@wmen}{}% 花体仅 macOS 常见：回退当前西文字体
 }
 
