@@ -52,8 +52,6 @@ Beamer PDF 定稿后贴回官方 pptx：`pdftoppm -png -r 300` 出图 → python
 会议官方模板原件为底版（先备份），删示例页、选空白版式、逐页满幅贴图。
 ⚠️ 目录里有 `~$xxx.pptx` 锁文件 = PowerPoint 正开着，不要写入。
 
-## 实例（填好的参照，不入仓库）
+## 实例
 
-- 会议 deck：WSL `~/projects/research/imhfc-ecr-mcnf/presentation/`
-  （presentation_beamer.tex、presentation_speech.md、presentation-template-original.pptx、
-  figs/beamer_bg/ 三张提取背景）。
+填好的会议 deck 原稿留在来源项目中，不入仓库。

@@ -4,11 +4,11 @@ description: >
   学术演讲 PPT/slides 制作 — 从论文稿件（LaTeX/PDF）到可现场演讲的完整流程：
   LaTeX Beamer 路线 + 视觉设计系统（有官方模板则提取背景复用，无模板则自建色板/版式）+
   数学公式与论文原图复用 + 讲稿撰写与时长控制 + PDF→图片→官方模板交付包装 + 演讲者备注与现场预案。
-  内置两套可复用模板按需加载：学术会议路线 conference-beamer（IMHFC 2026 实战沉淀）、
+  内置两套可复用模板按需加载：学术会议路线 conference-beamer（实战沉淀）、
   学位开题/答辩/组会路线 defense-beamer 通用主题包（横幅 + 进度条 + 轻量组件）。
   触发词："会议PPT"、"演讲PPT"、"做幻灯片"、"把论文做成PPT"、"presentation"、"slides"、
   "Beamer"、"会议模板"、"讲稿"、"演讲稿"、"presentation speech"、"演讲者备注"、"贴回模板"、
-  "开题报告"、"答辩PPT"、"组会汇报"、"组会pre"、"DMU主题"、"开题Beamer"。
+  "开题报告"、"答辩PPT"、"组会汇报"、"组会pre"、"开题Beamer"。
   Use this skill whenever the user wants to turn a paper/manuscript into conference or seminar
   presentation slides, build a Beamer deck, fit slides into the official template,
   write a time-budgeted talk script, or package a slide PDF back into
@@ -20,8 +20,8 @@ license: MIT
 
 # Academic PPT Skill（论文 → 学术演讲）
 
-从论文制作学术演讲材料（会议报告与学位开题/答辩/组会）。本技能沉淀自 IMHFC 2026 会议
-全流程（2026-08 两周、14 个会话、多轮修改）与 DMU 开题报告 Beamer 主题（2026-09），
+从论文制作学术演讲材料（会议报告与学位开题/答辩/组会）。本技能沉淀自一次完整的学术会议报告实战（2026-08 两周、14 个会话、多轮修改）
+与一次高校开题 Beamer 主题复刻（2026-09），
 核心价值在于路线已验证、坑已有数值级解法，不要重新试错。
 
 ## 0. 典型作业顺序
@@ -72,14 +72,14 @@ license: MIT
 - ⚠️ **单位换算坑**：pptx 物理高 19.05cm，Beamer `aspectratio=169` 纸面高只有 **9cm**。背景图里的条带高度必须按百分比换算（底部 9.76% 条带 ≈ **8.8mm**），绝不能拿 pptx 绝对尺寸直接预留（曾误留 21mm 压缩正文区，引发大面积溢出）。
 - 条带避让最终解法：footline 精确预留条带高度，正文永不进入条带区；不是删背景。
 - 转场页复用 bg_cover 照片时，按照片亮度调文字配色（亮照片上标题白→navy）。
-- 色板从模板主题色提取进 `\definecolor`（IMHFC 实例）：navy `0E2841`、orange `E97132`、teal `156082`、gray `5A6B7B`、light `F2F6F9`。
+- 色板从模板主题色提取进 `\definecolor`（实战实例）：navy `0E2841`、orange `E97132`、teal `156082`、gray `5A6B7B`、light `F2F6F9`。
 - 官方模板的提取流程、三行接线与条带避让参数已固化为 `assets/conference-beamer/`（§8）；
   背景图等会议品牌资产不入仓库，按其 README 自备。
 
 ### 2.2 无官方模板 → 自建设计系统
 
 - 原则：学术场合克制。白底黑字正文为基调；**单一主色（深蓝/navy 类）+ 单一强调色（橙/teal 类）+ 灰色辅助**，全部 `\definecolor` 落地后再动手写帧。
-- 色板来源：学校 VI、论文图表既有配色、或高对比经典组合；上面 IMHFC 那套五色已实战验证，可直接沿用换色值。
+- 色板来源：学校 VI、论文图表既有配色、或高对比经典组合；上面这套五色已实战验证，可直接沿用换色值。
 - 明度对比全局一致：反白字色块只用于少量强调且成体系出现，不要与白底黑字正文大面积混排（可读性冲突，用户实测提出过）。
 - 可选起点：成熟 Beamer 主题（如 metropolis，可选字体一律 `\IfFontExistsTF` 守护、缺字体自动回退）；
   或直接整份复制 `assets/conference-beamer/conference.tex`——preamble 与 17 类帧型全套已验证，改五处色值即换风格。
@@ -177,7 +177,7 @@ pdftoppm -png -r 300 presentation.pdf /tmp/slide-png       # 300dpi，1890×1063
 
 两套模板对应两条路线，开工时按场合**整份复制对应文件**再改内容，不要从零写：
 
-- **学术会议路线** `assets/conference-beamer/`：conference.tex（IMHFC 2026 实战 deck 泛化的完整骨架）+
+- **学术会议路线** `assets/conference-beamer/`：conference.tex（实战 deck 泛化的完整骨架）+
   figs/beamer_bg/ 背景投放点 + README——
   preamble 设计系统（五处色值、frametitle 眉注、footline 条带避让、`\divider`/`\callout` 宏）
   + 17 类帧型（封面/目录/转场/要点/三卡片/通栏纵排/左文右图/示意图/表格/数学×2/总览/
@@ -189,12 +189,8 @@ pdftoppm -png -r 300 presentation.pdf /tmp/slide-png       # 300dpi，1890×1063
   （背景图与官方 pptx 属会议方版权物，不入仓库，自备）。
 - **讲稿骨架** `assets/speech-template.md`：节奏表 + 关键数字表 + `[Slide:]` 逐页标记 +
   累计检查点 + Q&A 预案库，配合 §5 方法论使用。
-- 实战实例（模板的来源与填好的参照）：
-  - 会议 deck：WSL `~/projects/research/imhfc-ecr-mcnf/presentation/`
-    （presentation_beamer.tex、presentation_speech.md、presentation-template.pptx、
-    figs/beamer_bg/ 三张提取背景）。
-  - 开题实战 deck（未脱敏，骨架的脱敏来源）：Mac
-    `~/Documents/code/sc_resilience_geo/docs/开题报告/beamer-dmu/defense.tex`。
+- 实战实例（模板的来源与填好的参照）：填好的会议 deck 与开题 deck 原稿均留在
+  各自来源项目中，不入仓库；找回路径见 assets 对应包 README 的「来源」节。
 - 最快复用路径：会议有官方模板 → 按 conference-beamer README 提取三张背景 + 三行接线 + 换五处色值；
   无模板 → 默认自建模式直接开写；开题/答辩/组会 → 复制 defense-beamer、改校名宏直接填内容。
   之后重写 frames 内容 → 按 §4 循环验证 → 按 §6 交付。

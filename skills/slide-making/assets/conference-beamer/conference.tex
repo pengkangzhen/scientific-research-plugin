@@ -2,7 +2,7 @@
 % =========================================================================
 % conference.tex — 学术会议 Beamer 模板（slide-making 技能内置资产）
 % -------------------------------------------------------------------------
-% 来源：IMHFC 2026 实战 deck（presentation_beamer.tex，多轮视觉验证通过），
+% 来源：一份实战验证的学术会议 deck（多轮视觉验证通过），
 %       泛化为「改内容即用」的骨架；每类帧型一份，占位内容本身即填写说明。
 % 编译：latexmk -pdfxe conference.tex   （或 xelatex ×3）
 %       默认「自建模式」零外部资产、直接可编译（白底，SKILL §2.2）。
@@ -75,17 +75,31 @@
 \newcommand{\BgClosing}{}
 \usebackgroundtemplate{\BgContent}
 
-% ---- footline：运行标题 + 页码 ----
-% 官方模板有底部条带时的避让参数（实战验证）：ht+dp = 11mm 预留，正文止于
-% 条带上方 ~2mm，页码基线落在条带内；自建白底模式同样可用，无需改动
+% ---- footline：底部色条（footer bar）：左=姓名，中=主题，右=页码 ----
+% 内容取自文档元信息：\author → 姓名、\title → 主题（下方 \title/\author 已填占位）。
+% 色条高 ht+dp = 8.5mm，正文区随之加宽。⚠️ 官方模板背景自带底部条带时勿叠用
+% （会双条带），改挂下面注释里的透明版 footline（避让参数实战验证）
+\setbeamercolor{footer bar}{fg=white,bg=primary}
 \setbeamertemplate{footline}{%
-  \begin{beamercolorbox}[wd=\paperwidth,ht=7mm,dp=4mm,leftskip=9mm,rightskip=9mm]{}%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=5.5mm,dp=3mm,leftskip=9mm,rightskip=9mm]{footer bar}%
     \hbox to\dimexpr\paperwidth-18mm\relax{%
+      {\scriptsize\bfseries\insertshortauthor}%
       \hfill
-      {\color{primary}\scriptsize\bfseries Running title --- replace or delete}% 运行标题，可留空
+      {\scriptsize\insertshorttitle}%
       \hfill
-      \llap{{\color{primary}\scriptsize\insertframenumber\,/\,\inserttotalframenumber}}}%
+      {\scriptsize\insertframenumber\,/\,\inserttotalframenumber}}%
   \end{beamercolorbox}}
+
+% ---- footline（透明版，备用）：官方模板背景自带条带时换用这一版 ----
+% ht+dp = 11mm 预留，正文止于条带上方 ~2mm，页码基线落在条带内（实战验证）
+% \setbeamertemplate{footline}{%
+%   \begin{beamercolorbox}[wd=\paperwidth,ht=7mm,dp=4mm,leftskip=9mm,rightskip=9mm]{}%
+%     \hbox to\dimexpr\paperwidth-18mm\relax{%
+%       \hfill
+%       {\color{primary}\scriptsize\bfseries Running title --- replace or delete}%
+%       \hfill
+%       \llap{{\color{primary}\scriptsize\insertframenumber\,/\,\inserttotalframenumber}}}%
+%   \end{beamercolorbox}}
 
 % =========================================================================
 % 可复用宏（实战验证，勿改几何参数）
@@ -119,7 +133,10 @@
 \newcommand{\callout}[3][primary]{%
   \begin{tikzpicture}\node[fill=#1, rounded corners=2pt, inner sep=3mm, text width=#2, align=left]{#3};\end{tikzpicture}}
 
-\title{}\author{}\date{}   % 封面手工排版，不用 \titlepage
+% 文档元信息：封面手工排版不用 \titlepage，但底部色条取 [short] 短形式
+\title[Running title --- replace]{Paper full title}
+\author[Presenter Name]{}
+\date{}
 \newcommand{\currentsection}{}   % SECTION 眉注载体，由 \divider 维护
 \newcommand{\BgNone}{}   % 封底模式判断哨兵：\ifx\BgClosing\BgNone 仅在 \BgClosing 为空时成立
                          % （\newcommand 定义的宏是 \long，与 \empty 的 \ifx 比较永不相等，勿改用 \empty）
