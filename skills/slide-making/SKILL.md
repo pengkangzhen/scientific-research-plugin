@@ -1,201 +1,332 @@
 ---
 name: slide-making
 description: >
-  学术演讲 PPT/slides 制作 — 从论文稿件（LaTeX/PDF）到可现场演讲的完整流程：
-  LaTeX Beamer 路线 + 视觉设计系统（官方模板提取或自建）+ 公式与论文原图复用
-  + 讲稿撰写与时长控制 + 包装回官方 pptx（含演讲者备注）。
-  内置两套模板：学术会议 conference-beamer、开题/答辩/组会 defense-beamer。
-  触发词："会议PPT"、"演讲PPT"、"做幻灯片"、"把论文做成PPT"、"presentation"、"slides"、
-  "Beamer"、"会议模板"、"讲稿"、"演讲稿"、"presentation speech"、"演讲者备注"、"贴回模板"、
-  "开题报告"、"答辩PPT"、"组会汇报"、"组会pre"、"开题Beamer"。
-  Use this skill whenever the user wants to turn a paper/manuscript into conference or seminar
-  presentation slides, build a Beamer deck, fit slides into the official template,
-  write a time-budgeted talk script, or package a slide PDF back into
-  a pptx with speaker notes — also for thesis proposal/defense/group-meeting decks
-  (defense theme bundled) — even if they never say "PPT" (e.g. "下周要用这篇论文做口头报告",
-  "15 分钟的 talk 怎么准备").
+  Academic presentation slides — the full pipeline from a paper (LaTeX/PDF) to a
+  talk-ready deck: LaTeX Beamer route + visual design system (extract the official
+  template if provided, else build palette/layout from scratch) + math & figure
+  reuse + time-budgeted talk script + packaging the slide PDF back into the
+  official pptx with speaker notes.
+  Two bundled templates: conference-beamer (conference talks) and defense-beamer
+  (thesis proposal / defense / group meetings).
+  Use this skill whenever the user wants to turn a paper/manuscript into
+  conference or seminar presentation slides, build a Beamer deck, fit slides into
+  the official template, write a time-budgeted talk script, or package a slide
+  PDF back into a pptx with speaker notes — also for thesis proposal/defense/
+  group-meeting decks — even if they never say "PPT" (e.g. "I'm giving a talk on
+  this paper next week", "how do I prepare a 15-minute talk").
+  中文触发词："会议PPT"、"演讲PPT"、"做幻灯片"、"把论文做成PPT"、"Beamer"、
+  "会议模板"、"讲稿"、"演讲稿"、"演讲者备注"、"贴回模板"、"开题报告"、"答辩PPT"、
+  "组会汇报"、"组会pre"、"开题Beamer"。
 ---
 
-# Academic PPT Skill（论文 → 学术演讲）
+# Slide-Making Skill (paper → academic talk)
 
-从论文制作学术演讲材料（会议报告与学位开题/答辩/组会）。本技能沉淀自一次完整的学术会议报告实战（2026-08 两周、14 个会话、多轮修改）
-与一次高校开题 Beamer 主题复刻（2026-09），
-核心价值在于路线已验证、坑已有数值级解法，不要重新试错。
+Produce academic presentation material from a paper (conference talks, thesis
+proposal/defense/group meetings). This skill is distilled from one complete
+conference-talk engagement (2026-08: two weeks, 14 sessions, multiple revision
+rounds) and one university thesis-proposal Beamer theme replication (2026-09).
+Its core value: the route is verified and the pitfalls have numeric-level fixes —
+do not re-derive them by trial and error.
 
-## 0. 典型作业顺序
+## 0. Typical workflow
 
-1. 收集输入：论文源文件（manuscript.tex）、会议官方模板（若有）、时长档位、语言（通常英文）。
-2. 按 §1 定路线（结论优先，勿从零调研工具）。
-3. Beamer 路线：§2 确立视觉设计系统——**整份复制 §8 对应模板再改内容**（会议报告 →
-   conference-beamer/conference.tex；开题/答辩/组会 → defense-beamer/defense.tex；有官方 pptx
-   模板则提取背景替换）→ 写 tex → §4 验证循环 → §3 排版修法随改随查。
-4. 讲稿：§5 配合时长撰写/精简，术语与幻灯片、论文三方一致。
-5. 交付：§6 按会议要求包装（合规 pptx / 备注栏 / 现场预案）。
+1. Gather inputs: paper source (`manuscript.tex`), official conference template
+   (if any), time slot, language (usually English).
+2. Pick the route via §1 (conclusions first — do not re-survey tools).
+3. Beamer route: §2 establish the visual design system — **copy the matching §8
+   template in full, then edit content** (conference talk →
+   conference-beamer/conference.tex; proposal/defense/group meeting →
+   defense-beamer/defense.tex; if an official pptx template exists, extract
+   backgrounds and wire them in) → write tex → §4 verification loop → consult
+   §3 layout fixes as you go.
+4. Talk script: §5 write/trim against the time budget; keep terminology
+   consistent across paper, slides, and script.
+5. Delivery: §6 package per conference requirements (compliant pptx / notes
+   pane / contingencies).
 
-全程遵守 §7 协作红线。
+Follow the §7 collaboration red lines throughout.
 
-## 1. 路线决策树（已验证的结论）
+## 1. Route decision tree (verified conclusions)
 
-硬约束排序：**会议官方模板合规（若会议提供）> 数学公式/论文原图精度 > 可编辑性 > 制作速度**。
-开工前先确认会议方是否提供官方模板——有则走提取复用（§2.1），没有就以自建设计系统顶上（§2.2）。
+Hard-constraint ordering: **official-template compliance (if the conference
+provides one) > math/figure fidelity > editability > production speed**.
+Before starting, confirm whether the conference provides an official template —
+if yes, extract and reuse it (§2.1); if not, stand up a self-built design
+system (§2.2).
 
-| 路线 | 结论 | 原因 |
-|------|------|------|
-| python-pptx 从零生成 | ❌ 放弃 | 逐元素排版代码量大；模板默认字体（如 Aptos）本机没有，渲染与真实 PowerPoint 不符 |
-| officecli 生成 pptx | ❌ 放弃 | QA 用 HTML 渲染器，与真实 PowerPoint 渲染不一致，字体替换导致换行/溢出不可控 |
-| 智谱清言 PPT / GLM Slide Agent | ❌ 不适合学术演讲 | 不能嵌入论文原图、公式失真；GLM Slide Agent 仅导出 PDF；只可做风格初稿参考 |
-| **LaTeX Beamer（xelatex）+ 设计系统（模板提取或自建）** | ✅ 主力路线 | 原生数学公式、论文 PDF 图矢量嵌入、精确可控 |
-| **最终 PDF→图片→套回官方 pptx** | ✅ 交付路线 | 会议要求官方模板 / 需要演讲者备注时的合规形态 |
+| Route | Verdict | Why |
+|-------|---------|-----|
+| python-pptx from scratch | ❌ rejected | Element-by-element layout is code-heavy; template default fonts (e.g. Aptos) missing locally, so rendering diverges from real PowerPoint |
+| officecli pptx generation | ❌ rejected | QA runs through an HTML renderer that diverges from real PowerPoint; font substitution makes wrapping/overflow uncontrollable |
+| Consumer AI slide generators (chat-app PPT agents) | ❌ unsuitable for academic talks | Cannot embed paper figures; math gets mangled; the tested agent exported PDF only; usable at most for style-reference drafts |
+| **LaTeX Beamer (xelatex) + design system (extracted or self-built)** | ✅ primary route | Native math, vector embedding of paper PDF figures, precise control |
+| **Final PDF→images→official pptx packaging** | ✅ delivery route | The compliant form when the conference mandates its template / speaker notes are needed |
 
-- 不平行维护双格式：中期只留 Beamer，最后一步才包装回 pptx。
-- 若必须原生 pptx 且要保真渲染验证：用 AppleScript（osascript）驱动真实 PowerPoint 导出 PDF/PNG 核对，不信任何 HTML 渲染器。
-- 学位开题 / 答辩 / 组会：直接用内置 defense-beamer 主题（§2.4），不走 pptx 提取。
+- Do not maintain dual formats in parallel: Beamer-only until the very end,
+  then package back to pptx.
+- If native pptx is mandatory and you need faithful render verification: drive
+  real PowerPoint via AppleScript (osascript) to export PDF/PNG for checking;
+  never trust HTML renderers.
+- Thesis proposal / defense / group meeting: use the bundled defense-beamer
+  theme (§2.4) directly; skip pptx extraction.
 
-## 2. 视觉设计系统：先确立，再写内容帧
+## 2. Visual design system: establish it before writing content frames
 
-背景、色板、标题版式这套设计系统要在写内容之前定下来。来源有两条路，版式基座通用。
+Background, palette, and title layout must be settled before writing content.
+Two sources; the layout base is shared.
 
-### 2.1 有官方 pptx 模板 → 提取复用
+### 2.1 Official pptx template exists → extract and reuse
 
-- pptx 即 zip：解压取 `ppt/media/` 内整页背景图，一般三张（封面 bg_cover / 内容页 bg_content / 封底 bg_closing）。
-  - ⚠️ logo 和真页脚在 slide master 里，**不在**背景图片里；提取图可能带无意义淡色伪影条带。
-- 用当前环境的读图能力（如 Read 工具直接读提取出的背景图；或目测）标定安全区：
-  正文可放区域、条带占页面高度的百分比。
-- Beamer 挂背景：
+- A pptx is a zip: unzip and take the full-page background images from
+  `ppt/media/` — usually three (cover `bg_cover` / content `bg_content` /
+  closing `bg_closing`).
+  - ⚠️ Logos and the real footer live in the slide master, **not** in the
+    background images; extracted images may carry meaningless pale artifact
+    strips.
+- Calibrate the safe area with image inspection (e.g. view the extracted
+  backgrounds directly with your image-reading capability; or eyeball): the
+  usable body area, and the band height as a percentage of page height.
+- Hanging backgrounds in Beamer:
   ```latex
-  \documentclass[aspectratio=169,11pt]{beamer}   % pptx 13.33″×7.5″ = 16:9 = aspectratio=169，两边吻合无变形
+  \documentclass[aspectratio=169,11pt]{beamer}   % pptx 13.33″×7.5″ = 16:9 = aspectratio=169; both sides match, no distortion
   \usebackgroundtemplate{\includegraphics[width=\paperwidth,height=\paperheight]{figs/beamer_bg/bg_content}}
   ```
-  封面/封底/转场页用 `{ ... }` 局部组覆盖为各自背景。
-- ⚠️ **`\usebackgroundtemplate` 优先级高于 `\setbeamercolor{background canvas}`**——分隔页深蓝底上白字"消失"的根因即此。
-- ⚠️ **单位换算坑**：pptx 物理高 19.05cm，Beamer `aspectratio=169` 纸面高只有 **9cm**。背景图里的条带高度必须按百分比换算（底部 9.76% 条带 ≈ **8.8mm**），绝不能拿 pptx 绝对尺寸直接预留（曾误留 21mm 压缩正文区，引发大面积溢出）。
-- 条带避让最终解法：footline 精确预留条带高度，正文永不进入条带区；不是删背景。
-- 转场页复用 bg_cover 照片时，按照片亮度调文字配色（亮照片上标题白→navy）。
-- 色板从模板主题色提取进 `\definecolor`（实战实例）：navy `0E2841`、orange `E97132`、teal `156082`、gray `5A6B7B`、light `F2F6F9`。
-- 官方模板的提取流程、三行接线与条带避让参数已固化为 `assets/conference-beamer/`（§8）；
-  背景图等会议品牌资产不入仓库，按其 README 自备。
+  Cover/closing/divider pages override with their own backgrounds inside
+  `{ ... }` groups.
+- ⚠️ **`\usebackgroundtemplate` overrides `\setbeamercolor{background canvas}`**
+  — this is why white text "vanished" on a navy divider page.
+- ⚠️ **Unit-conversion trap**: pptx physical height is 19.05 cm, but Beamer
+  `aspectratio=169` paper height is only **9 cm**. Band heights inside the
+  background must be converted as percentages (a bottom 9.76% band ≈
+  **8.8 mm**); never reserve pptx absolute dimensions directly (reserving
+  21 mm this way once squeezed the body area and caused massive overflow).
+- Final band-avoidance fix: the footline reserves exactly the band height so
+  body content never enters the band; do not delete the background.
+- When reusing the bg_cover photo on divider pages, adapt text colors to photo
+  brightness (on a bright photo: title white → navy).
+- Extract the palette from the template theme colors into `\definecolor`
+  (battle-tested example): navy `0E2841`, orange `E97132`, teal `156082`,
+  gray `5A6B7B`, light `F2F6F9`.
+- The official-template extraction procedure, the three-line wiring, and the
+  band-avoidance parameters are codified in `assets/conference-beamer/` (§8);
+  conference brand assets (backgrounds) stay out of the repo — supply your own
+  per its README.
 
-### 2.2 无官方模板 → 自建设计系统
+### 2.2 No official template → build the design system yourself
 
-- 原则：学术场合克制。白底黑字正文为基调；**单一主色（深蓝/navy 类）+ 单一强调色（橙/teal 类）+ 灰色辅助**，全部 `\definecolor` 落地后再动手写帧。
-- 色板来源：学校 VI、论文图表既有配色、或高对比经典组合；上面这套五色已实战验证，可直接沿用换色值。
-- 明度对比全局一致：反白字色块只用于少量强调且成体系出现，不要与白底黑字正文大面积混排（可读性冲突，用户实测提出过）。
-- 可选起点：成熟 Beamer 主题（如 metropolis，可选字体一律 `\IfFontExistsTF` 守护、缺字体自动回退）；
-  或直接整份复制 `assets/conference-beamer/conference.tex`——preamble 与 17 类帧型全套已验证，改五处色值即换风格。
-- 无背景图就**不挂** `\usebackgroundtemplate`：白底是 Beamer 默认，天然避开 2.1 的优先级坑与单位换算坑；分隔页用主色纯填充即可。
+- Principle: restraint for academic settings. White background with black body
+  text as the base; **one primary color (deep blue/navy family) + one accent
+  (orange/teal family) + gray support**, all landed as `\definecolor` before
+  writing any frame.
+- Palette sources: university visual identity, the paper's existing figure
+  colors, or classic high-contrast combos; the five colors above are
+  battle-tested — reuse them and swap the values.
+- Keep luminance contrast globally consistent: reversed-out color blocks only
+  for sparse, systematic emphasis; do not mix them at scale with
+  white-background body pages (readability conflict, flagged by the user in
+  real use).
+- Optional starting points: a mature Beamer theme (e.g. metropolis; guard
+  every optional font with `\IfFontExistsTF` with automatic fallback), or copy
+  `assets/conference-beamer/conference.tex` in full — preamble and 17 frame
+  archetypes fully verified; change five color values to restyle.
+- With no background image, do **not** set `\usebackgroundtemplate`: white is
+  Beamer's default, which sidesteps the §2.1 priority and unit-conversion
+  traps; divider pages use a solid primary-color fill.
 
-### 2.3 版式基座（两条路通用）
+### 2.3 Layout base (shared by both routes)
 
-- 去导航符号 `\setbeamertemplate{navigation symbols}{}`、`\usefonttheme{professionalfonts}`；amsmath + unicode-math，数学字体（如 Fira Math）用 `\IfFontExistsTF` 守护。
-- frametitle 自定义模板：主色粗体大标题 + 强调色细线（如 13mm×1.1pt），眉注见 §3。
-- `\divider`（分隔页：大编号 + 标题）与 `\callout`（强调卡片）已沉淀为模板内置宏（conference-beamer/conference.tex），宽度规则见 §3。
+- Remove nav symbols `\setbeamertemplate{navigation symbols}{}`,
+  `\usefonttheme{professionalfonts}`; amsmath + unicode-math, with the math
+  font (e.g. Fira Math) guarded by `\IfFontExistsTF`.
+- Custom frametitle template: primary-color bold title + thin accent rule
+  (e.g. 13mm × 1.1pt); section eyebrows see §3.
+- `\divider` (divider page: big number + title) and `\callout` (emphasis card)
+  are built-in template macros (conference-beamer/conference.tex); width rules
+  in §3.
 
-### 2.4 内置现成主题：defense-beamer（学位开题 / 答辩 / 组会）
+### 2.4 Bundled ready-made theme: defense-beamer (proposal / defense / group meetings)
 
-- `assets/defense-beamer/`：`beamerthemeDefense.sty`（通用答辩主题：顶部横幅可选校徽 +
-  校名/院名字标宏 + 底部章节进度条 + 目录/转场页/封面）+ `defense.tex`/`defense.pdf`
-  （脱敏开题答辩骨架，25 页全帧型，占位文本即填写说明；帧型速查见其 README）+ `README.md`。
-- 用法：sty 放文稿同目录，`\usetheme{Defense}`，`\renewcommand` 改横幅校名/院名四宏；
-  校徽自备：`campus-emblem.png` 放同目录即自动入横幅，不放则纯文字字标。
-  四个内容组件覆盖高频版式——`point`（左橙竖条要点分组）、`warn`（不足/风险警示条）、
-  `card`（多列并排卡片）、`band`（深蓝底白字结论横幅）。
-- 字体**保留实战开题 deck 的原版设置**（全 `\IfFontExistsTF` 守护）：macOS 出原版效果
-  （正文鸿蒙黑体 + 横幅字标行楷 + Zapfino 花体），缺字体的平台（Windows/WSL/Overleaf）
-  自动回退仍可编译；conference 包则采用实战会议 deck 的字体（西文 Helvetica Neue +
-  数学 Fira Math，同样守护）——两包各自沿用其来源 deck 的字体，不混用。
+- `assets/defense-beamer/`: `beamerthemeDefense.sty` (generic defense theme:
+  top banner with optional university emblem + university/college wordmark
+  macros + bottom section progress bar + TOC/divider/cover) +
+  `defense.tex`/`defense.pdf` (sanitized proposal-defense skeleton, 25 pages
+  covering all archetypes; placeholder text doubles as filling instructions;
+  archetype cheat sheet in its README) + `README.md`.
+- Usage: put the sty next to your deck file, `\usetheme{Defense}`,
+  `\renewcommand` the four banner macros; supply your own emblem:
+  `campus-emblem.png` in the same directory joins the banner automatically,
+  otherwise you get a pure-text wordmark.
+  Four content components cover the high-frequency layouts — `point` (orange
+  left-bar bullet grouping), `warn` (limitation/risk strip), `card`
+  (multi-column side-by-side cards), `band` (navy reversed-out conclusion
+  banner).
+- Fonts keep the source proposal deck's original setup (all guarded by
+  `\IfFontExistsTF`): macOS renders the original look (HarmonyOS Sans body +
+  XingKai brush-script wordmark + Zapfino flourishes); platforms missing them
+  (Windows/WSL/Overleaf) fall back and still compile. The conference package
+  uses the conference deck's fonts (Latin: Helvetica Neue, math: Fira Math,
+  same guarding) — each package keeps its source deck's fonts; do not mix.
 
-## 3. Beamer 排版坑与修法（实际发生过的问题）
+## 3. Beamer layout pitfalls and fixes (all actually happened)
 
-- **includegraphics 调大小没反应**：`keepaspectratio` 下先诊断约束瓶颈是宽还是高——
-  用 `pdfcrop` 验证图本身留白；若图已被列宽卡住，调 `height` 无效，要改 `column` 宽度
-  （实例：0.46→0.54\textwidth 后图放大 37%）。
-- **色块(callout)溢出/贴边**：色块文本宽 + 2×内边距 必须 < 所在列宽（实例：78mm 块塞 68mm 列，直抵页面右缘）。
-- **纯文字页不配色块**：文字栏用普通段落 + 橙色小标题点缀即可，色块会压过旁边的图。
-- **图文页布局约定**：左文右图（阅读顺序自然）；元素随语义走（流程条放到讲该流程的那页）。
-- **多列长文字**：四列横排文字长 → 改通栏纵排（每行 = 大编号 + 粗标题 + 灰色小注）。
-- **overfull hbox 逐条清零**：overfull pt 数 ≈ 溢出 mm × 2.85，直接量出要收多少；收窄一侧后检查另一侧是否超高（字号 \small→\footnotesize、行距 1mm→0.6mm）。
-- **数学页必须与论文逐项核对**：曾抓出悬空成本系数（`+ c^fold/unfold` 无求和项，数学上不成立）；
-  补整型约束 x,w,r,y∈Z₊；符号密集页加一行灰色图例；约束分块打小标签（demand-side / capacity-side coupling、boundary condition）。
-- **"改了没变"两种病因**：①编辑没真正落盘/没重编译——说"改好了"之前必须确认 PDF mtime 已更新；②PDF 阅读器缓存——提示用户重新打开文件。
-- 章节眉注：内容页大标题上方加 `SECTION N: <转场页标题>` 橙色小字眉注，导航感好。
+- **\includegraphics size changes do nothing**: under `keepaspectratio`, first
+  diagnose whether width or height is the binding constraint — check the
+  figure's own whitespace with `pdfcrop`; if the column width is binding,
+  raising `height` does nothing — widen the `column` instead (real case:
+  0.46→0.54\textwidth grew the figure 37%).
+- **Callout overflow / edge-hugging**: callout text width + 2× inner padding
+  must be < the containing column width (real case: a 78mm block in a 68mm
+  column, flush against the page edge).
+- **No color blocks on text-only pages**: use plain paragraphs with small
+  orange subheads; a callout overpowers the figure beside it.
+- **Text+figure page convention**: text left, figure right (natural reading
+  order); elements follow semantics (a process strip goes on the page that
+  discusses that process).
+- **Multi-column long text**: four side-by-side columns of long text → switch
+  to a full-width vertical list (each row = big number + bold head + gray
+  subnote).
+- **Drive overfull hboxes to zero**: overfull pt ≈ overflow mm × 2.85 —
+  measure exactly how much to trim; after narrowing one side, check the other
+  for new vertical overflow (font \small→\footnotesize, leading 1mm→0.6mm).
+- **Check math pages against the paper item by item**: once caught a dangling
+  cost term (`+ c^fold/unfold` with no summation — mathematically invalid);
+  added integrality constraints x,w,r,y∈Z₊; added a gray legend line on
+  symbol-dense pages; tagged constraint blocks with small labels (demand-side /
+  capacity-side coupling, boundary condition).
+- **"Changed it, nothing happened" — two causes**: ① the edit never landed or
+  never recompiled — before saying "fixed", confirm the PDF mtime advanced;
+  ② PDF viewer cache — ask the user to reopen the file.
+- Section eyebrow: above the content-page title, add a small orange eyebrow
+  `SECTION N: <divider title>` — good wayfinding.
 
-## 4. 视觉验证循环（每次改版的标准动作）
+## 4. Visual verification loop (standard practice after every revision)
 
-1. `latexmk -pdfxe presentation_beamer.tex`（或 xelatex ×3）编译至 0 error。
-2. `pdftoppm -png -r 120` 渲染全部页；运行 `scripts/contact_sheet.py` 拼成 contact sheet。
-3. 用当前环境的读图能力（如 Read 工具直接读 PNG）先扫 contact sheet（只要求报问题：
-   溢出/截断/压条带/空页），再对最密几页（数学、表格、图页）读原图全分辨率逐页复核。
-   - 读图报错且该页 PNG 刚被脚本刷新 = 文件尚在重写，等刷新完成重读即可。
-4. 结论给量化证据（像素测量、MSE 对比背景一致性），不凭印象说"好了"。
+1. `latexmk -pdfxe presentation_beamer.tex` (or xelatex ×3) — compile to
+   0 errors.
+2. `pdftoppm -png -r 120` render all pages; run `scripts/contact_sheet.py` to
+   build a contact sheet.
+3. Inspect with your image-reading capability (e.g. the Read tool directly on
+   PNGs): scan the contact sheet first (report only problems: overflow /
+   truncation / band collisions / blank pages), then re-check the densest
+   pages (math, tables, figures) at full resolution, page by page.
+   - If reading an image errors right after a script refreshed that PNG = the
+     file was mid-rewrite; wait for the write to finish and read again.
+4. Quantify conclusions (pixel measurements, MSE against the background for
+   consistency); never declare "it's fine" from impression.
 
-## 5. 讲稿方法论（配合演讲时长）
+## 5. Talk-script methodology (matched to speaking time)
 
-- **用户定则：PPT 展示全一些，讲稿少讲**——精简讲稿时不动 PPT。
-- 时间预算：15 分钟档 ≈ **1900 口语词 ≈ 13.25 min**（留 1.75 min 缓冲）；
-  讲稿内嵌累计时间检查点（如 [04:00] [07:00] [09:30] [12:00] [13:15]），逐节核对。
-- 精简原则：
-  - 幻灯片上已展示的细节不念（口头只说"约四分之一个箱位，精确值见表"）；
-  - Q&A 防御点保留口播（如"租赁无上限 ⇒ 模型恒有可行解"能当场挡住可行性质疑）；
-  - 上一页刚说过的内容不重复列举；
-  - 破折号要给读法（— includes …）；数字按口语写（62 percent）。
-- 讲稿结构：逐页 `[Slide: 标题]` 标记对齐 + 头部全局节奏表 + 关键数字表 + Q&A 预案；
-  骨架见 `assets/speech-template.md`，整份复制填写。
-- **术语三方一致**（论文 / 幻灯片 / 讲稿同一次全局替换）；论文在审稿周期内时不能单方面改词，
-  记入修回待办等同步替换。
-- 叙事打磨：否定式对比（"not computation, but cognitive"）开场太冲——改为递进埋线，最后点题；deck 与讲稿同步改（一次 3+5 处）。
+- **User's standing rule: slides show more, the script says less** — when
+  trimming the script, never touch the slides.
+- Time budget: a 15-minute slot ≈ **1900 spoken words ≈ 13.25 min** (leaves a
+  1.75 min buffer); embed cumulative time checkpoints in the script (e.g.
+  [04:00] [07:00] [09:30] [12:00] [13:15]) and verify section by section.
+- Trimming principles:
+  - Don't read details already shown on the slide (say "about a quarter of the
+    slots — exact values in the table");
+  - Keep Q&A defense points in the spoken script (e.g. "leases are uncapped ⇒
+    the model always has a feasible solution" pre-blocks feasibility attacks);
+  - Don't re-list what the previous slide just said;
+  - Give dashes a spoken reading ("— includes …"); write numbers as spoken
+    ("62 percent").
+- Script structure: per-page `[Slide: title]` markers + a global pacing table
+  at the top + a key-numbers table + Q&A prep; skeleton in
+  `assets/speech-template.md` — copy in full and fill.
+- **Three-way terminology consistency** (paper / slides / script changed in one
+  global pass); while the paper is under review you cannot unilaterally reword
+  — log it as a revision to-do and sync the replacement later.
+- Narrative polish: a negation-contrast opening ("not computation, but
+  cognitive") is too abrupt — switch to progressive foreshadowing that lands
+  the point at the end; change deck and script together (one pass touched
+  3 + 5 spots).
 
-## 6. 交付包装与现场预案
+## 6. Delivery packaging and contingencies
 
-先判断是否需要包装：**会议无官方模板、也不需要演讲者备注时，直接放映 Beamer PDF 即是交付**，
-以下包装步骤仅在"要求官方模板 / 需要 pptx 备注栏"时执行。
+First decide whether packaging is needed at all: **no official template and no
+speaker notes needed → presenting the Beamer PDF is the delivery**. The
+packaging below runs only when "official template mandated / pptx notes pane
+needed".
 
-### 6.1 合规 pptx 包装（PDF→图片→官方模板）
+### 6.1 Compliant pptx packaging (PDF→images→official template)
+
 ```bash
-pdftoppm -png -r 300 presentation.pdf /tmp/slide-png       # 300dpi，1890×1063
-python scripts/package_pptx.py 官方模板.pptx /tmp/slide-png -o packaged.pptx
+pdftoppm -png -r 300 presentation.pdf /tmp/slide-png       # 300 dpi, 1890×1063
+python scripts/package_pptx.py official-template.pptx /tmp/slide-png -o packaged.pptx
 ```
-脚本固化了全套流程与红线：`~$` 锁文件检查（PowerPoint 正开着即拒绝写入）→ 自动备份原模板
-→ 删模板示例页 → 选占位符最少的空白版式 → 逐页贴整幅图片于 (0,0) 满幅 → 保存输出
-→ 重开验证页数与满幅位置；出图目录混入杂图（如 contact sheet）会因尺寸不齐被拒。
-- 宽高比两边必须同为 16:9 才无变形（脚本会校验）。
-- 此形态文字不可再编辑——只作为定稿交付，内容修改回到 Beamer 源。
+The script codifies the full procedure and the red lines: `~$` lock-file check
+(refuses to write while PowerPoint has the file open) → automatic backup of the
+template → delete the template's sample slides → pick the layout with the
+fewest placeholders → paste each full-page image at (0,0) full-bleed → save →
+reopen and verify page count and full-bleed placement; a render directory
+contaminated with non-page images (e.g. the contact sheet) is rejected on size
+mismatch.
+- Both sides must be 16:9 or the pasted images distort (the script checks).
+- In this form text is no longer editable — final delivery only; content
+  changes go back to the Beamer source.
 
-### 6.2 备注
-- 讲稿按 `[Slide: ]` 切分逐页贴入 pptx 备注栏；演讲者视图（Presenter View）一页一屏显示备注+计时。
-- 演讲者视图需要**扩展显示**（非镜像）；只有镜像时的预案：关闭"使用演示者视图"+ 打印
-  "备注页"版式做纸质提词 + 手机震动闹钟对准讲稿检查点。
-- 公用电脑镜像风险：备注只存在演示者视图里，关掉该选项后观众绝对看不到。
-- **别用 PDF 放映**——PDF 没有备注，这正是最终包装回 pptx 的原因。
-- 给观众打印讲义时要"每页幻灯片"版式，别让工作人员选"备注页"（会把讲稿印出去）。
+### 6.2 Notes
 
-## 7. 协作红线
+- Split the script on `[Slide: ]` and paste page by page into the pptx notes
+  pane; Presenter View shows notes + timer, one page per screen.
+- Presenter View needs an **extended display** (not mirrored);
+  mirrored-only contingency: turn off "Use Presenter View" + print the
+  "Notes Pages" layout as paper prompts + a vibrating phone alarm aligned to
+  the script checkpoints.
+- Shared-computer mirror risk: notes exist only in Presenter View; with the
+  option off, the audience cannot see them.
+- **Never present from the PDF** — PDF has no notes; that is exactly why the
+  final packaging goes back to pptx.
+- Printing handouts for the audience: the "Slides" layout — don't let staff
+  pick "Notes Pages" (it would print your script).
 
-- **不得单方面删除用户点名的约束物**：为解决重叠曾把模板背景改成纯白，用户震怒
-  （"你把模板背景删了？？？"）。正确做法：精确定位冲突高度并预留，或先问。
-- 说"修好了"之前：改动落盘 + 重编译 + 确认输出文件 mtime + 渲染验证，四步缺一不可。
-- 平行双格式是时间黑洞：中期砍、末期合。
+## 7. Collaboration red lines
 
-## 8. 可复用资产（内置 assets/，按需加载）
+- **Never unilaterally delete a constraint the user named**: to fix an
+  overlap, the template background was once replaced with plain white; the
+  user was furious ("You deleted the template background???"). The correct
+  move: locate the conflicting height precisely and reserve it, or ask first.
+- Before saying "fixed": edit landed + recompiled + output mtime confirmed +
+  render verified — all four, no exceptions.
+- Parallel dual formats are a time sink: cut them mid-project, merge at the
+  end.
 
-两套模板对应两条路线，开工时按场合**整份复制对应文件**再改内容，不要从零写：
+## 8. Reusable assets (bundled under assets/, load on demand)
 
-- **学术会议路线** `assets/conference-beamer/`：conference.tex（实战 deck 泛化的完整骨架）+
-  figs/beamer_bg/ 背景投放点 + README——
-  preamble 设计系统（五处色值、frametitle 眉注、footline 条带避让、`\divider`/`\callout` 宏）
-  + 17 类帧型共 18 页（数学页一类占两页：封面/目录/转场/要点/三卡片/通栏纵排/左文右图/
-  示意图/表格/数学×2/总览/路由表/结果大数字/对比结果/构成启示/结论/封底），占位内容即填写说明；
-  自建模式零外部资产直接可编译，官方模板模式改 `\BgCover`/`\BgContent`/`\BgClosing` 三个宏。
-- **学位开题/答辩/组会路线** `assets/defense-beamer/`：beamerthemeDefense.sty +
-  defense.tex/.pdf（脱敏骨架）+ README（详见 §2.4）。
-- 官方模板的提取流程、三行接线、条带避让参数与封底印字避坑，见 conference-beamer/README
-  （背景图与官方 pptx 属会议方版权物，不入仓库，自备）。
-- **讲稿骨架** `assets/speech-template.md`：节奏表 + 关键数字表 + `[Slide:]` 逐页标记 +
-  累计检查点 + Q&A 预案库，配合 §5 方法论使用。
-- **验证与交付脚本** `scripts/`：`contact_sheet.py`（§4 第 2 步拼总览图）与
-  `package_pptx.py`（§6.1 全流程：锁文件检查 → 备份 → 删示例页 → 空白版式 → 满幅贴图 → 复核），
-  依赖 Pillow / python-pptx，临时环境用 `uv run --with` 即装即用。
-- 实战实例（模板的来源与填好的参照）：填好的会议 deck 与开题 deck 原稿均留在
-  各自来源项目中，不入仓库；找回路径见 assets 对应包 README 的「来源」节。
-- 最快复用路径：会议有官方模板 → 按 conference-beamer README 提取三张背景 + 三行接线 + 换五处色值；
-  无模板 → 默认自建模式直接开写；开题/答辩/组会 → 复制 defense-beamer、改校名宏直接填内容。
-  之后重写 frames 内容 → 按 §4 循环验证 → 按 §6 交付。
+Two templates for two routes; when starting a deck, **copy the matching files
+in full** and edit content — never write from scratch:
+
+- **Conference route** `assets/conference-beamer/`: conference.tex (complete
+  skeleton generalized from the battle-tested deck) + figs/beamer_bg/
+  background drop-in point + README —
+  preamble design system (five color values, frametitle eyebrow, footline band
+  avoidance, `\divider`/`\callout` macros)
+  + 17 frame archetypes across 18 pages (the math archetype spans two pages:
+  cover / TOC / divider / bullets / three cards / full-width vertical list /
+  text+figure / diagram / table / math×2 / overview / routing table /
+  big-number results / comparative results / takeaways / conclusions /
+  closing), placeholder content doubles as filling instructions;
+  self-built mode compiles with zero external assets; official-template mode
+  swaps the three macros `\BgCover`/`\BgContent`/`\BgClosing`.
+- **Proposal/defense/group-meeting route** `assets/defense-beamer/`:
+  beamerthemeDefense.sty + defense.tex/.pdf (sanitized skeleton) + README
+  (details in §2.4).
+- Official-template extraction procedure, three-line wiring, band-avoidance
+  parameters, and the closing-page printed-text trap: see the
+  conference-beamer README (backgrounds and the official pptx are the
+  conference's copyrighted material — keep them out of the repo, supply your
+  own).
+- **Talk-script skeleton** `assets/speech-template.md`: pacing table +
+  key-numbers table + `[Slide:]` per-page markers + cumulative checkpoints +
+  Q&A prep bank; use with §5.
+- **Verification & delivery scripts** `scripts/`: `contact_sheet.py` (§4 step
+  2, contact sheet) and `package_pptx.py` (§6.1 full flow: lock-file check →
+  backup → delete samples → blank layout → full-bleed paste → verify);
+  depend on Pillow / python-pptx — run ad hoc via `uv run --with`.
+- Filled-in decks (the templates' sources and reference instances) stay in
+  their source projects, off-repo; recovery pointers in each asset pack
+  README's "Provenance" section.
+- Fastest reuse path: official template → follow the conference-beamer README
+  (extract three backgrounds + three-line wiring + five color values);
+  no template → self-built mode, start writing directly; proposal/defense/
+  group meeting → copy defense-beamer, set the banner macros, fill in content.
+  Then rewrite frame content → verify via the §4 loop → deliver via §6.

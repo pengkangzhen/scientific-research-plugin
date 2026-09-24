@@ -1,93 +1,101 @@
-# 演讲讲稿 — &lt;会议名 年份&gt;
+# Talk Script — <Conference Year>
 
-> 用法：整份复制为 `presentation_speech.md`，替换所有 `<>` 占位与斜体说明。
-> 配套 deck：`presentation_beamer.tex`（本技能 assets）。
-> 铁律（SKILL §5）：**幻灯片上已展示的细节不念**；上一页说过的内容不重复；
-> Q&A 防御点保留口播；数字按口语写（62 percent，7.07 million yuan）。
+> Usage: copy this whole file as `presentation_speech.md`; replace all `<>`
+> placeholders and italic instructions.
+> Companion deck: `presentation_beamer.tex` (this skill's assets).
+> Iron rules (SKILL §5): **don't read details already shown on the slides**;
+> don't repeat what the previous slide said; keep Q&A defense points in the
+> spoken script; write numbers as spoken (62 percent, 7.07 million yuan).
 
-**Paper:** *<论文标题>*
-**Venue:** <会议全称，Month Day--Day, Year, City, Country>
-**Target duration:** <N>-minute slot；讲稿目标 <M> min ≈ <W> 口语词
-（经验值：15 min 档 ≈ 1900 词 ≈ 13.25 min，留 1.75 min 缓冲）
-**Presenter:** <姓名（单位）>
+**Paper:** *<paper title>*
+**Venue:** <full conference name, Month Day–Day, Year, City, Country>
+**Target duration:** <N>-minute slot; script target <M> min ≈ <W> spoken words
+(rule of thumb: 15-min slot ≈ 1900 words ≈ 13.25 min, leaving a 1.75 min buffer)
+**Presenter:** <name (affiliation)>
 
-## 全局节奏表（头部检查点，逐节核对用）
+## Global pacing table (top-of-file checkpoints, verify section by section)
 
-| 段落 | 幻灯片 | 时间预算 | 累计检查点 |
-|------|--------|----------|-----------|
+| Block | Slides | Time budget | Cumulative checkpoint |
+|-------|--------|-------------|------------------------|
 | Opening + Outline | 1–2   | 0:45 | **[00:45]** |
 | Section 1         | 3–8   | 3:15 | **[04:00]** |
 | Section 2         | 9–13  | 3:00 | **[07:00]** |
 | Section 3         | 14–18 | 2:30 | **[09:30]** |
 | Section 4         | 19–23 | 2:30 | **[12:00]** |
-| Conclusion + 封底 | 24–25 | 1:15 | **[13:15]** |
+| Conclusion + Closing | 24–25 | 1:15 | **[13:15]** |
 
-## 关键数字表（必须说准的数字，口语读法预先写死）
+## Key-numbers table (numbers that must be said exactly; spoken form fixed in advance)
 
-| 数字 | 口语读法 | 出处帧 |
-|------|----------|--------|
+| Number | Spoken form | Source frame |
+|--------|-------------|--------------|
 | <7,065,368.5> | *seven point zero six five million yuan* | <Result 1> |
 | <+27.9\%>     | *twenty-seven point nine percent*      | <Result 2> |
 
 ---
 
-> 正文约定：**粗体** = 重读词；斜体 = 舞台指示（transition、动作）；`[Slide: ]`
-> 标题与 deck 帧标题**逐字一致**；每节末尾放累计时间检查点。
+> Body conventions: **bold** = stressed word; italic = stage direction
+> (transition, action); `[Slide: ]` titles match the deck frame titles
+> **verbatim**; each section ends with a cumulative time checkpoint.
 
 ---
 
 ## [Cover slide] — Opening
 
-**Good morning, everyone.** <自报家门 + 论文全称逐字稿：*"My name is … from … I'm here to share our recent work, titled: '…'"*>
+**Good morning, everyone.** <Introduce yourself + verbatim paper title:
+*"My name is … from … I'm here to share our recent work, titled: '…'"*>
 
 **[00:45]**
 
 ---
 
-## Section 1 — <节标题>
+## Section 1 — <section title>
 
-*[Divider 01]* — *transition: "<一句话转场，承接上一节、预告本节>"*
+*[Divider 01]* — *transition: "<one sentence bridging from the previous
+section and announcing this one>"*
 
-**[Slide: <帧标题，与 deck 逐字一致>]**
+**[Slide: <frame title, verbatim match with the deck>]**
 
-<讲稿正文。一段一个语义；图上的轴、表里的数不逐项念，只说结论与出处
-（*"about a quarter of the slots — exact values in the table"*）。>
+<Script body. One paragraph per idea; don't read out every axis tick or table
+cell — give the takeaway and where it lives
+(*"about a quarter of the slots — exact values in the table"*).>
 
 **[04:00]**
 
 ---
 
-## Section 2 — <节标题>
+## Section 2 — <section title>
 
-*[Divider 02]* — *transition: "<一句话转场>"*
+*[Divider 02]* — *transition: "<one-sentence transition>"*
 
-**[Slide: <帧标题>]**
+**[Slide: <frame title>]**
 
-<讲稿正文。数学页只讲结构与直觉（"one line per node class"），不逐符号读。>
+<Script body. On math pages, explain structure and intuition only
+("one line per node class"); don't read symbols one by one.>
 
 **[07:00]**
 
 ---
 
-## Section 3 — <节标题>
+## Section 3 — <section title>
 
-*[Divider 03]* — *transition: "<一句话转场>"*
+*[Divider 03]* — *transition: "<one-sentence transition>"*
 
-**[Slide: <帧标题>]**
+**[Slide: <frame title>]**
 
-<讲稿正文。>
+<Script body.>
 
 **[09:30]**
 
 ---
 
-## Section 4 — <节标题>
+## Section 4 — <section title>
 
-*[Divider 04]* — *transition: "<一句话转场>"*
+*[Divider 04]* — *transition: "<one-sentence transition>"*
 
-**[Slide: <帧标题>]**
+**[Slide: <frame title>]**
 
-<讲稿正文。结果页先给 headline number，再给证据链。>
+<Script body. On results pages: headline number first, then the evidence
+chain.>
 
 **[12:00]**
 
@@ -97,20 +105,22 @@
 
 **[Slide: Conclusion \& future work]**
 
-<收束三段式：What we did → 定位一句话 → Future work。>
+<Three-beat close: what we did → one-line positioning → future work.>
 
 ---
 
 ## [Closing slide] — Thank you
 
-<致谢一句话 + 邀请提问。>
+<One line of thanks + invite questions.>
 
 ---
 
-## Q&A 预案库（每条 = 可能的问题 + 一句话防御答案）
+## Q&A prep bank (each entry = likely question + one-sentence defensive answer)
 
-- *"<最尖锐的可行性问题>"* — <答案；能当场挡掉质疑的那句必须保留口播>。
-- *"<与已有方法的区别>"* — <答案>。
-- *"<局限与推广>"* — <答案；主动承认边界比被动挨问好>。
-- *"<结果对关键假设/组件的敏感性>"* — <答案>。
-- *"<为什么不用 XX 技术路线>"* — <答案>。
+- *"<The sharpest feasibility question>"* — <answer; the sentence that blocks
+  the attack on the spot must stay in the spoken script>.
+- *"<Difference from existing approaches>"* — <answer>.
+- *"<Limitations and generalization>"* — <answer; conceding the boundary
+  proactively beats being cornered by it>.
+- *"<Sensitivity of results to a key assumption/component>"* — <answer>.
+- *"<Why not approach XX>"* — <answer>.

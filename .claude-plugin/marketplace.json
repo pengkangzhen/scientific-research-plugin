@@ -6,7 +6,7 @@
     {
       "name": "scientific-research-plugin",
       "source": "./",
-      "version": "0.5.0",
+      "version": "0.6.0",
       "description": "A full-lifecycle research pipeline for OR & ML, 10 skills + 1 subagent take a project from prior-art survey to the conference talk — Zotero literature intake, structured reading notes, publication-grade figures, LaTeX polishing, noun-term jargon auditing, citation verification against official APIs, three-blind adversarial review, and point-by-point rebuttal. The survey-first discipline applies to any non-trivial task, not just papers.",
       "description_i18n": {
         "zh-CN": "面向运筹学与机器学习的全流程科研流水线：10 个技能 + 1 个子代理，把一个项目从先例调研一路带到会议汇报 PPT——Zotero 文献入库、结构化阅读笔记、论文出图、LaTeX 润色、名词术语黑话审计、官方 API 引文核查、三盲对抗审稿、逐条审稿回复。先调研后动手的纪律适用于任何非琐碎任务，不止论文。"
