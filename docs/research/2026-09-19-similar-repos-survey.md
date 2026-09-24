@@ -73,7 +73,7 @@ ICML 2025（Claims-and-Evidence 表单）、Transportation Science 2025（唯一
 
 **采纳**（scientific-review 496→660 行，十项机制）：①Claims-and-Evidence 映射（ICML/ICLR）②数学/实证双轨（INFORMS OR）③实验红线清单（本地改编）④致命缺陷四条硬判定+总分封顶（本地 DA agent + lyra81604）⑤Reviewer 七连问（本地 DA 裁剪）⑥辩护评分+反谄媚三规则（本地）⑦锚定量表+Confidence 绑定验证深度（NeurIPS + AI-Scientist）⑧审稿纪律 10 条（TRSC 2025 + ICLR + AWT 清洁室）⑨排序标定「100 篇进前 10 吗」（AgentReview + Thelwall）⑩自检 6 问+Issue 直通 rebuttal（本地）。
 
-**否决**（能力边界）：7 人评审团/calibration 模式（归 academic-paper-reviewer 职责）；SSoT 种子+OS 并行脚本（AlexWortega，单文件承载不了）；BibTeX 逐条核验（OpenJudge，转 zotero-paper-fetch）；清洁室硬性子代理化（AWT，降级为软规则）。
+**否决**（能力边界）：7 人评审团/calibration 模式（归 academic-paper-reviewer 职责）；SSoT 种子+OS 并行脚本（AlexWortega，单文件承载不了）；BibTeX 逐条核验（OpenJudge，转 zotero-paper-fetching）；清洁室硬性子代理化（AWT，降级为软规则）。
 
 **后续候选**：ARIS 三道硬门、Rebuttal-Audit 三查——rebuttal 技能升级素材。
 

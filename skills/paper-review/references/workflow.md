@@ -52,4 +52,4 @@ Overlapping axes are fine — overlap is evidence, and duplication must survive 
 |---|---|
 | Language, grammar, flow polish | `paper-polishing` (this skill touches language only where it obscures meaning) |
 | Point-by-point response writing | `rebuttal` (consumes this skill's C/M/N list directly) |
-| Novelty claims needing literature verification | fetch and verify via `zotero-paper-fetch`; this skill does not fabricate citations |
+| Novelty claims needing literature verification | fetch and verify via `zotero-paper-fetching`; this skill does not fabricate citations |
