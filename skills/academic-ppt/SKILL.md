@@ -5,7 +5,7 @@ description: >
   LaTeX Beamer 路线 + 视觉设计系统（有官方模板则提取背景复用，无模板则自建色板/版式）+
   数学公式与论文原图复用 + 讲稿撰写与时长控制 + PDF→图片→官方模板交付包装 + 演讲者备注与现场预案。
   内置两套可复用模板按需加载：学术会议路线 beamer-deck-template（IMHFC 2026 实战沉淀）、
-  学位开题/答辩/组会路线 DMU Beamer 主题包（校方 pptx 复刻）。
+  学位开题/答辩/组会路线 defense-beamer 通用主题包（横幅 + 进度条 + 轻量组件）。
   触发词："会议PPT"、"演讲PPT"、"做幻灯片"、"把论文做成PPT"、"presentation"、"slides"、
   "Beamer"、"会议模板"、"讲稿"、"演讲稿"、"presentation speech"、"演讲者备注"、"贴回模板"、
   "开题报告"、"答辩PPT"、"组会汇报"、"组会pre"、"DMU主题"、"开题Beamer"。
@@ -13,7 +13,7 @@ description: >
   presentation slides, build a Beamer deck, fit slides into the official template,
   write a time-budgeted talk script, or package a slide PDF back into
   a pptx with speaker notes — also for thesis proposal/defense/group-meeting decks
-  (DMU theme bundled) — even if they never say "PPT" (e.g. "下周要用这篇论文做口头报告",
+  (defense theme bundled) — even if they never say "PPT" (e.g. "下周要用这篇论文做口头报告",
   "15 分钟的 talk 怎么准备").
 license: MIT
 ---
@@ -29,7 +29,7 @@ license: MIT
 1. 收集输入：论文源文件（manuscript.tex）、会议官方模板（若有）、时长档位、语言（通常英文）。
 2. 按 §1 定路线（结论优先，勿从零调研工具）。
 3. Beamer 路线：§2 确立视觉设计系统——**整份复制 §8 对应模板再改内容**（会议报告 →
-   beamer-deck-template.tex；DMU 开题/答辩/组会 → dmu-beamer/defense.tex；有官方 pptx
+   beamer-deck-template.tex；开题/答辩/组会 → defense-beamer/defense.tex；有官方 pptx
    模板则提取背景替换）→ 写 tex → §4 验证循环 → §3 排版修法随改随查。
 4. 讲稿：§5 配合时长撰写/精简，术语与幻灯片、论文三方一致。
 5. 交付：§6 按会议要求包装（合规 pptx / 备注栏 / 现场预案）。
@@ -51,7 +51,7 @@ license: MIT
 
 - 不平行维护双格式：中期只留 Beamer，最后一步才包装回 pptx。
 - 若必须原生 pptx 且要保真渲染验证：用 AppleScript（osascript）驱动真实 PowerPoint 导出 PDF/PNG 核对，不信任何 HTML 渲染器。
-- 学位开题 / 答辩 / 组会（DMU 场合）：直接用内置 dmu-beamer 主题（§2.4），不走 pptx 提取。
+- 学位开题 / 答辩 / 组会：直接用内置 defense-beamer 主题（§2.4），不走 pptx 提取。
 
 ## 2. 视觉设计系统：先确立，再写内容帧
 
@@ -73,7 +73,8 @@ license: MIT
 - 条带避让最终解法：footline 精确预留条带高度，正文永不进入条带区；不是删背景。
 - 转场页复用 bg_cover 照片时，按照片亮度调文字配色（亮照片上标题白→navy）。
 - 色板从模板主题色提取进 `\definecolor`（IMHFC 实例）：navy `0E2841`、orange `E97132`、teal `156082`、gray `5A6B7B`、light `F2F6F9`。
-- IMHFC 系会议**不必重走提取流程**：提取成品已入库 `assets/imhfc-beamer/`（三张背景 + 官方 pptx 原件 + 接线说明），复制 `figs/` 后三行填入 `\Bg*` 宏即成官方模式。
+- 官方模板的提取流程、三行接线与条带避让参数已固化为 `assets/conference-beamer/`（§8）；
+  背景图等会议品牌资产不入仓库，按其 README 自备。
 
 ### 2.2 无官方模板 → 自建设计系统
 
@@ -90,14 +91,15 @@ license: MIT
 - frametitle 自定义模板：主色粗体大标题 + 强调色细线（如 13mm×1.1pt），眉注见 §3。
 - `\divider`（分隔页：大编号 + 标题）与 `\callout`（强调卡片）已沉淀为模板内置宏（beamer-deck-template.tex），宽度规则见 §3。
 
-### 2.4 内置现成主题：dmu-beamer（学位开题 / 答辩 / 组会）
+### 2.4 内置现成主题：defense-beamer（学位开题 / 答辩 / 组会）
 
-- `assets/dmu-beamer/`：`beamerthemeDMU.sty`（由校方开题 pptx 复刻：顶部横幅校名/院名字标 +
-  底部章节进度条 + 目录/转场页/封面）+ `defense.tex`/`defense.pdf`（脱敏开题答辩骨架，
-  25 页全帧型，占位文本即填写说明；帧型速查见其 README）+ `dmu-emblem.png` + `README.md`。
-- 用法：sty 与校徽放文稿同目录，`\usetheme{DMU}`；四个内容组件覆盖高频版式——
-  `dmupoint`（左橙竖条要点分组）、`dmualert`（不足/风险警示条）、`dmucard`（多列并排卡片）、
-  `dmuband`（深蓝底白字结论横幅）。
+- `assets/defense-beamer/`：`beamerthemeDefense.sty`（通用答辩主题：顶部横幅可选校徽 +
+  校名/院名字标宏 + 底部章节进度条 + 目录/转场页/封面）+ `defense.tex`/`defense.pdf`
+  （脱敏开题答辩骨架，25 页全帧型，占位文本即填写说明；帧型速查见其 README）+ `README.md`。
+- 用法：sty 放文稿同目录，`\usetheme{Defense}`，`\renewcommand` 改横幅校名/院名四宏；
+  校徽自备：`campus-emblem.png` 放同目录即自动入横幅，不放则纯文字字标。
+  四个内容组件覆盖高频版式——`point`（左橙竖条要点分组）、`warn`（不足/风险警示条）、
+  `card`（多列并排卡片）、`band`（深蓝底白字结论横幅）。
 - 字体已全量 `\IfFontExistsTF` 守护：macOS 出原版效果（鸿蒙黑体 + 行楷 + Zapfino 花体），
   缺字体的平台（Windows/WSL/Overleaf）自动回退仍可编译。
 
@@ -148,7 +150,7 @@ license: MIT
 
 ### 6.1 合规 pptx 包装（PDF→图片→官方模板）
 ```bash
-pdftoppm -png -r 300 presentation.pdf /tmp/imhfc-slide-png   # 300dpi，1890×1063
+pdftoppm -png -r 300 presentation.pdf /tmp/slide-png       # 300dpi，1890×1063
 ```
 再用 python-pptx：备份原模板 → 从备份打开 → 删模板示例页 → 选空白版式（占位符最少）→
 逐页贴整幅图片于 (0,0) 满幅 → 覆盖保存 → 重开验证页数与图片位置。
@@ -180,11 +182,11 @@ pdftoppm -png -r 300 presentation.pdf /tmp/imhfc-slide-png   # 300dpi，1890×10
   + 17 类帧型（封面/目录/转场/要点/三卡片/通栏纵排/左文右图/示意图/表格/数学×2/总览/
   路由表/结果大数字/对比结果/构成启示/结论/封底），占位内容即填写说明；
   自建模式零外部资产直接可编译，官方模板模式改 `\BgCover`/`\BgContent`/`\BgClosing` 三个宏。
-- **学位开题/答辩/组会路线** `assets/dmu-beamer/`：beamerthemeDMU.sty + defense.tex/.pdf（脱敏骨架）+
-  dmu-emblem.png + README（详见 §2.4）。
-- **IMHFC 系会议** `assets/imhfc-beamer/`：官方模板提取成品——三张整页背景（figs/beamer_bg/）+
-  官方 pptx 原件（§6.1 包装底版）+ README；与 beamer-deck-template.tex 三行接线即成官方模式，
-  色板即模板默认五色。
+- **学位开题/答辩/组会路线** `assets/defense-beamer/`：beamerthemeDefense.sty +
+  defense.tex/.pdf（脱敏骨架）+ README（详见 §2.4）。
+- **会议汇报接线包** `assets/conference-beamer/`：官方模板提取流程、`figs/beamer_bg/`
+  背景投放点、与 beamer-deck-template 的三行接线、条带避让参数与封底印字避坑
+  （背景图与官方 pptx 属会议方版权物，不入仓库，自备）。
 - **讲稿骨架** `assets/speech-template.md`：节奏表 + 关键数字表 + `[Slide:]` 逐页标记 +
   累计检查点 + Q&A 预案库，配合 §5 方法论使用。
 - 实战实例（模板的来源与填好的参照）：
@@ -193,7 +195,6 @@ pdftoppm -png -r 300 presentation.pdf /tmp/imhfc-slide-png   # 300dpi，1890×10
     figs/beamer_bg/ 三张提取背景）。
   - 开题实战 deck（未脱敏，骨架的脱敏来源）：Mac
     `~/Documents/code/sc_resilience_geo/docs/开题报告/beamer-dmu/defense.tex`。
-- 最快复用路径：IMHFC 系会议 → 复制 imhfc-beamer 的 `figs/` + 三行接线；
-  其他会议有官方模板 → 解压取三张背景填入 `\Bg*` 宏 + 换五处色值；
-  无模板 → 默认自建模式直接开写；DMU 场合 → 复制 dmu-beamer 直接填内容。
+- 最快复用路径：会议有官方模板 → 按 conference-beamer README 提取三张背景 + 三行接线 + 换五处色值；
+  无模板 → 默认自建模式直接开写；开题/答辩/组会 → 复制 defense-beamer、改校名宏直接填内容。
   之后重写 frames 内容 → 按 §4 循环验证 → 按 §6 交付。

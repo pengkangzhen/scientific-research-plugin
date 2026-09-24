@@ -1,21 +1,21 @@
 % =========================================================================
-% defense.tex — 学位论文开题答辩骨架（基于 beamerthemeDMU 模板，脱敏版）
+% defense.tex — 学位论文开题答辩骨架（基于 beamerthemeDefense 通用主题，脱敏骨架）
 % -------------------------------------------------------------------------
 % 25 页全帧型骨架：帧型结构、组件几何与实战 deck 完全一致，内容为占位文本，
 % 占位即填写说明。实战原版（真实题目/姓名/图片）在
-% Mac ~/Documents/code/sc_resilience_geo/docs/开题报告/beamer-dmu/defense.tex
+% Mac ~/Documents/code/sc_resilience_geo/docs/开题报告/beamer-dmu/defense.tex（实战原版，不入仓库）
 % 编译：latexmk -xelatex defense.tex（xelatex 跑两遍定位 tikz overlay）
 % =========================================================================
 \documentclass[aspectratio=169,11pt]{beamer}
 \usepackage{booktabs}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning,matrix}
-\usetheme{DMU}
+\usetheme{Defense}
 
 % 底部进度条条目名（与 \section 顺序一致；当前节深蓝高亮、其余灰色）
-\dmusetprogress{选题背景与意义,文献综述与研究不足,研究内容与创新点,研究难点,研究方案与工作计划}
+\DefenseSetProgress{选题背景与意义,文献综述与研究不足,研究内容与创新点,研究难点,研究方案与工作计划}
 % 转场页副述（英文逗号分隔，与 \section 顺序一致；不配置则无副述行）
-\dmusetsectiondesc{第一节一句话副述占位,第二节一句话副述占位,第三节一句话副述占位,第四节一句话副述占位,第五节一句话副述占位}
+\DefenseSetSectionDesc{第一节一句话副述占位,第二节一句话副述占位,第三节一句话副述占位,第四节一句话副述占位,第五节一句话副述占位}
 
 \title{论文题目（在此填写，过长可断行\\第二行占位）}
 \subtitle{学位论文开题报告}
@@ -38,36 +38,36 @@
 % 目录
 %---------------------------------------------------------------
 \begin{frame}{目录}
-  \begin{dmuoutline}
-    \dmuoutlineitem{选题背景与意义}{一句话副述：研究背景与量化目标（占位）。}
-    \dmuoutlineitem{文献综述与研究不足}{一句话副述：几条脉络与缺口（占位）。}
-    \dmuoutlineitem{研究内容与创新点}{一句话副述：几部分内容、几个关键问题（占位）。}
-    \dmuoutlineitem{研究难点}{一句话副述：难点与对策（占位）。}
-    \dmuoutlineitem{研究方案与工作计划}{一句话副述：方法体系、技术路线与进度（占位）。}
-  \end{dmuoutline}
+  \begin{outlinelist}
+    \outlineitem{选题背景与意义}{一句话副述：研究背景与量化目标（占位）。}
+    \outlineitem{文献综述与研究不足}{一句话副述：几条脉络与缺口（占位）。}
+    \outlineitem{研究内容与创新点}{一句话副述：几部分内容、几个关键问题（占位）。}
+    \outlineitem{研究难点}{一句话副述：难点与对策（占位）。}
+    \outlineitem{研究方案与工作计划}{一句话副述：方法体系、技术路线与进度（占位）。}
+  \end{outlinelist}
 \end{frame}
 
 %===============================================================
 \section{选题背景与意义}
 %===============================================================
 
-% 帧型：三卡片并列（columns[0.325] × 3 + dmucard）
+% 帧型：三卡片并列（columns[0.325] × 3 + card）
 \begin{frame}{选题背景：（占位）主标题写成一个论断}
   \small
   \begin{columns}[T]
     \begin{column}{0.325\textwidth}
-      \begin{dmucard}{背景维度一}
+      \begin{card}{背景维度一}
         \footnotesize
         背景维度一的一句话概括（占位）：
         \begin{itemize}
-          \item 关键事实或数据，数字用 \textcolor{dmuaccent}{强调色} 标出
+          \item 关键事实或数据，数字用 \textcolor{accent}{强调色} 标出
           \item 要点占位文本
           \item 要点占位文本
         \end{itemize}
-      \end{dmucard}
+      \end{card}
     \end{column}
     \begin{column}{0.325\textwidth}
-      \begin{dmucard}{背景维度二}
+      \begin{card}{背景维度二}
         \footnotesize
         背景维度二的一句话概括（占位）：
         \begin{itemize}
@@ -75,10 +75,10 @@
           \item 要点占位文本
           \item 要点占位文本
         \end{itemize}
-      \end{dmucard}
+      \end{card}
     \end{column}
     \begin{column}{0.325\textwidth}
-      \begin{dmucard}{背景维度三}
+      \begin{card}{背景维度三}
         \footnotesize
         背景维度三的一句话概括（占位）：
         \begin{itemize}
@@ -86,7 +86,7 @@
           \item 要点占位文本
           \item 要点占位文本
         \end{itemize}
-      \end{dmucard}
+      \end{card}
     \end{column}
   \end{columns}
 \end{frame}
@@ -96,33 +96,33 @@
   \footnotesize
   \begin{columns}[T]
     \begin{column}{0.325\textwidth}
-      \begin{dmucard}{研究目标}
+      \begin{card}{研究目标}
         \begin{enumerate}
           \item 目标一（占位）：构建/攻克/产出的动作句式
           \item 目标二（占位）：一句话点名技术难点
           \item 目标三（占位）：一句话点名产出形态
         \end{enumerate}
-      \end{dmucard}
+      \end{card}
     \end{column}
     \begin{column}{0.325\textwidth}
-      \begin{dmucard}{量化验证目标}
+      \begin{card}{量化验证目标}
         在（占位）情景下：
         \begin{itemize}
-          \item 指标一改善 \textcolor{dmuaccent}{20\%以上}
-          \item 指标二代价控制在 \textcolor{dmuaccent}{5\%以内}
+          \item 指标一改善 \textcolor{accent}{20\%以上}
+          \item 指标二代价控制在 \textcolor{accent}{5\%以内}
         \end{itemize}
         \vskip0.6mm
         一句话点出价值落点（占位）
-      \end{dmucard}
+      \end{card}
     \end{column}
     \begin{column}{0.325\textwidth}
-      \begin{dmucard}{应用价值}
+      \begin{card}{应用价值}
         \begin{itemize}
-          \item \textcolor{dmuaccent}{价值一}：一句话占位
-          \item \textcolor{dmuaccent}{价值二}：一句话占位
-          \item \textcolor{dmuaccent}{价值三}：一句话占位
+          \item \textcolor{accent}{价值一}：一句话占位
+          \item \textcolor{accent}{价值二}：一句话占位
+          \item \textcolor{accent}{价值三}：一句话占位
         \end{itemize}
-      \end{dmucard}
+      \end{card}
     \end{column}
   \end{columns}
 \end{frame}
@@ -131,66 +131,66 @@
 \section{文献综述与研究不足}
 %===============================================================
 
-% 帧型：综述页（dmupoint 分组要点 + dmualert 不足警示）
+% 帧型：综述页（point 分组要点 + warn 不足警示）
 \begin{frame}{文献综述Ⅰ：（占位）第一条脉络名}
   \footnotesize
-  \begin{dmupoint}{三类现行方法（分组标题占位）}
+  \begin{point}{三类现行方法（分组标题占位）}
     \begin{itemize}
-      \item \textcolor{dmuhead}{方法类一}：代表文献（年份）——一句话概括贡献与局限
-      \item \textcolor{dmuhead}{方法类二}：代表文献（年份）；代表文献（年份）
-      \item \textcolor{dmuhead}{方法类三}：代表文献（年份）——一句话概括
+      \item \textcolor{primary}{方法类一}：代表文献（年份）——一句话概括贡献与局限
+      \item \textcolor{primary}{方法类二}：代表文献（年份）；代表文献（年份）
+      \item \textcolor{primary}{方法类三}：代表文献（年份）——一句话概括
     \end{itemize}
-  \end{dmupoint}
-  \begin{dmualert}{不足}
+  \end{point}
+  \begin{warn}{不足}
     ① 不足一占位\quad ② 不足二占位\quad ③ 不足三占位
-  \end{dmualert}
+  \end{warn}
 \end{frame}
 
 \begin{frame}{文献综述Ⅱ：（占位）第二条脉络名}
   \footnotesize
-  \begin{dmupoint}{几条研究脉络（占位）}
+  \begin{point}{几条研究脉络（占位）}
     \begin{itemize}
-      \item \textcolor{dmuhead}{脉络一}：代表文献（年份）——一句话概括
-      \item \textcolor{dmuhead}{脉络二}：代表文献（年份）；代表文献（年份）
-      \item \textcolor{dmuhead}{脉络三}：代表文献（年份）——一句话概括
-      \item \textcolor{dmuhead}{脉络四}：模型谱系一句话概括（占位）
-      \item \textcolor{dmuhead}{脉络五}：核心结论一句话（占位）
+      \item \textcolor{primary}{脉络一}：代表文献（年份）——一句话概括
+      \item \textcolor{primary}{脉络二}：代表文献（年份）；代表文献（年份）
+      \item \textcolor{primary}{脉络三}：代表文献（年份）——一句话概括
+      \item \textcolor{primary}{脉络四}：模型谱系一句话概括（占位）
+      \item \textcolor{primary}{脉络五}：核心结论一句话（占位）
     \end{itemize}
-  \end{dmupoint}
-  \begin{dmualert}{不足}
+  \end{point}
+  \begin{warn}{不足}
     该组脉络的共性不足，一句话点名（占位）
-  \end{dmualert}
+  \end{warn}
 \end{frame}
 
 \begin{frame}{文献综述Ⅲ：（占位）第三条脉络名}
   \footnotesize
-  \begin{dmupoint}{三个层面（占位）}
+  \begin{point}{三个层面（占位）}
     \begin{itemize}
-      \item \textcolor{dmuhead}{层面一}：代表文献（年份）——一句话概括
-      \item \textcolor{dmuhead}{层面二}：代表文献（年份）；代表文献（年份）
-      \item \textcolor{dmuhead}{层面三}：代表文献（年份）——一句话概括
+      \item \textcolor{primary}{层面一}：代表文献（年份）——一句话概括
+      \item \textcolor{primary}{层面二}：代表文献（年份）；代表文献（年份）
+      \item \textcolor{primary}{层面三}：代表文献（年份）——一句话概括
     \end{itemize}
-  \end{dmupoint}
-  \begin{dmualert}{不足}
+  \end{point}
+  \begin{warn}{不足}
     该组脉络的共性不足，一句话点名（占位）
-  \end{dmualert}
+  \end{warn}
 \end{frame}
 
-% 帧型：研究缺口 + 切入点（dmupoint 编号项 \item[Ⅰ] + dmuband 横幅）
+% 帧型：研究缺口 + 切入点（point 编号项 \item[Ⅰ] + band 横幅）
 \begin{frame}{研究缺口与本课题切入点}
   \small
   \vspace*{-2.5mm}
-  \begin{dmupoint}{几点研究不足（呼应前几条脉络）}
+  \begin{point}{几点研究不足（呼应前几条脉络）}
     \begin{itemize}
-      \item[Ⅰ] 不足一占位：\textcolor{dmuaccent}{强调缺口关键词}
-      \item[Ⅱ] 不足二占位：\textcolor{dmuaccent}{强调缺口关键词}
-      \item[Ⅲ] 不足三占位：\textcolor{dmuaccent}{强调缺口关键词}
+      \item[Ⅰ] 不足一占位：\textcolor{accent}{强调缺口关键词}
+      \item[Ⅱ] 不足二占位：\textcolor{accent}{强调缺口关键词}
+      \item[Ⅲ] 不足三占位：\textcolor{accent}{强调缺口关键词}
     \end{itemize}
-  \end{dmupoint}
+  \end{point}
   \vskip-1.2mm
-  \begin{dmuband}
-    {\footnotesize\color{dmuaccent}本课题切入点}\quad 方法一（占位）$\;\to\;$ 方法二（占位）$\;\to\;$ 方法三（占位）$\;\to\;$ 验证手段（占位）
-  \end{dmuband}
+  \begin{band}
+    {\footnotesize\color{accent}本课题切入点}\quad 方法一（占位）$\;\to\;$ 方法二（占位）$\;\to\;$ 方法三（占位）$\;\to\;$ 验证手段（占位）
+  \end{band}
 \end{frame}
 
 %===============================================================
@@ -201,65 +201,65 @@
 \begin{frame}{研究框架总览：（占位）一句话概括闭环}
   \begin{center}
     \begin{tikzpicture}[
-        stage/.style={fill=dmuprimary!5, rounded corners=1.5pt,
+        stage/.style={fill=primary!5, rounded corners=1.5pt,
                       text width=22mm, minimum height=17mm, align=center, inner sep=1.5mm},
-        arr/.style={-{Stealth[length=2.6mm]}, line width=1.5pt, dmuaccent}]
+        arr/.style={-{Stealth[length=2.6mm]}, line width=1.5pt, accent}]
       \node[stage] (s1)
-        {{\color{dmuaccent}\bfseries\large ①}\\[0.3mm]
-         \textcolor{dmuhead}{\bfseries 模块一}\\[0.5mm]
-         {\scriptsize\color{dmugray} 方法关键词（占位）}};
+        {{\color{accent}\bfseries\large ①}\\[0.3mm]
+         \textcolor{primary}{\bfseries 模块一}\\[0.5mm]
+         {\scriptsize\color{muted} 方法关键词（占位）}};
       \node[stage, right=2.5mm of s1] (s2)
-        {{\color{dmuaccent}\bfseries\large ②}\\[0.3mm]
-         \textcolor{dmuhead}{\bfseries 模块二}\\[0.5mm]
-         {\scriptsize\color{dmugray} 方法关键词（占位）}};
+        {{\color{accent}\bfseries\large ②}\\[0.3mm]
+         \textcolor{primary}{\bfseries 模块二}\\[0.5mm]
+         {\scriptsize\color{muted} 方法关键词（占位）}};
       \node[stage, right=2.5mm of s2] (s3)
-        {{\color{dmuaccent}\bfseries\large ③}\\[0.3mm]
-         \textcolor{dmuhead}{\bfseries 模块三}\\[0.5mm]
-         {\scriptsize\color{dmugray} 方法关键词（占位）}};
+        {{\color{accent}\bfseries\large ③}\\[0.3mm]
+         \textcolor{primary}{\bfseries 模块三}\\[0.5mm]
+         {\scriptsize\color{muted} 方法关键词（占位）}};
       \node[stage, right=2.5mm of s3] (s4)
-        {{\color{dmuaccent}\bfseries\large ④}\\[0.3mm]
-         \textcolor{dmuhead}{\bfseries 模块四}\\[0.5mm]
-         {\scriptsize\color{dmugray} 方法·算法（占位）}};
+        {{\color{accent}\bfseries\large ④}\\[0.3mm]
+         \textcolor{primary}{\bfseries 模块四}\\[0.5mm]
+         {\scriptsize\color{muted} 方法·算法（占位）}};
       \node[stage, right=2.5mm of s4] (s5)
-        {{\color{dmuaccent}\bfseries\large ⑤}\\[0.3mm]
-         \textcolor{dmuhead}{\bfseries 模块五}\\[0.5mm]
-         {\scriptsize\color{dmugray} 产出形态（占位）}};
+        {{\color{accent}\bfseries\large ⑤}\\[0.3mm]
+         \textcolor{primary}{\bfseries 模块五}\\[0.5mm]
+         {\scriptsize\color{muted} 产出形态（占位）}};
       \draw[arr] (s1) -- (s2);
       \draw[arr] (s2) -- (s3);
       \draw[arr] (s3) -- (s4);
       \draw[arr] (s4) -- (s5);
       \draw[arr, dashed] (s5.south) to[bend left=20]
-        node[below, font=\scriptsize, text=dmugray]{反馈闭环说明（占位）} (s1.south);
+        node[below, font=\scriptsize, text=muted]{反馈闭环说明（占位）} (s1.south);
     \end{tikzpicture}
   \end{center}
 \end{frame}
 
-% 帧型：图文页（左 dmupoint×2 + 右图；论文图放 figures/ 后按下行引用）
+% 帧型：图文页（左 point×2 + 右图；论文图放 figures/ 后按下行引用）
 \begin{frame}{研究内容Ⅰ：（占位）内容标题}
   \footnotesize
   \begin{columns}[T]
     \begin{column}{0.44\textwidth}
-      \begin{dmupoint}{子内容一标题（占位）}
+      \begin{point}{子内容一标题（占位）}
         \begin{itemize}
-          \item \textcolor{dmuhead}{数据}：数据库名与范围（占位）
-          \item \textcolor{dmuhead}{方法与目标}：方法一句话，目标一句话（占位）
+          \item \textcolor{primary}{数据}：数据库名与范围（占位）
+          \item \textcolor{primary}{方法与目标}：方法一句话，目标一句话（占位）
         \end{itemize}
-      \end{dmupoint}
-      \begin{dmupoint}{子内容二标题（占位）}
+      \end{point}
+      \begin{point}{子内容二标题（占位）}
         \begin{itemize}
-          \item \textcolor{dmuhead}{变量}：变量与来源一句话（占位）
+          \item \textcolor{primary}{变量}：变量与来源一句话（占位）
         \end{itemize}
-      \end{dmupoint}
+      \end{point}
     \end{column}
     \begin{column}{0.52\textwidth}
       \begin{center}
         % 论文图放 figures/ 目录后取消注释（矢量 PDF 优先）：
         % \includegraphics[width=\linewidth]{figures/figure1}
-        \fbox{\parbox[c][50mm][c]{0.92\linewidth}{\centering\color{dmugray} 论文图占位\\[0.5mm]
+        \fbox{\parbox[c][50mm][c]{0.92\linewidth}{\centering\color{muted} 论文图占位\\[0.5mm]
           \scriptsize \texttt{figures/figure1}}}
 
         \vskip0.8mm
-        {\scriptsize\color{dmugray} 图注一句话（占位）}
+        {\scriptsize\color{muted} 图注一句话（占位）}
       \end{center}
     \end{column}
   \end{columns}
@@ -270,65 +270,65 @@
   \footnotesize
   \begin{columns}[T]
     \begin{column}{0.50\textwidth}
-      \begin{dmupoint}{子内容一标题（占位）}
+      \begin{point}{子内容一标题（占位）}
         \begin{itemize}
-          \item \textcolor{dmuhead}{主体}：对象与角色一句话（占位）
-          \item \textcolor{dmuhead}{规则与目标}：规则一句话，目标一句话（占位）
+          \item \textcolor{primary}{主体}：对象与角色一句话（占位）
+          \item \textcolor{primary}{规则与目标}：规则一句话，目标一句话（占位）
         \end{itemize}
-      \end{dmupoint}
-      \begin{dmupoint}{子内容二标题（占位）}
+      \end{point}
+      \begin{point}{子内容二标题（占位）}
         \begin{itemize}
-          \item \textcolor{dmuhead}{维度框架}：维度名缩写一句话（占位）
-          \item \textcolor{dmuhead}{聚合口径}：双口径/尾部风险一句话（占位）
+          \item \textcolor{primary}{维度框架}：维度名缩写一句话（占位）
+          \item \textcolor{primary}{聚合口径}：双口径/尾部风险一句话（占位）
         \end{itemize}
-      \end{dmupoint}
+      \end{point}
     \end{column}
     \begin{column}{0.46\textwidth}
       \begin{center}
         % \includegraphics[height=44mm]{figures/figure2}
-        \fbox{\parbox[c][44mm][c]{0.92\linewidth}{\centering\color{dmugray} 论文图占位\\[0.5mm]
+        \fbox{\parbox[c][44mm][c]{0.92\linewidth}{\centering\color{muted} 论文图占位\\[0.5mm]
           \scriptsize \texttt{figures/figure2}}}
 
         \vskip0.8mm
-        {\scriptsize\color{dmugray} 图注一句话（占位）}
+        {\scriptsize\color{muted} 图注一句话（占位）}
       \end{center}
     \end{column}
   \end{columns}
 \end{frame}
 
-% 帧型：纯文字方法页（dmupoint 内含公式与灰色符号图例）
+% 帧型：纯文字方法页（point 内含公式与灰色符号图例）
 \begin{frame}{研究内容Ⅲ：（占位）模型/方法标题}
   \small
-  \begin{dmupoint}{子内容一标题（占位）}
+  \begin{point}{子内容一标题（占位）}
     \begin{itemize}
-      \item \textcolor{dmuhead}{目标}：三维/多维协同一句话（占位）
-      \item \textcolor{dmuhead}{约束}：关键约束一句话（占位）
+      \item \textcolor{primary}{目标}：三维/多维协同一句话（占位）
+      \item \textcolor{primary}{约束}：关键约束一句话（占位）
     \end{itemize}
     \vskip0.6mm
     $\min F=(f_1,f_2)$,\ \ $\min_x f_1(x)+\mathbb{E}_\omega[Q(x,\omega)]$\par
-    {\scriptsize\color{dmugray} $f_1$ 目标一占位 $f_2$ 目标二占位；$x$ 一阶段决策；$Q$ 二阶段成本（符号图例占位）}
-  \end{dmupoint}
-  \begin{dmupoint}{子内容二标题（占位）}
+    {\scriptsize\color{muted} $f_1$ 目标一占位 $f_2$ 目标二占位；$x$ 一阶段决策；$Q$ 二阶段成本（符号图例占位）}
+  \end{point}
+  \begin{point}{子内容二标题（占位）}
     \begin{itemize}
-      \item \textcolor{dmuhead}{算法}：全局探索 + 场景降维（占位）一句话
+      \item \textcolor{primary}{算法}：全局探索 + 场景降维（占位）一句话
       \item 输出形态一句话（占位）
     \end{itemize}
-  \end{dmupoint}
+  \end{point}
 \end{frame}
 
 \begin{frame}{几个关键问题}
   \small
-  \begin{dmupoint}{关键问题 1：（占位）问题名}
+  \begin{point}{关键问题 1：（占位）问题名}
     一句话点出从什么到什么（占位）
-  \end{dmupoint}
-  \begin{dmupoint}{关键问题 2：（占位）问题名}
+  \end{point}
+  \begin{point}{关键问题 2：（占位）问题名}
     一句话点出框架与口径（占位）
     \[ \mathcal{R}=\tfrac{1}{T\,Q_0}\textstyle\int_0^{T}\! Q(t)\,\mathrm{d}t,\qquad \mathbb{E}[\mathcal{R}],\ \min_\omega \mathcal{R}(\omega) \]
-    {\scriptsize\color{dmugray} 公式排版示范：$Q(t)$ 性能曲线；$T$ 时长；$Q_0$ 基准（符号图例占位）}
-  \end{dmupoint}
-  \begin{dmupoint}{关键问题 3：（占位）问题名}
+    {\scriptsize\color{muted} 公式排版示范：$Q(t)$ 性能曲线；$T$ 时长；$Q_0$ 基准（符号图例占位）}
+  \end{point}
+  \begin{point}{关键问题 3：（占位）问题名}
     一句话点出模型与算法（占位）
-  \end{dmupoint}
+  \end{point}
 \end{frame}
 
 % 帧型：三卡片（创新点）
@@ -336,28 +336,28 @@
   \footnotesize
   \begin{columns}[T]
     \begin{column}{0.325\textwidth}
-      \begin{dmucard}{创新点 1}
-        \textcolor{dmuhead}{创新点名（占位）}
+      \begin{card}{创新点 1}
+        \textcolor{primary}{创新点名（占位）}
 
         \vskip1mm
         与现有方法的差异一句话（占位）；弥补什么缺陷一句话（占位）
-      \end{dmucard}
+      \end{card}
     \end{column}
     \begin{column}{0.325\textwidth}
-      \begin{dmucard}{创新点 2}
-        \textcolor{dmuhead}{创新点名（占位）}
+      \begin{card}{创新点 2}
+        \textcolor{primary}{创新点名（占位）}
 
         \vskip1mm
         突破什么、纳入什么，形成什么可计算形态——一句话占位
-      \end{dmucard}
+      \end{card}
     \end{column}
     \begin{column}{0.325\textwidth}
-      \begin{dmucard}{创新点 3}
-        \textcolor{dmuhead}{创新点名（占位）}
+      \begin{card}{创新点 3}
+        \textcolor{primary}{创新点名（占位）}
 
         \vskip1mm
         模型 + 算法 + 输出形态一句话占位
-      \end{dmucard}
+      \end{card}
     \end{column}
   \end{columns}
 \end{frame}
@@ -371,7 +371,7 @@
   \footnotesize
   \begin{tabular}{@{}p{0.30\textwidth}@{\quad}p{0.66\textwidth}@{}}
     \toprule
-    \textcolor{dmuhead}{\textbf{难点}} & \textcolor{dmuhead}{\textbf{对策}} \\
+    \textcolor{primary}{\textbf{难点}} & \textcolor{primary}{\textbf{对策}} \\
     \midrule
     难点一占位 & 对策一句话占位；备选手段一句话占位 \\
     \addlinespace[0.7mm]
@@ -395,48 +395,48 @@
   \footnotesize
   \begin{columns}[T]
     \begin{column}{0.475\textwidth}
-      \begin{dmucard}{方法模块}
+      \begin{card}{方法模块}
         \begin{itemize}
-          \item \textcolor{dmuhead}{模块一}：方法一句话（占位）
-          \item \textcolor{dmuhead}{模块二}：方法与算法一句话（占位）
-          \item \textcolor{dmuhead}{模块三}：仿真/验证一句话（占位）
+          \item \textcolor{primary}{模块一}：方法一句话（占位）
+          \item \textcolor{primary}{模块二}：方法与算法一句话（占位）
+          \item \textcolor{primary}{模块三}：仿真/验证一句话（占位）
         \end{itemize}
-      \end{dmucard}
+      \end{card}
     \end{column}
     \begin{column}{0.475\textwidth}
-      \begin{dmucard}{数据源}
+      \begin{card}{数据源}
         \begin{itemize}
           \item 公开数据库一（占位）
           \item 公开数据库二（占位）
           \item 事件/文本数据（占位）
           \item 企业合作数据（占位，注明脱敏协议）
         \end{itemize}
-      \end{dmucard}
+      \end{card}
     \end{column}
   \end{columns}
 \end{frame}
 
-% 帧型：技术路线（tikz dmucap+dmubody 上下贴合并排五列）
+% 帧型：技术路线（tikz cnode+bnode 上下贴合并排五列）
 \begin{frame}{技术路线：五阶段递进}
   \begin{center}
     \begin{tikzpicture}[
-        dmucap/.style={fill=dmuprimary, text=white, font=\footnotesize\bfseries,
+        cnode/.style={fill=primary, text=white, font=\footnotesize\bfseries,
                        text width=23mm, minimum height=6.5mm, align=center,
                        inner xsep=1mm, inner ysep=0mm},
-        dmubody/.style={draw=dmuprimary!28, fill=dmuprimary!5, line width=0.5pt,
+        bnode/.style={draw=primary!28, fill=primary!5, line width=0.5pt,
                         font=\scriptsize, text width=23mm, minimum height=21mm,
                         align=center, inner sep=1.2mm},
-        arr/.style={-{Stealth[length=2.6mm,width=2mm]}, line width=1.1pt, dmuaccent}]
-      \node[dmucap] (c1) {①\; 阶段一};
-      \node[dmucap, right=3.3mm of c1] (c2) {②\; 阶段二};
-      \node[dmucap, right=3.3mm of c2] (c3) {③\; 阶段三};
-      \node[dmucap, right=3.3mm of c3] (c4) {④\; 阶段四};
-      \node[dmucap, right=3.3mm of c4] (c5) {⑤\; 阶段五};
-      \node[dmubody, below=0.5pt of c1] (b1) {工作要点\\[0.3mm] 工作要点\\[0.3mm] 工作要点};
-      \node[dmubody, below=0.5pt of c2] (b2) {工作要点\\[0.3mm] 工作要点\\[0.3mm] 工作要点};
-      \node[dmubody, below=0.5pt of c3] (b3) {工作要点\\[0.3mm] 工作要点\\[0.3mm] 工作要点};
-      \node[dmubody, below=0.5pt of c4] (b4) {工作要点\\[0.3mm] 工作要点\\[0.3mm] 工作要点};
-      \node[dmubody, below=0.5pt of c5] (b5) {工作要点\\[0.3mm] 工作要点\\[0.3mm] 工作要点};
+        arr/.style={-{Stealth[length=2.6mm,width=2mm]}, line width=1.1pt, accent}]
+      \node[cnode] (c1) {①\; 阶段一};
+      \node[cnode, right=3.3mm of c1] (c2) {②\; 阶段二};
+      \node[cnode, right=3.3mm of c2] (c3) {③\; 阶段三};
+      \node[cnode, right=3.3mm of c3] (c4) {④\; 阶段四};
+      \node[cnode, right=3.3mm of c4] (c5) {⑤\; 阶段五};
+      \node[bnode, below=0.5pt of c1] (b1) {工作要点\\[0.3mm] 工作要点\\[0.3mm] 工作要点};
+      \node[bnode, below=0.5pt of c2] (b2) {工作要点\\[0.3mm] 工作要点\\[0.3mm] 工作要点};
+      \node[bnode, below=0.5pt of c3] (b3) {工作要点\\[0.3mm] 工作要点\\[0.3mm] 工作要点};
+      \node[bnode, below=0.5pt of c4] (b4) {工作要点\\[0.3mm] 工作要点\\[0.3mm] 工作要点};
+      \node[bnode, below=0.5pt of c5] (b5) {工作要点\\[0.3mm] 工作要点\\[0.3mm] 工作要点};
       \draw[arr] (c1.east) -- (c2.west);
       \draw[arr] (c2.east) -- (c3.west);
       \draw[arr] (c3.east) -- (c4.west);
@@ -444,27 +444,27 @@
     \end{tikzpicture}
 
     \vspace{2.5mm}
-    {\scriptsize\color{dmugray}五阶段逐级递进：每阶段的输出即下一阶段的输入（一句话概括闭环，占位）}
+    {\scriptsize\color{muted}五阶段逐级递进：每阶段的输出即下一阶段的输入（一句话概括闭环，占位）}
   \end{center}
 \end{frame}
 
-% 帧型：研究基础（双图占位 + dmupoint）
+% 帧型：研究基础（双图占位 + point）
 \begin{frame}{研究基础}
   \footnotesize
   \begin{center}
     % 前期工作图放 figures/ 后取消注释：
     % \includegraphics[height=34mm]{figures/figure3}\,
     % \includegraphics[height=34mm]{figures/figure4}
-    \fbox{\parbox[c][34mm][c]{0.36\linewidth}{\centering\color{dmugray} 前期图一占位}}\,
-    \fbox{\parbox[c][34mm][c]{0.36\linewidth}{\centering\color{dmugray} 前期图二占位}}
+    \fbox{\parbox[c][34mm][c]{0.36\linewidth}{\centering\color{muted} 前期图一占位}}\,
+    \fbox{\parbox[c][34mm][c]{0.36\linewidth}{\centering\color{muted} 前期图二占位}}
 
     \vskip0.6mm
-    {\scriptsize\color{dmugray} 左：图一说明（占位）；右：图二说明（占位）}
+    {\scriptsize\color{muted} 左：图一说明（占位）；右：图二说明（占位）}
   \end{center}
   \vskip1mm
-  \begin{dmupoint}{探索性工作}
+  \begin{point}{探索性工作}
     前期工作逐条列出（占位）：已完成的分析/原型/数据面板；团队支撑；本人实践经验——每条一句话
-  \end{dmupoint}
+  \end{point}
 \end{frame}
 
 % 帧型：进度表（booktabs 三列表）
@@ -472,7 +472,7 @@
   \footnotesize
   \begin{tabular}{@{}l@{\quad}p{0.46\textwidth}@{\quad}p{0.22\textwidth}@{}}
     \toprule
-    \textcolor{dmuhead}{\textbf{起讫时间}} & \textcolor{dmuhead}{\textbf{主要研究内容}} & \textcolor{dmuhead}{\textbf{预期成果}} \\
+    \textcolor{primary}{\textbf{起讫时间}} & \textcolor{primary}{\textbf{主要研究内容}} & \textcolor{primary}{\textbf{预期成果}} \\
     \midrule
     2026.09--2026.12 & 阶段一内容一句话占位 & 学术论文 1 篇 \\
     \addlinespace[1mm]
@@ -487,7 +487,7 @@
   \end{tabular}
 
   \vskip1mm
-  \begin{center}\footnotesize\color{dmugray}
+  \begin{center}\footnotesize\color{muted}
   经费保障：（占位：项目名称 + 配套说明）
   \end{center}
 \end{frame}
@@ -501,8 +501,8 @@
     {\usebeamercolor[fg]{title}\bfseries\fontsize{26}{34}\selectfont 恳请各位专家批评指正}
     \vskip6mm
     \begin{tikzpicture}
-      \fill[dmuprimary] (0,0) rectangle (11mm,1pt);
-      \fill[dmuaccent] (12mm,0) rectangle (22mm,1pt);
+      \fill[primary] (0,0) rectangle (11mm,1pt);
+      \fill[accent] (12mm,0) rectangle (22mm,1pt);
     \end{tikzpicture}
     \vskip8mm
     {\usebeamercolor[fg]{institute}\small 答辩人：××× \quad 导师：××× 教授 \quad 2026 年 × 月}

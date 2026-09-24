@@ -34,7 +34,7 @@
 \definecolor{accent}{HTML}{E97132}    % 强调色（橙/teal 系）：编号、细线、关键词点缀
 \definecolor{secondary}{HTML}{156082} % 辅助色：分组小标题、次级结构元素
 \definecolor{muted}{HTML}{5A6B7B}     % 弱化灰：图例、脚注、副述
-\definecolor{soft}{HTML}{F2F6F9}      % 浅底：卡片填充（IMHFC 实战五色，可直接沿用）
+\definecolor{soft}{HTML}{F2F6F9}      % 浅底：卡片填充（实战验证五色，可直接沿用）
 
 % ---- 干净版面 ----
 \setbeamertemplate{navigation symbols}{}
@@ -500,10 +500,10 @@ Give the per-unit saving numbers.\\[1.5mm]
 
 % =========================================================================
 % 帧型 17：封底（bg_closing / 自建模式白底）
-% ⚠️ 官方封底背景通常自带致谢字样（IMHFC bg_closing 已印 "Thank you for your
+% ⚠️ 官方封底背景通常自带致谢字样（实测某会议 bg_closing 已印 "Thank you for your
 % attention!"，占页高 ~30-46%），整块叠字必乱码——实战原版就曾叠印。故封底
 % 模式自适应：白底显示完整致谢块；官方背景只留单行联系信息，落在实测空档
-% （IMHFC 为页高 46-54%，此处 yshift=-1mm ≈ 页高中心）；换会议背景时按其
+% （实测例为页高 46-54%，此处 yshift=-1mm ≈ 页高中心）；换会议背景时按其
 % 留白重调 yshift，勿信默认居中
 % =========================================================================
 {\usebackgroundtemplate{\BgClosing}%

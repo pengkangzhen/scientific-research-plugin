@@ -1,0 +1,345 @@
+% =========================================================================
+% beamerthemeDefense.sty — 学术答辩 / 开题 / 组会通用 Beamer 主题
+% -------------------------------------------------------------------------
+% 版式：顶部深蓝横幅（可选校徽 + 校名/院名字标：中文行楷 + 西文花体 +
+%       细竖线分隔，竖线经 tikz calc 锚定字标实际宽度，改文案无需重算坐标）
+%       + 底部章节进度条（当前节高亮）+ 目录/转场页/封面
+% 视觉规格：三色制科研配色（主色深海军蓝 #1F3864 + 强调暖橙 #E87722 +
+%       中性灰 #595959，蓝橙互补、色盲友好），实战验证多轮视觉验收
+%
+% 编译：xelatex（必须，字体经 fontspec/xeCJK 加载） latexmk -xelatex <doc>.tex
+%
+% 可调项：
+%   \DefenseUniv / \DefenseUnivEn       横幅校名中/英文（默认占位，\renewcommand 修改）
+%   \DefenseCollege / \DefenseCollegeEn 横幅学院名中/英文
+%   \DefenseBannerHeight                横幅高度（长度，默认 8.3mm）
+%   \DefenseSetProgress{a,b,c}          底部进度条条目（与 \section 顺序一致）
+%   \DefenseSetSectionDesc{a,b,c}       转场页一句话副述（与 \section 顺序一致）
+%   campus-emblem.png                   可选校徽：放在文稿同目录即自动入横幅，
+%                                       缺省则横幅纯文字字标排版
+%
+% 内容组件（替代整页重色块的轻量组件，同页可多条堆叠）：
+%   point{标题}  左强调竖条分组要点   warn{标题}  浅红底警示条（不足/风险）
+%   card{标题}   顶部粗线卡片（多列并排）   band  深蓝底白字结论横幅
+%
+% 字体已全部 \IfFontExistsTF 守护（见下方【字体】一节），跨平台自动回退；
+% 手动替换仍改该节对应行。回退链：HarmonyOS Sans SC → PingFang SC →
+% Noto Sans CJK SC → SimHei；行楷 → KaiTi → FandolKai；Zapfino → 当前西文。
+% =========================================================================
+\ProvidesPackage{beamerthemeDefense}[2026/09/24 Generic academic defense beamer theme v2.0]
+
+\RequirePackage{tikz}
+\usetikzlibrary{calc}
+\RequirePackage{etoolbox}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{fontspec}
+\RequirePackage{xeCJK}
+
+% -------------------------------------------------------------------------
+% 颜色：三色制（科研演示规范：主色 + 强调色 + 中性灰，蓝橙互补、色盲友好）
+%   主色 深海军蓝 #1F3864 —— 横幅/标题/进度条/结构元素
+%   强调 暖橙     #E87722 —— 标题横线/编号/关键词强调/不足警示
+%   中性 灰       #595959 —— 次级文字
+% -------------------------------------------------------------------------
+\definecolor{primary}{HTML}{1F3864}   % 主色 深海军蓝（标题字色同色）
+\definecolor{accent}{HTML}{E87722}    % 强调 暖橙（警示兼用，三色原则）
+\definecolor{muted}{HTML}{595959}     % 次级灰
+
+\setbeamercolor{palette primary}{fg=white,bg=primary}
+\setbeamercolor{structure}{fg=primary}
+\setbeamercolor{normal text}{fg=black!85}
+\setbeamercolor{frametitle}{fg=primary}
+\setbeamercolor{title}{fg=primary}
+\setbeamercolor{subtitle}{fg=muted}
+\setbeamercolor{author}{fg=black!80}
+\setbeamercolor{date}{fg=muted}
+\setbeamercolor{institute}{fg=muted}
+\setbeamercolor{section in toc}{fg=primary}
+\setbeamercolor{subsection in toc}{fg=black!75}
+\setbeamercolor{itemize item}{fg=primary}
+\setbeamercolor{itemize subitem}{fg=accent}
+\setbeamercolor{itemize subsubitem}{fg=muted}
+\setbeamercolor{enumerate item}{fg=primary}
+\setbeamercolor{caption name}{fg=primary}
+\setbeamercolor{footline}{fg=muted}
+
+% block：navy 标题条 + 浅蓝灰正文底
+\setbeamercolor{block title}{fg=white,bg=primary}
+\setbeamercolor{block body}{fg=black!85,bg=primary!6}
+% alertblock：橙标题条
+\setbeamercolor{block title alerted}{fg=white,bg=accent}
+\setbeamercolor{block body alerted}{fg=black!85,bg=accent!6}
+% exampleblock：橙标题条（与 alert 同色系，三色原则）
+\setbeamercolor{block title example}{fg=white,bg=accent}
+\setbeamercolor{block body example}{fg=black!85,bg=accent!8}
+
+% -------------------------------------------------------------------------
+% 轻量内容组件（同页多条堆叠时替代 block，避免整页重色块）：
+%   point{标题}  左 accent 竖条分组，无底色，标题深蓝粗体
+%   warn{标题}   浅红底 + 左橙竖条提示条（不足/风险）
+%   card{标题}   顶部 accent 粗线卡片（用于多列并排）
+%   band         深蓝底白字结论横幅
+% -------------------------------------------------------------------------
+\newenvironment{point}[1]{%
+  \begin{tcolorbox}[enhanced, blank,
+    borderline west={1.8pt}{0pt}{accent},
+    left=3mm, right=1mm, top=1mm, bottom=1mm,
+    before skip=2.4mm, after skip=0.6mm,
+    before upper={{\normalsize\color{primary}\bfseries #1\par}\vskip0.8mm}]}%
+  {\end{tcolorbox}}
+
+\newenvironment{warn}[1]{%
+  \begin{tcolorbox}[enhanced,
+    colback=accent!6, colframe=accent!6, boxrule=0pt, arc=0mm,
+    borderline west={1.8pt}{0pt}{accent},
+    left=3mm, right=1mm, top=1mm, bottom=1mm,
+    before skip=2.4mm, after skip=0.6mm,
+    before upper={{\normalsize\color{accent}\bfseries #1\par}\vskip0.6mm}]}%
+  {\end{tcolorbox}}
+
+\newenvironment{card}[1]{%
+  \begin{tcolorbox}[enhanced,
+    colback=primary!5, colframe=primary!5, boxrule=0pt, arc=1.2mm,
+    left=2mm, right=2mm, top=1.4mm, bottom=1.2mm,
+    before skip=1mm, after skip=1mm,
+    before upper={{\normalsize\color{primary}\bfseries #1\par}\vskip1mm}]}%
+  {\end{tcolorbox}}
+
+\newenvironment{band}{%
+  \begin{tcolorbox}[enhanced,
+    colback=primary, colframe=primary, boxrule=0pt, arc=1.2mm,
+    left=3mm, right=3mm, top=1.8mm, bottom=1.8mm,
+    before skip=2.6mm, after skip=1mm,
+    before upper={\color{white}}]}%
+  {\end{tcolorbox}}
+
+% -------------------------------------------------------------------------
+% 字体（xelatex + fontspec/xeCJK）——平台探测 + 自动回退（字体必须守护）。
+% 探测规则：多词名走 fontconfig（静默），单词名缺失时 fontspec
+% 会走 kpathsea 文件查找并在日志留错，故用多词名 HarmonyOS Sans SC 探测，
+% 非 macOS 分支只探测常见已装字体、花体不再探测。
+%   macOS/已装鸿蒙：原版规格（HarmonyOS Sans SC + Songti SC + 行楷 + Zapfino）
+%   其他平台：正文 SimHei→Noto Sans CJK SC；宋体 SimSun；行楷 KaiTi（仿粗）；
+%             花体→当前西文
+% -------------------------------------------------------------------------
+\IfFontExistsTF{HarmonyOS Sans SC}{%
+  \setsansfont[BoldFont={HarmonyOS Sans SC Bold}]{HarmonyOS Sans SC}%
+  \setCJKsansfont[BoldFont={HarmonyOS Sans SC Bold}]{HarmonyOS Sans SC}%
+  \IfFontExistsTF{Songti SC}{\setCJKfamilyfont{zhsong}{Songti SC}}{}%
+  \IfFontExistsTF{Xingkai SC Bold}{%
+    \newCJKfontfamily\df@wmcn{Xingkai SC Bold}%
+  }{\newCJKfontfamily\df@wmcn{KaiTi}}%
+  \IfFontExistsTF{Zapfino}{\newfontfamily\df@wmen{Zapfino}}{\newcommand{\df@wmen}{}}%
+}{%
+  \IfFontExistsTF{SimHei}{%
+    \setsansfont[AutoFakeBold=2.5]{SimHei}\setCJKsansfont[AutoFakeBold=2.5]{SimHei}%
+  }{\IfFontExistsTF{Noto Sans CJK SC}{%
+    \setsansfont[BoldFont={Noto Sans CJK SC Bold}]{Noto Sans CJK SC}%
+    \setCJKsansfont[BoldFont={Noto Sans CJK SC Bold}]{Noto Sans CJK SC}%
+  }}%
+  \IfFontExistsTF{SimSun}{\setCJKfamilyfont{zhsong}{SimSun}}{}%
+  \IfFontExistsTF{KaiTi}{%
+    \newCJKfontfamily\df@wmcn[AutoFakeBold=2.5]{KaiTi}%
+  }{\newCJKfontfamily\df@wmcn{SimSun}}%
+  \newcommand{\df@wmen}{}% 花体仅 macOS 常见：回退当前西文字体
+}
+
+% -------------------------------------------------------------------------
+% 版式几何：横幅高默认 8.3mm，页码底栏；校徽可选（有则字标右移让位）
+% -------------------------------------------------------------------------
+\newlength{\DefenseBannerHeight}
+\setlength{\DefenseBannerHeight}{8.3mm}
+\newcommand{\DefenseUniv}{大学名称}
+\newcommand{\DefenseUnivEn}{University Name}
+\newcommand{\DefenseCollege}{学院名称}
+\newcommand{\DefenseCollegeEn}{College Name}
+
+\newlength{\df@emblemsgap}
+\IfFileExists{campus-emblem.png}{\setlength{\df@emblemsgap}{7.6mm}}{\setlength{\df@emblemsgap}{2.5mm}}
+
+\usefonttheme{professionalfonts}
+\useinnertheme{default}
+\useoutertheme{default}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+
+% 列表符号：一级圆点 navy，二级短横 accent，三级灰色小星
+\setbeamertemplate{itemize item}{\textcolor{primary}{\raisebox{1.2pt}{\small$\bullet$}}}
+\setbeamertemplate{itemize subitem}{\textcolor{accent}{--}}
+\setbeamertemplate{itemize subsubitem}{\textcolor{muted}{$\ast$}}
+
+% -------------------------------------------------------------------------
+% headline：深蓝横幅（可选校徽 + 校名/院名字标 + 竖线）
+% 字标均为文字排版（中文行楷 + 西文 Zapfino 花体，同字号同规格），
+% 两侧竖线经 calc 锚定字标节点实际宽度；改字号/文案无需重算坐标
+% -------------------------------------------------------------------------
+\newcommand{\df@wm@cn}[1]{\color{white}{\df@wmcn\fontsize{9.4}{10.2}\selectfont #1}}
+\newcommand{\df@wm@en}[1]{\color{white}{\df@wmen\fontsize{3.2}{3.2}\selectfont #1}}
+\newcommand{\df@banner}{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[primary]
+      (current page.north west) rectangle
+      ([yshift=-\DefenseBannerHeight]current page.north east);
+    \IfFileExists{campus-emblem.png}{%
+      \node[anchor=west, inner sep=0pt]
+        at ([xshift=1.4mm, yshift=-0.5*\DefenseBannerHeight]current page.north west)
+        {\includegraphics[height=5.0mm]{campus-emblem.png}};}{}%
+    \node[anchor=west, inner sep=0pt] (df@wmUcn)
+      at ([xshift=\df@emblemsgap, yshift=-2.5mm]current page.north west)
+      {\df@wm@cn{\DefenseUniv}};
+    \node[anchor=west, inner sep=0pt] (df@wmUen)
+      at ([xshift=\df@emblemsgap, yshift=-5.35mm]current page.north west)
+      {\df@wm@en{\DefenseUnivEn}};
+    \draw[white, line width=0.4pt]
+      ($ (df@wmUcn.east)+(1.4mm,1.2mm) $) -- ($ (df@wmUcn.east)+(1.4mm,-3.0mm) $);
+    \node[anchor=west, inner sep=0pt] (df@wmCcn)
+      at ($ (df@wmUcn.east)+(2.8mm,0mm) $)
+      {\df@wm@cn{\DefenseCollege}};
+    \node[anchor=west, inner sep=0pt] (df@wmCen)
+      at ($ (df@wmCcn.west)+(0mm,-2.85mm) $)
+      {\df@wm@en{\DefenseCollegeEn}};
+    \draw[white, line width=0.4pt]
+      ($ (df@wmCcn.east)+(1.4mm,1.2mm) $) -- ($ (df@wmCcn.east)+(1.4mm,-3.0mm) $);
+  \end{tikzpicture}%
+}
+
+\setbeamertemplate{headline}{%
+  \df@banner%
+  \vskip0pt%
+  \hbox to 0pt{\hskip0pt\rule{0pt}{\DefenseBannerHeight}\hss}%
+}
+
+% 封面专用环境：保留顶部横幅，隐藏进度条与页码
+\newenvironment{coverframe}
+  {\begin{frame}[plain]\df@banner}
+  {\end{frame}}
+
+% frametitle：横幅下方左对齐深蓝粗体 + 标题下 accent 细横线
+\setbeamertemplate{frametitle}{%
+  \vskip2.6mm%
+  \leavevmode%
+  {\color{primary}\bfseries\large \insertframetitle}%
+  \ifx\insertframesubtitle\@empty%
+  \else%
+    {\ \ \color{muted}\normalfont\normalsize \insertframesubtitle}%
+  \fi
+  \par\vskip1.3mm%
+  {\color{accent}\hrule height 0.7pt}%
+  \par\vskip1.4mm%
+}
+
+% footline：底部一行 = contents 进度条（当前节白字高亮、其余灰字，
+% 色块统一为横幅同色）+ 右端页码
+\newcommand{\DefenseSetProgress}[1]{%
+  \def\df@progressnames{#1}%
+  \def\df@segcount{0}%
+  \foreach \df@x in {#1}{%
+    \pgfmathtruncatemacro\df@segcount{\df@segcount+1}%
+    \xdef\df@segcount{\df@segcount}}%
+  \pgfmathsetlengthmacro{\df@segw}{(\paperwidth-10.6mm-(\df@segcount-1)*0.6mm)/\df@segcount}%
+}
+\newcommand{\df@progressnames}{}
+\newcounter{df@seg}
+\setbeamercolor{progress on}{fg=white,bg=primary}
+\setbeamercolor{progress off}{fg=white!50!primary,bg=primary}
+\newcommand{\df@progress@seg}[1]{%
+  \ifnum\value{df@seg}>0\hspace{0.6mm}\fi
+  \stepcounter{df@seg}%
+  \ifnum\insertsectionnumber=\value{df@seg}\relax
+    \begin{beamercolorbox}[wd=\df@segw,ht=2.4mm,dp=1.0mm,center]{progress on}%
+      \fontsize{6}{6.8}\selectfont #1%
+    \end{beamercolorbox}%
+  \else
+    \begin{beamercolorbox}[wd=\df@segw,ht=2.4mm,dp=1.0mm,center]{progress off}%
+      \fontsize{6}{6.8}\selectfont #1%
+    \end{beamercolorbox}%
+  \fi
+}
+
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox to \paperwidth{%
+    \setcounter{df@seg}{0}%
+    \foreach \df@nm in \df@progressnames {%
+      \expandafter\df@progress@seg\expandafter{\df@nm}%
+    }%
+    \hspace{0.6mm}%
+    \begin{beamercolorbox}[wd=10mm,ht=2.4mm,dp=1.0mm,center]{progress on}%
+      \fontsize{6}{6.8}\selectfont
+      \insertframenumber\,/\,\inserttotalframenumber
+    \end{beamercolorbox}%
+  }%
+}
+
+% -------------------------------------------------------------------------
+% 目录页：条目 = accent 大编号 + 深蓝标题 + 灰色一句话副述（编号自动）
+% -------------------------------------------------------------------------
+\newcounter{df@outl}
+\newenvironment{outlinelist}{\setcounter{df@outl}{0}}{}
+\newcommand{\outlineitem}[2]{% #1 = 节标题, #2 = 一句话副述
+  \par\vskip1.6mm%
+  \stepcounter{df@outl}%
+  \begin{tikzpicture}
+    \node[fill=primary!6, rounded corners=2pt, inner sep=2.2mm,
+          text width=132mm, align=left]{%
+      {\color{accent}\bfseries\Large
+       \ifnum\value{df@outl}<10 0\fi\arabic{df@outl}}\hspace{4mm}%
+      {\color{primary}\bfseries\large #1}\hspace{4mm}%
+      {\color{muted}\footnotesize #2}};
+  \end{tikzpicture}\par
+}
+
+% -------------------------------------------------------------------------
+% 转场页：居中 accent 大编号 / accent 短横线 / 深蓝居中标题 / 灰色斜体副述
+% 副述用 \DefenseSetSectionDesc{第一节描述,第二节描述,...} 按节序配置，
+% 不配置则转场页无副述行
+% -------------------------------------------------------------------------
+\newcommand{\DefenseSetSectionDesc}[1]{\def\df@sectiondescs{#1}}
+\newcommand{\df@sectiondescs}{}
+\newcounter{df@sd}
+\newcommand{\df@sectiondesc}{%
+  \setcounter{df@sd}{0}%
+  \foreach \df@d in \df@sectiondescs {%
+    \stepcounter{df@sd}%
+    \ifnum\value{df@sd}=\insertsectionnumber\df@d\fi
+  }%
+}
+\setbeamertemplate{section page}{%
+  \vfill%
+  \begin{center}
+    {\color{accent}\bfseries\fontsize{40}{40}\selectfont
+     \ifnum\insertsectionnumber<10 0\fi\insertsectionnumber\par}%
+    \vskip2.5mm%
+    {\color{accent}\rule{40mm}{1.2pt}}\par
+    \vskip5mm%
+    {\color{primary}\bfseries\LARGE \insertsection\par}%
+    \vskip4mm%
+    {\color{muted}\itshape\small \df@sectiondesc\par}%
+  \end{center}%
+  \vfill%
+}
+\AtBeginSection[]{}
+
+% -------------------------------------------------------------------------
+% 封面：白底 + 中央深蓝大标题 + accent 装饰短线 + 作者区
+% -------------------------------------------------------------------------
+\setbeamertemplate{title page}{%
+  \vfill%
+  \begin{center}
+    {\usebeamercolor[fg]{subtitle}\small\bfseries \insertsubtitle\par}
+    \vskip6mm%
+    {\usebeamercolor[fg]{title}\bfseries\fontsize{19}{26}\selectfont \inserttitle\par}
+    \vskip4mm%
+    \begin{tikzpicture}
+      \fill[primary] (0,0) rectangle (11mm,1pt);
+      \fill[accent] (12mm,0) rectangle (22mm,1pt);
+    \end{tikzpicture}\par
+    \vskip10mm%
+    {\usebeamercolor[fg]{author}\normalsize \insertauthor\par}
+    \vskip2mm%
+    {\usebeamercolor[fg]{institute}\small \insertinstitute\par}
+    \vskip1.5mm%
+    {\usebeamercolor[fg]{date}\small \insertdate\par}
+  \end{center}%
+  \vfill%
+}
