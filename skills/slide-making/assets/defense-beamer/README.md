@@ -12,7 +12,7 @@ text that doubles as filling instructions).
 
 | File | Purpose |
 |------|---------|
-| `beamerthemeDefense.sty` | Theme file v2.3 (banner / progress bar / TOC / section dividers / cover / components; all fonts guarded with fallback: Latin Helvetica Neue, math Fira Math) |
+| `beamerthemeDefense.sty` | Theme file v2.3 (banner / progress bar / TOC / section dividers / cover / components; all fonts `\IfFontExistsTF`-guarded with per-platform fallback — see the Fonts section below; Latin/math fonts stay at Beamer defaults) |
 | `defense.tex` | Proposal-defense skeleton (sanitized, 25 pages: cover / TOC / 5 section dividers / three-card page / bullets+warnings overview / research-framework tikz / technical route / schedule / closing) |
 | `defense.pdf` | Compiled preview of the above (WSL fallback-font version: body in heiti, banner in kaiti; macOS compilation renders the original HarmonyOS Sans + XingKai look) |
 | `campus-emblem.png` | **Not bundled — supply your own**: put your university emblem PNG next to the deck file and it joins the banner automatically (5 mm tall, best on reversed-out backgrounds); without it the banner falls back to a pure-text wordmark |

@@ -1,6 +1,6 @@
 ---
 name: paper-review
-description: "科学审稿 (scientific review) — three-blind adversarial review of the SCIENTIFIC merit of papers and experimental results in any technical domain: 3 isolated reviewers (methodology rigor / domain contribution / adversarial attack) + author-defense arbitration + cross-review synthesis, with claim-evidence anchoring and journal-profile axes. Domain-conditional gates are detected per manuscript and composed freely (built-in: mathematical programming, stochastic/robust, decomposition, network/combinatorial, application domains, ML+OR, LLM/agents; extensible). NOT prose quality (use paper-polishing). 触发词：\"科学审稿\"、\"学术审稿\"、\"审一下这个模型/结果\"、\"这个结果合理吗\"、\"投稿前自审\"、\"review these results\"、\"pre-submission review\"、\"simulate review\"。"
+description: "科学审稿 (scientific review) — three-blind adversarial review of the SCIENTIFIC merit of papers and experimental results in any technical domain: 3 isolated reviewers (methodology rigor / domain contribution / adversarial attack) + author-defense arbitration + cross-review synthesis, with claim-evidence anchoring and journal-profile axes. Domain-conditional gates are detected per manuscript and composed freely (built-in: mathematical programming, stochastic/robust, decomposition, network/combinatorial, application domains, ML+OR, LLM/agents; extensible). NOT prose quality (use paper-polishing). 触发词：\"科学审稿\"、\"学术审稿\"、\"审一下这个模型/结果\"、\"这个结果合理吗\"、\"投稿前自审\"、\"review these results\"、\"pre-submission review\"、\"simulate review\"、\"review my paper\"、\"peer review\"、\"模拟审稿\"。"
 license: MIT
 ---
 

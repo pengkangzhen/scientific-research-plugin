@@ -13,10 +13,11 @@ description: >
   the official template, write a time-budgeted talk script, or package a slide
   PDF back into a pptx with speaker notes — also for thesis proposal/defense/
   group-meeting decks — even if they never say "PPT" (e.g. "I'm giving a talk on
-  this paper next week", "how do I prepare a 15-minute talk").
+  this paper next week").
   中文触发词："会议PPT"、"演讲PPT"、"做幻灯片"、"把论文做成PPT"、"Beamer"、
   "会议模板"、"讲稿"、"演讲稿"、"演讲者备注"、"贴回模板"、"开题报告"、"答辩PPT"、
   "组会汇报"、"组会pre"、"开题Beamer"。
+license: MIT
 ---
 
 # Slide-Making Skill (paper → academic talk)
@@ -201,8 +202,8 @@ Two sources; the layout base is shared.
 
 ## 4. Visual verification loop (standard practice after every revision)
 
-1. `latexmk -pdfxe presentation_beamer.tex` (or xelatex ×3) — compile to
-   0 errors.
+1. `latexmk -pdfxe <deck>.tex` (bundled skeletons: `conference.tex` /
+   `defense.tex`; or xelatex ×3) — compile to 0 errors.
 2. `pdftoppm -png -r 120` render all pages; run `scripts/contact_sheet.py` to
    build a contact sheet.
 3. Inspect with your image-reading capability (e.g. the Read tool directly on
@@ -250,7 +251,7 @@ needed".
 ### 6.1 Compliant pptx packaging (PDF→images→official template)
 
 ```bash
-pdftoppm -png -r 300 presentation.pdf /tmp/slide-png       # 300 dpi, 1890×1063
+pdftoppm -png -r 300 conference.pdf /tmp/slide-png         # 300 dpi, 1890×1063
 python scripts/package_pptx.py official-template.pptx /tmp/slide-png -o packaged.pptx
 ```
 The script codifies the full procedure and the red lines: `~$` lock-file check

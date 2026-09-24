@@ -1,6 +1,6 @@
 ---
 name: reference-verifying
-description: 论文参考文献真实性与书目准确性核查（投稿前体检）。当用户要求「检查参考文献」「核查引用是否真实存在」「这些引用是不是编造的/幻觉的」「文献体检」「citation check」「verify references」，或提到预印本要不要升级为正式版、arXiv 链接要不要换官方链接时使用。输入支持 LaTeX 手稿（外部 .bib 或内嵌 thebibliography）与纯引用清单；三层方法：官方 API 机核（CrossRef / arXiv / OpenAlex / PMLR / OpenReview / ACL Anthology / NeurIPS，命令取事实、零模型回忆）→ 机核未决条目联网核查（证据必须带可访问 URL）→ 存疑结论独立复核；输出字段级核对表、严重度分级与预印本升级建议。学科不限。
+description: 论文参考文献真实性与书目准确性核查（投稿前体检）。当用户要求「检查参考文献」「核查引用是否真实存在」「这些引用是不是编造的/幻觉的」「文献体检」「引用核查」「检查 bib」「citation check」「verify references」，或提到预印本要不要升级为正式版、arXiv 链接要不要换官方链接时使用。输入支持 LaTeX 手稿（外部 .bib 或内嵌 thebibliography）与纯引用清单；三层方法：官方 API 机核（CrossRef / arXiv / OpenAlex / PMLR / OpenReview / ACL Anthology / NeurIPS，命令取事实、零模型回忆）→ 机核未决条目联网核查（证据必须带可访问 URL）→ 存疑结论独立复核；输出字段级核对表、严重度分级与预印本升级建议。学科不限。
 license: MIT
 ---
 
@@ -29,7 +29,7 @@ uv run skills/reference-verifying/scripts/ref_machine_check.py manuscript.tex   
 uv run skills/reference-verifying/scripts/ref_machine_check.py refs.bib --tex manuscript.tex   # 外部 bib
 ```
 
-脚本产出（markdown + JSON）：每条的 DOI/arXiv 编号、CrossRef 官方记录（题名 / 首作者 / 年份 / 期刊）、arXiv 官方记录（题名 / 首作者 / 发布年 / **journal_ref / comment**——预印本升级检查的关键字段）、条目内全部 URL 的 HTTP 状态。请求全部经 curl（尊重代理环境变量），单条重试、逐条串行。
+脚本产出（默认 markdown 打到 stdout；`--json refs.json` / `--md report.md` 落盘，`--skip-links` 跳过 URL 状态检查）：每条的 DOI/arXiv 编号、CrossRef 官方记录（题名 / 首作者 / 年份 / 期刊）、arXiv 官方记录（题名 / 首作者 / 发布年 / **journal_ref / comment**——预印本升级检查的关键字段）、条目内全部 URL 的 HTTP 状态。请求全部经 curl（尊重代理环境变量），单条重试、逐条串行。
 
 **API 事实表是事实源**：阶段 2 的字段比对只允许对照这张表与脚本未覆盖的联网证据，不允许对照模型记忆。
 
@@ -101,7 +101,7 @@ uv run skills/reference-verifying/scripts/ref_machine_check.py refs.bib --tex ma
 
 严重度分级沿用：**必须修正**（虚构作者、文献不存在、有正式版未升级）/ **建议核对**（首字母、页码、链接 hygiene）/ **仅供参考**（未引用 bibitem 等）/ **无法验证**（多源无果，保留人工）。
 
-修订执行（用户确认后）：bibitem 字段级改动 + label 年份 + cite key 更名（全文 `\citep` 联动，grep 确认无遗漏）+ `latexmk -pdf` 重编译 + 从成品 PDF 抽文本（`mutool draw -F txt`，本机无 pdftotext）验证渲染生效。
+修订执行（用户确认后）：bibitem 字段级改动 + label 年份 + cite key 更名（全文 `\citep` 联动，grep 确认无遗漏）+ `latexmk -pdf` 重编译 + 从成品 PDF 抽文本（`mutool draw -F txt`；无 mutool 的机器用 `pdftotext`）验证渲染生效。
 
 ## 环境坑速查（2026-09 实测）
 

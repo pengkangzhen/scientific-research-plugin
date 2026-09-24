@@ -5,8 +5,8 @@ description: >
   revision: locate each pending reviewer comment in the response letter, propose
   manuscript changes (ADD/MODIFY/DELETE) for user confirmation, apply
   \changed{}/\deleted{} markup, compile both PDFs, and update the response letter
-  with professional tone templates. 触发词："回复审稿意见"、"逐条回应审稿人"、"rebuttal"、
-  "response letter"、"审稿修改"、"改稿回应审稿人"。Use when the user receives reviewer
+  with professional tone templates. 触发词："回复审稿意见"、"审稿意见回复"、"逐条回应审稿人"、"rebuttal"、
+  "response letter"、"response to reviewers"、"reviewer comments"、"审稿修改"、"改稿回应审稿人"。Use when the user receives reviewer
   comments and needs to revise the manuscript and write the response letter.
 license: MIT
 ---
@@ -139,8 +139,8 @@ Dispatch the **jargon-check** subagent once in `full` mode to audit terminology 
 ## Key Constraints
 
 1. **One by one**: Process exactly one reviewer comment at a time; move to the next only after completion
-2. **Propose before executing**: Always present the modification plan and obtain user confirmation before editing files
-3. **Markup consistency**: If the project uses a markup package, always use `\changed{}`/`\deleted{}` in the manuscript — never replace original text directly
-4. **Response letter format**: Always use `enumerate` + `quote` format; do not use `longtable`
+2. **Propose before executing**: Always present the modification plan and obtain user confirmation before editing files — the author must stay in control of every change to the manuscript
+3. **Markup consistency**: If the project uses a markup package, always use `\changed{}`/`\deleted{}` in the manuscript — never replace original text directly, or editors and co-authors lose the ability to see what changed in response to which comment
+4. **Response letter format**: Always use `enumerate` + `quote` format; do not use `longtable` — it is fragile across letter templates and breaks copy-paste into submission systems
 5. **Line number references**: Always cite manuscript line numbers in proposals so the user can locate changes
 6. **Response tone**: Every response must include a professional acknowledgment, selecting the appropriate template based on comment type

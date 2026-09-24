@@ -14,6 +14,9 @@
     load_style()            # 中文图：load_style(zh=True)
     # ... 绘图（每条序列带 label=，收尾 ax.legend()）...
     save_fig(fig, "fig5_convergence", outdir="figures")
+
+sys.path 里的 ~/.agents/skills/... 是 install.sh 软链安装的路径；插件市场直装的机器上，
+改为插件缓存内的对应 scripts 目录（本模块自身用 _SKILL_DIR 定位样式，不受影响）。
 """
 
 from __future__ import annotations

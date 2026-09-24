@@ -1,6 +1,6 @@
 ---
 name: zotero-paper-fetching
-description: 批量检索文献、下载 PDF 并入库 Zotero 的完整管线。当用户提供文献/引用列表（Markdown 编号列表、参考文献节选、DOI 清单、arXiv ID 等），要求"搜索下载入库 Zotero""把这些文献加到 Zotero""下载 PDF 并归类""下载 arXiv 预印本"时使用。覆盖：CrossRef / arXiv / OpenAlex 检索补全元数据 → Zotero 入库归类打标 → 按出版商分层下载 PDF（OA 直链 / 仓库反爬 / 校园 VPN 付费墙）→ 挂载或落盘报告。适用于运筹学、供应链韧性、物流网络、风险建模等领域。
+description: 批量检索文献、下载 PDF 并入库 Zotero 的完整管线。当用户提供文献/引用列表（Markdown 编号列表、参考文献节选、DOI 清单、arXiv ID 等），要求"搜索下载入库 Zotero""把这些文献加到 Zotero""下载 PDF 并归类""下载 arXiv 预印本""找文献""文献下载"（英文如 "find papers" / "add to Zotero"）时使用。覆盖：CrossRef / arXiv / OpenAlex 检索补全元数据 → Zotero 入库归类打标 → 按出版商分层下载 PDF（OA 直链 / 仓库反爬 / 校园 VPN 付费墙）→ 挂载或落盘报告。适用于运筹学、供应链韧性、物流网络、风险建模等领域。
 license: MIT
 ---
 
@@ -218,7 +218,7 @@ CrossRef/OpenAlex 对中文文献覆盖有限：CNKI / 万方通过浏览器搜�
 
 ### 相关路由
 
-- 文献阅读与笔记走 zotero-paper-note / paper-reader 技能。
+- 文献阅读与笔记走 zotero-paper-note 技能。
 - 文献综述先 `zotero_synthesize_annotations` 汇总高亮与笔记，再动笔综合。
 - 检索 GitHub 仓库 / 网页调研用 zread、web_reader；引用代码带 file:line。
 

@@ -1,6 +1,7 @@
 ---
 name: term-audit
-description: 学术黑话批量审计（term audit）——两段式漏斗审一篇 LaTeX 手稿的名词术语：确定性脚本提取候选名词短语并按五信号排序，分批派 jargon-check terms 模式并行审计，归一化变体分组 + 合并复查术语漂移。当用户说"审一下术语""检查黑话/名词""术语要统一""投稿前术语核查"，或要把 jargon-check 跑在全篇论文上（而不只是一段话）时使用。黑话病理单位是高度凝练的多词复合名词（controller-level execution 类），本技能就是为它们设计的批量漏斗。
+description: 学术黑话批量审计（term audit）——两段式漏斗审一篇 LaTeX 手稿的名词术语：确定性脚本提取候选名词短语并按五信号排序，分批派 jargon-check terms 模式并行审计，归一化变体分组 + 合并复查术语漂移。当用户说"审一下术语""检查黑话/名词""术语要统一""投稿前术语核查""术语一致性"，或要把 jargon-check 跑在全篇论文上（而不只是一段话），或说 "check terminology" / "terminology audit" 时使用。黑话病理单位是高度凝练的多词复合名词（controller-level execution 类），本技能就是为它们设计的批量漏斗。
+license: MIT
 ---
 # term-audit：名词黑话批量审计
 
@@ -37,6 +38,7 @@ uv run skills/term-audit/scripts/extract_terms.py manuscript.tex \
 - `--baseline`（可选）：你自己已发表论文的 glob。基线缺席 +2 分，是"这词不像你写的"信号；不给则跳过该信号。
 - 五信号：频次、结构位置（title/abstract/section）、style 黑名单命中（见下）、日常词拼接比、基线缺席。多词复合短语是主目标；单名词只走 style 黑名单侧道且豁免最低频次。
 - 黑名单来自 Kobak et al. (Science Advances 2025) 的 900 超额词表（`data/excess_words.csv`，MIT），来源与许可见 `data/README.md`。
+- 参数缺省即 `--top 60 --min-count 2 --batch-size 20`：候选上限 60 条、最低出现 2 次、每批 20 条；术语密集的长稿或要捞低频新造词时，调大 `--top`、调低 `--min-count`。
 
 ## ② 分批派审
 
@@ -54,6 +56,8 @@ uv run skills/term-audit/scripts/extract_terms.py manuscript.tex \
 ```
 
 要点：审计员逐术语 `Grep -n` 自取上下文与行号，判定框架、四档判定、防过度审计规则全部沿用 jargon-check 原文，工单不重复。
+
+**降级路径**：当前环境没有子代理机制（或 jargon-check 未安装）时，在主会话按 jargon-check 的 terms 模式契约逐批自审——四档判定、白名单与只读纪律原样沿用，并在终报告注明「审计非隔离上下文」。
 
 ## ③ 变体分组与合并
 

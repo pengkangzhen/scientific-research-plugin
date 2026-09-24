@@ -4,7 +4,7 @@ description: >
   语言润色 (language polishing) — Academic English paper polishing for LaTeX manuscripts.
   Polishes grammar, word choice, sentence structure, logic flow, and academic tone while
   preserving all LaTeX markup; does NOT judge scientific content (use paper-review for that).
-  触发词："润色"、"语言润色"、"论文润色"、"改英语"、"帮我改这段的英文"、"检查语言质量"。
+  触发词："润色"、"语言润色"、"论文润色"、"改英语"、"改写"、"帮我改这段的英文"、"检查语言质量"、"检查语法"、"paraphrase"。
   Use this skill whenever the user asks to polish, refine, improve, or proofread a paper,
   manuscript, or LaTeX file, or mentions language editing, writing quality, or English
   improvement for academic writing. Also trigger on phrases like "check my English",
@@ -160,7 +160,7 @@ Precision (2):
 
 ## Follow-up: Terminology Audit
 
-Polishing is a high-risk moment for introducing fresh shorthand: rewording a sentence often swaps in a new label for an existing concept. After completing a polish of paragraph scale or larger, **automatically dispatch** the **jargon-check** subagent (independent buzzword/terminology auditor) on the polished passage — do not ask the user first: the audit is read-only, and only applying its suggested revisions needs the author's confirmation. Skip the dispatch for `phrase`-scale polish and "light polish" requests. The dispatch brief must include: the file path or pasted text, audit mode (`phrase`/`passage`/`full`), and the project's terminology whitelist (method/agent/step names). Do not perform this audit yourself in the main session: the independence is the point.
+Polishing is a high-risk moment for introducing fresh shorthand: rewording a sentence often swaps in a new label for an existing concept. After completing a polish of paragraph scale or larger, **automatically dispatch** the **jargon-check** subagent (independent buzzword/terminology auditor) on the polished passage — do not ask the user first: the audit is read-only, and only applying its suggested revisions needs the author's confirmation. Skip the dispatch for `phrase`-scale polish and "light polish" requests. The dispatch brief must include: the file path or pasted text, audit mode (`phrase`/`passage`/`full`), and the project's terminology whitelist (method/agent/step names). Do not perform this audit yourself in the main session: the independence is the point. If the jargon-check subagent is unavailable in the current environment, say so and skip the audit — a same-context self-audit defeats the independence and must not be faked.
 
 ## Edge Cases
 

@@ -1,6 +1,6 @@
 ---
 name: figure-plotting
-description: 数据可视化与绘图技能。用户要求画图、绘图、出图、作图、重画，或提到 figure、plot、matplotlib、数据图、示意图、算法流程图、框架图、拓扑图、柱状图、折线图、热力图、帕累托前沿、网络图、收敛曲线、中文图、学位论文图、海运航线、地理网络、世界地图、避陆，或问 drawio/math/数学公式/数学符号/LaTeX 渲染等任何图形与公式渲染问题时使用。覆盖数据图（Python/matplotlib）与示意图/流程图（drawio）的完整规范：图契约、Times New Roman 字体（中文宋体回退）、色盲安全配色、图例强制审计（序列缺图例导出即报错）、矢量 PDF 导出与字体嵌入验证、脚本落盘与迭代约定、海运航线 searoute 避陆生成与穿陆检测。
+description: 数据可视化与绘图技能。用户要求画图、绘图、出图、作图、重画，或提到 figure、plot、matplotlib、visualization、数据图、示意图、算法流程图、框架图、拓扑图、柱状图、折线图、散点图、箱线图、热力图、帕累托前沿、网络图、收敛曲线、中文图、学位论文图、海运航线、地理网络、世界地图、避陆，或问 drawio/math/数学公式/数学符号/LaTeX 渲染等任何图形与公式渲染问题时使用。覆盖数据图（Python/matplotlib）与示意图/流程图（drawio）的完整规范：图契约、Times New Roman 字体（中文宋体回退）、色盲安全配色、图例强制审计（序列缺图例导出即报错）、矢量 PDF 导出与字体嵌入验证、脚本落盘与迭代约定、海运航线 searoute 避陆生成与穿陆检测。
 license: MIT
 ---
 
@@ -148,6 +148,7 @@ save_fig(fig, "fig5_convergence", outdir="figures")
 
 - `save_fig` 导出前先做**图例审计**：同轴 ≥2 组视觉可分的序列无图例、或图例缺 entry（有序列没写 `label=`）都报错拒绝导出；`check_legends=False` 豁免仅限单序列或全部序列已就地标注的图。随后导出 `figures/<name>.pdf`、校验非空、核对字体全部嵌入（pdffonts emb=yes），通过后回显绝对路径。
 - 论文仓库需脱离本机自包含（合作者复现/投稿）时，把 `figstyle.py` 与 `publication.mplstyle` 拷入仓库 `figures/` 目录，此后以仓库内副本为该论文的唯一事实源。
+- 上面 `sys.path` 里的 `~/.agents/skills/...` 是 install.sh 软链安装的路径；经插件市场直装（没跑过 install.sh）的机器上，改为插件缓存内的对应目录（如 `~/.zcode/cli/plugins/cache/scientific-research-plugin/<版本>/skills/figure-plotting/scripts`）。
 
 ## 执行约定
 
