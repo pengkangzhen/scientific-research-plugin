@@ -1,30 +1,36 @@
 ---
 name: academic-ppt
 description: >
-  学术会议演讲 PPT/slides 制作 — 从论文稿件（LaTeX/PDF）到可现场演讲的完整流程：
+  学术演讲 PPT/slides 制作 — 从论文稿件（LaTeX/PDF）到可现场演讲的完整流程：
   LaTeX Beamer 路线 + 视觉设计系统（有官方模板则提取背景复用，无模板则自建色板/版式）+
   数学公式与论文原图复用 + 讲稿撰写与时长控制 + PDF→图片→官方模板交付包装 + 演讲者备注与现场预案。
-  IMHFC 2026 会议实战多轮迭代沉淀。
+  内置两套可复用模板按需加载：学术会议路线 beamer-deck-template（IMHFC 2026 实战沉淀）、
+  学位开题/答辩/组会路线 DMU Beamer 主题包（校方 pptx 复刻）。
   触发词："会议PPT"、"演讲PPT"、"做幻灯片"、"把论文做成PPT"、"presentation"、"slides"、
-  "Beamer"、"会议模板"、"讲稿"、"演讲稿"、"presentation speech"、"演讲者备注"、"贴回模板"。
+  "Beamer"、"会议模板"、"讲稿"、"演讲稿"、"presentation speech"、"演讲者备注"、"贴回模板"、
+  "开题报告"、"答辩PPT"、"组会汇报"、"组会pre"、"DMU主题"、"开题Beamer"。
   Use this skill whenever the user wants to turn a paper/manuscript into conference or seminar
   presentation slides, build a Beamer deck, fit slides into the official template,
   write a time-budgeted talk script, or package a slide PDF back into
-  a pptx with speaker notes — even if they never say "PPT" (e.g. "下周要用这篇论文做口头报告",
+  a pptx with speaker notes — also for thesis proposal/defense/group-meeting decks
+  (DMU theme bundled) — even if they never say "PPT" (e.g. "下周要用这篇论文做口头报告",
   "15 分钟的 talk 怎么准备").
 license: MIT
 ---
 
-# Academic PPT Skill（论文 → 会议演讲）
+# Academic PPT Skill（论文 → 学术演讲）
 
-从论文制作学术会议演讲材料。本技能是 IMHFC 2026 全流程（2026-08 两周、14 个会话、多轮修改）
-沉淀的作业程序，核心价值在于路线已验证、坑已有数值级解法，不要重新试错。
+从论文制作学术演讲材料（会议报告与学位开题/答辩/组会）。本技能沉淀自 IMHFC 2026 会议
+全流程（2026-08 两周、14 个会话、多轮修改）与 DMU 开题报告 Beamer 主题（2026-09），
+核心价值在于路线已验证、坑已有数值级解法，不要重新试错。
 
 ## 0. 典型作业顺序
 
 1. 收集输入：论文源文件（manuscript.tex）、会议官方模板（若有）、时长档位、语言（通常英文）。
 2. 按 §1 定路线（结论优先，勿从零调研工具）。
-3. Beamer 路线：§2 确立视觉设计系统（有官方模板则提取复用，无则自建）→ 写 tex → §4 验证循环 → §3 排版修法随改随查。
+3. Beamer 路线：§2 确立视觉设计系统——**整份复制 §8 对应模板再改内容**（会议报告 →
+   beamer-deck-template.tex；DMU 开题/答辩/组会 → dmu-beamer/defense.tex；有官方 pptx
+   模板则提取背景替换）→ 写 tex → §4 验证循环 → §3 排版修法随改随查。
 4. 讲稿：§5 配合时长撰写/精简，术语与幻灯片、论文三方一致。
 5. 交付：§6 按会议要求包装（合规 pptx / 备注栏 / 现场预案）。
 
@@ -45,6 +51,7 @@ license: MIT
 
 - 不平行维护双格式：中期只留 Beamer，最后一步才包装回 pptx。
 - 若必须原生 pptx 且要保真渲染验证：用 AppleScript（osascript）驱动真实 PowerPoint 导出 PDF/PNG 核对，不信任何 HTML 渲染器。
+- 学位开题 / 答辩 / 组会（DMU 场合）：直接用内置 dmu-beamer 主题（§2.4），不走 pptx 提取。
 
 ## 2. 视觉设计系统：先确立，再写内容帧
 
@@ -66,20 +73,33 @@ license: MIT
 - 条带避让最终解法：footline 精确预留条带高度，正文永不进入条带区；不是删背景。
 - 转场页复用 bg_cover 照片时，按照片亮度调文字配色（亮照片上标题白→navy）。
 - 色板从模板主题色提取进 `\definecolor`（IMHFC 实例）：navy `0E2841`、orange `E97132`、teal `156082`、gray `5A6B7B`、light `F2F6F9`。
+- IMHFC 系会议**不必重走提取流程**：提取成品已入库 `assets/imhfc-beamer/`（三张背景 + 官方 pptx 原件 + 接线说明），复制 `figs/` 后三行填入 `\Bg*` 宏即成官方模式。
 
 ### 2.2 无官方模板 → 自建设计系统
 
 - 原则：学术场合克制。白底黑字正文为基调；**单一主色（深蓝/navy 类）+ 单一强调色（橙/teal 类）+ 灰色辅助**，全部 `\definecolor` 落地后再动手写帧。
 - 色板来源：学校 VI、论文图表既有配色、或高对比经典组合；上面 IMHFC 那套五色已实战验证，可直接沿用换色值。
 - 明度对比全局一致：反白字色块只用于少量强调且成体系出现，不要与白底黑字正文大面积混排（可读性冲突，用户实测提出过）。
-- 可选起点：成熟 Beamer 主题（如 metropolis，可选字体一律 `\IfFontExistsTF` 守护、缺字体自动回退）；或直接复用资产索引里 presentation_beamer.tex 的 preamble——frametitle/divider/callout 整套已验证，换色板即换风格。
+- 可选起点：成熟 Beamer 主题（如 metropolis，可选字体一律 `\IfFontExistsTF` 守护、缺字体自动回退）；
+  或直接整份复制 `assets/beamer-deck-template.tex`——preamble 与 17 类帧型全套已验证，改五处色值即换风格。
 - 无背景图就**不挂** `\usebackgroundtemplate`：白底是 Beamer 默认，天然避开 2.1 的优先级坑与单位换算坑；分隔页用主色纯填充即可。
 
 ### 2.3 版式基座（两条路通用）
 
 - 去导航符号 `\setbeamertemplate{navigation symbols}{}`、`\usefonttheme{professionalfonts}`；amsmath + unicode-math，数学字体（如 Fira Math）用 `\IfFontExistsTF` 守护。
 - frametitle 自定义模板：主色粗体大标题 + 强调色细线（如 13mm×1.1pt），眉注见 §3。
-- `\divider`（分隔页：大编号 + 标题）与 `\callout`（强调卡片）沉淀为可复用宏，宽度规则见 §3。
+- `\divider`（分隔页：大编号 + 标题）与 `\callout`（强调卡片）已沉淀为模板内置宏（beamer-deck-template.tex），宽度规则见 §3。
+
+### 2.4 内置现成主题：dmu-beamer（学位开题 / 答辩 / 组会）
+
+- `assets/dmu-beamer/`：`beamerthemeDMU.sty`（由校方开题 pptx 复刻：顶部横幅校名/院名字标 +
+  底部章节进度条 + 目录/转场页/封面）+ `defense.tex`/`defense.pdf`（脱敏开题答辩骨架，
+  25 页全帧型，占位文本即填写说明；帧型速查见其 README）+ `dmu-emblem.png` + `README.md`。
+- 用法：sty 与校徽放文稿同目录，`\usetheme{DMU}`；四个内容组件覆盖高频版式——
+  `dmupoint`（左橙竖条要点分组）、`dmualert`（不足/风险警示条）、`dmucard`（多列并排卡片）、
+  `dmuband`（深蓝底白字结论横幅）。
+- 字体已全量 `\IfFontExistsTF` 守护：macOS 出原版效果（鸿蒙黑体 + 行楷 + Zapfino 花体），
+  缺字体的平台（Windows/WSL/Overleaf）自动回退仍可编译。
 
 ## 3. Beamer 排版坑与修法（实际发生过的问题）
 
@@ -115,7 +135,8 @@ license: MIT
   - Q&A 防御点保留口播（如"租赁无上限 ⇒ 模型恒有可行解"能当场挡住可行性质疑）；
   - 上一页刚说过的内容不重复列举；
   - 破折号要给读法（— includes …）；数字按口语写（62 percent）。
-- 讲稿结构：逐页 `[Slide: 标题]` 标记对齐 + 头部全局节奏表 + 关键数字表 + Q&A 预案。
+- 讲稿结构：逐页 `[Slide: 标题]` 标记对齐 + 头部全局节奏表 + 关键数字表 + Q&A 预案；
+  骨架见 `assets/speech-template.md`，整份复制填写。
 - **术语三方一致**（论文 / 幻灯片 / 讲稿同一次全局替换）；论文在审稿周期内时不能单方面改词，
   记入修回待办等同步替换。
 - 叙事打磨：否定式对比（"not computation, but cognitive"）开场太冲——改为递进埋线，最后点题；deck 与讲稿同步改（一次 3+5 处）。
@@ -150,12 +171,29 @@ pdftoppm -png -r 300 presentation.pdf /tmp/imhfc-slide-png   # 300dpi，1890×10
 - 说"修好了"之前：改动落盘 + 重编译 + 确认输出文件 mtime + 渲染验证，四步缺一不可。
 - 平行双格式是时间黑洞：中期砍、末期合。
 
-## 8. 可复用资产索引
+## 8. 可复用资产（内置 assets/，按需加载）
 
-- WSL 真源仓库 `~/projects/research/imhfc-ecr-mcnf/`：
-  - `presentation/`：presentation_beamer.tex（整套设计系统可直接改内容复用）、presentation_beamer.pdf、
-    presentation_speech.md（讲稿范本：节奏表+检查点+Q&A）、模板及原始备份；
-  - `figs/beamer_bg/`：bg_cover.jpg / bg_content.jpg / bg_closing.jpg（提取好的三张背景）。
-- 新会议最快复用路径：有官方模板 → 解压取三张背景替换 beamer_bg/，并从模板主题色替换 `\definecolor` 色板；
-  无模板 → 直接沿用 presentation_beamer.tex 的 preamble 设计系统、只换色板。
+两套模板对应两条路线，开工时按场合**整份复制对应文件**再改内容，不要从零写：
+
+- **学术会议路线** `assets/beamer-deck-template.tex`：IMHFC 2026 实战 deck 泛化的完整骨架——
+  preamble 设计系统（五处色值、frametitle 眉注、footline 条带避让、`\divider`/`\callout` 宏）
+  + 17 类帧型（封面/目录/转场/要点/三卡片/通栏纵排/左文右图/示意图/表格/数学×2/总览/
+  路由表/结果大数字/对比结果/构成启示/结论/封底），占位内容即填写说明；
+  自建模式零外部资产直接可编译，官方模板模式改 `\BgCover`/`\BgContent`/`\BgClosing` 三个宏。
+- **学位开题/答辩/组会路线** `assets/dmu-beamer/`：beamerthemeDMU.sty + defense.tex/.pdf（脱敏骨架）+
+  dmu-emblem.png + README（详见 §2.4）。
+- **IMHFC 系会议** `assets/imhfc-beamer/`：官方模板提取成品——三张整页背景（figs/beamer_bg/）+
+  官方 pptx 原件（§6.1 包装底版）+ README；与 beamer-deck-template.tex 三行接线即成官方模式，
+  色板即模板默认五色。
+- **讲稿骨架** `assets/speech-template.md`：节奏表 + 关键数字表 + `[Slide:]` 逐页标记 +
+  累计检查点 + Q&A 预案库，配合 §5 方法论使用。
+- 实战实例（模板的来源与填好的参照）：
+  - 会议 deck：WSL `~/projects/research/imhfc-ecr-mcnf/presentation/`
+    （presentation_beamer.tex、presentation_speech.md、presentation-template.pptx、
+    figs/beamer_bg/ 三张提取背景）。
+  - 开题实战 deck（未脱敏，骨架的脱敏来源）：Mac
+    `~/Documents/code/sc_resilience_geo/docs/开题报告/beamer-dmu/defense.tex`。
+- 最快复用路径：IMHFC 系会议 → 复制 imhfc-beamer 的 `figs/` + 三行接线；
+  其他会议有官方模板 → 解压取三张背景填入 `\Bg*` 宏 + 换五处色值；
+  无模板 → 默认自建模式直接开写；DMU 场合 → 复制 dmu-beamer 直接填内容。
   之后重写 frames 内容 → 按 §4 循环验证 → 按 §6 交付。

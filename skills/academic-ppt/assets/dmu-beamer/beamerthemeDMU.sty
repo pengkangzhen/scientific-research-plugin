@@ -1,0 +1,326 @@
+% =========================================================================
+% beamerthemeDMU.sty — 大连海事大学开题报告 Beamer 主题
+% -------------------------------------------------------------------------
+% 视觉规格复刻自 docs/开题报告/开题报告.pptx（2026-09 版）：
+%   * 顶部深蓝横幅 #292F89（占页高 9.2%），左起校徽（反白）、校名字标
+%     （行楷+Zapfino 白字）、细竖线、学院名字标（同款字体同号）、收尾竖线
+%   * 目录/章节大字深蓝 #27308E（PPT 目录页表格字色）
+%   * 强调色 #00A2FF 取自 PPT 主题 accent1；警告色 #FF644E 取自 accent5
+%   * 底部居中页码（PPT 母版「幻灯片编号」位置）
+%
+% 编译：xelatex（必须，字体经 fontspec/xeCJK 加载）
+%   latexmk -xelatex example.tex
+%
+% 字体已全部 \IfFontExistsTF 守护（见下方【字体】一节），跨平台自动回退；
+% 手动替换仍改该节对应行。回退链：HarmonyOS Sans SC → PingFang SC →
+% Noto Sans CJK SC → SimHei；行楷 → KaiTi → FandolKai；Zapfino → 当前西文。
+% =========================================================================
+\ProvidesPackage{beamerthemeDMU}[2026/09/24 DMU proposal beamer theme v1.1]
+
+\RequirePackage{tikz}
+\usetikzlibrary{calc}
+\RequirePackage{etoolbox}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{fontspec}
+\RequirePackage{xeCJK}
+
+% -------------------------------------------------------------------------
+% 颜色：三色制（科研演示规范：主色 + 强调色 + 中性灰，蓝橙互补、色盲友好）
+%   主色 深海军蓝 #1F3864 —— 横幅/标题/进度条/结构元素
+%   强调 暖橙     #E87722 —— 标题横线/编号/关键词强调/不足警示
+%   中性 灰       #595959 —— 次级文字
+% -------------------------------------------------------------------------
+\definecolor{dmuprimary}{HTML}{1F3864}   % 主色 深海军蓝
+\definecolor{dmuhead}{HTML}{1F3864}      % 标题字色（与主色统一）
+\definecolor{dmuaccent}{HTML}{E87722}    % 强调 暖橙
+\definecolor{dmualert}{HTML}{E87722}     % 警示兼用强调橙（三色原则）
+\definecolor{dmugray}{HTML}{595959}      % 次级灰
+
+\setbeamercolor{palette primary}{fg=white,bg=dmuprimary}
+\setbeamercolor{structure}{fg=dmuhead}
+\setbeamercolor{normal text}{fg=black!85}
+\setbeamercolor{frametitle}{fg=dmuhead}
+\setbeamercolor{title}{fg=dmuhead}
+\setbeamercolor{subtitle}{fg=dmugray}
+\setbeamercolor{author}{fg=black!80}
+\setbeamercolor{date}{fg=dmugray}
+\setbeamercolor{institute}{fg=dmugray}
+\setbeamercolor{section in toc}{fg=dmuhead}
+\setbeamercolor{subsection in toc}{fg=black!75}
+\setbeamercolor{itemize item}{fg=dmuhead}
+\setbeamercolor{itemize subitem}{fg=dmuaccent}
+\setbeamercolor{itemize subsubitem}{fg=dmugray}
+\setbeamercolor{enumerate item}{fg=dmuhead}
+\setbeamercolor{caption name}{fg=dmuhead}
+\setbeamercolor{footline}{fg=dmugray}
+
+% block：navy 标题条 + 浅蓝灰正文底
+\setbeamercolor{block title}{fg=white,bg=dmuprimary}
+\setbeamercolor{block body}{fg=black!85,bg=dmuprimary!6}
+% alertblock：红标题条
+\setbeamercolor{block title alerted}{fg=white,bg=dmualert}
+\setbeamercolor{block body alerted}{fg=black!85,bg=dmualert!6}
+% exampleblock：亮蓝标题条
+\setbeamercolor{block title example}{fg=white,bg=dmuaccent}
+\setbeamercolor{block body example}{fg=black!85,bg=dmuaccent!8}
+
+% -------------------------------------------------------------------------
+% 轻量内容组件（同页多条堆叠时替代 block，避免整页重色块）：
+%   dmupoint{标题}  左 accent 竖条分组，无底色，标题深蓝粗体
+%   dmualert{标题}  浅红底 + 左红竖条提示条（不足/风险）
+%   dmucard{标题}   顶部 accent 粗线卡片（用于多列并排）
+%   dmuband         深蓝底白字结论横幅
+% -------------------------------------------------------------------------
+\newtcolorbox{dmupoint}[1]{enhanced, blank,
+  borderline west={1.8pt}{0pt}{dmuaccent},
+  left=3mm, right=1mm, top=1mm, bottom=1mm,
+  before skip=2.4mm, after skip=0.6mm,
+  before upper={{\normalsize\color{dmuhead}\bfseries #1\par}\vskip0.8mm}}
+
+\newtcolorbox{dmualert}[1]{enhanced,
+  colback=dmualert!6, colframe=dmualert!6, boxrule=0pt, arc=0mm,
+  borderline west={1.8pt}{0pt}{dmualert},
+  left=3mm, right=1mm, top=1mm, bottom=1mm,
+  before skip=2.4mm, after skip=0.6mm,
+  before upper={{\normalsize\color{dmualert}\bfseries #1\par}\vskip0.6mm}}
+
+\newtcolorbox{dmucard}[1]{enhanced,
+  colback=dmuprimary!5, colframe=dmuprimary!5, boxrule=0pt, arc=1.2mm,
+  left=2mm, right=2mm, top=1.4mm, bottom=1.2mm,
+  before skip=1mm, after skip=1mm,
+  before upper={{\normalsize\color{dmuhead}\bfseries #1\par}\vskip1mm}}
+
+\newtcolorbox{dmuband}{enhanced,
+  colback=dmuprimary, colframe=dmuprimary, boxrule=0pt, arc=1.2mm,
+  left=3mm, right=3mm, top=1.8mm, bottom=1.8mm,
+  before skip=2.6mm, after skip=1mm,
+  before upper={\color{white}}}
+
+% -------------------------------------------------------------------------
+% 字体（xelatex + fontspec/xeCJK）——平台探测 + 自动回退（SKILL §2.3 教训：
+% 字体必须守护）。探测规则：多词名走 fontconfig（静默），单词名缺失时 fontspec
+% 会走 kpathsea 文件查找并在日志留错，故 macOS 用多词名 HarmonyOS Sans SC 探测，
+% 非 macOS 分支只探测常见已装字体、花体不再探测。
+%   macOS/已装鸿蒙：原版规格（HarmonyOS Sans SC + Songti SC + 行楷 + Zapfino）
+%   其他平台：正文 SimHei→Noto Sans CJK SC→FandolHei；宋体 SimSun→FandolSong；
+%             行楷 KaiTi→AR PL KaitiM GB→FandolKai→SimSun（仿粗）；花体→当前西文
+% -------------------------------------------------------------------------
+\IfFontExistsTF{HarmonyOS Sans SC}{%
+  \setsansfont[BoldFont={HarmonyOS Sans SC Bold}]{HarmonyOS Sans SC}%
+  \setCJKsansfont[BoldFont={HarmonyOS Sans SC Bold}]{HarmonyOS Sans SC}%
+  \IfFontExistsTF{Songti SC}{\setCJKfamilyfont{zhsong}{Songti SC}}{}%
+  \IfFontExistsTF{Xingkai SC Bold}{%
+    \newCJKfontfamily\dmu@wmcn{Xingkai SC Bold}% 行楷-简；PPT 源写 Xingkai TC Bold（同套华文行楷繁体版）
+  }{\newCJKfontfamily\dmu@wmcn{KaiTi}}%
+  \IfFontExistsTF{Zapfino}{\newfontfamily\dmu@wmen{Zapfino}}{\newcommand{\dmu@wmen}{}}%
+}{%
+  \IfFontExistsTF{SimHei}{%
+    \setsansfont[AutoFakeBold=2.5]{SimHei}\setCJKsansfont[AutoFakeBold=2.5]{SimHei}%
+  }{\IfFontExistsTF{Noto Sans CJK SC}{%
+    \setsansfont[BoldFont={Noto Sans CJK SC Bold}]{Noto Sans CJK SC}%
+    \setCJKsansfont[BoldFont={Noto Sans CJK SC Bold}]{Noto Sans CJK SC}%
+  }}%
+  \IfFontExistsTF{SimSun}{\setCJKfamilyfont{zhsong}{SimSun}}{}%
+  \IfFontExistsTF{KaiTi}{%
+    \newCJKfontfamily\dmu@wmcn[AutoFakeBold=2.5]{KaiTi}%
+  }{\newCJKfontfamily\dmu@wmcn{SimSun}}%
+  \newcommand{\dmu@wmen}{}% Zapfino 花体仅 macOS 有：回退当前西文字体
+}
+
+% -------------------------------------------------------------------------
+% 版式几何：横幅高 8.3mm（PPT 35mm/381mm × 90mm），页码底栏
+% -------------------------------------------------------------------------
+\newlength{\dmubannerheight}
+\setlength{\dmubannerheight}{8.3mm}
+\newcommand{\dmuuniv}{大连海事大学}
+\newcommand{\dmuuniven}{Dalian Maritime University}
+\newcommand{\dmucollege}{交通运输工程学院}
+\newcommand{\dmucollegeen}{College of Transportation Engineering}
+
+\usefonttheme{professionalfonts}
+\useinnertheme{default}
+\useoutertheme{default}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+
+% 列表符号：一级圆点 navy，二级短横 accent，三级灰色小星
+\setbeamertemplate{itemize item}{\textcolor{dmuhead}{\raisebox{1.2pt}{\small$\bullet$}}}
+\setbeamertemplate{itemize subitem}{\textcolor{dmuaccent}{--}}
+\setbeamertemplate{itemize subsubitem}{\textcolor{dmugray}{$\ast$}}
+
+% -------------------------------------------------------------------------
+% headline：深蓝横幅（校徽 + 校名字标 + 竖线 + 学院名字标 + 竖线）
+% 校名/院名均为文字排版（华文行楷 + Zapfino 花体，与 PPTX slide2 同源
+% 同规格），两侧竖线经 calc 锚定字标节点实际宽度；改字号/文案无需重算坐标
+% -------------------------------------------------------------------------
+\newcommand{\dmu@wm@cn}[1]{\color{white}{\dmu@wmcn\fontsize{9.4}{10.2}\selectfont #1}}
+\newcommand{\dmu@wm@en}[1]{\color{white}{\dmu@wmen\fontsize{3.2}{3.2}\selectfont #1}}
+\newcommand{\dmu@banner}{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[dmuprimary]
+      (current page.north west) rectangle
+      ([yshift=-\dmubannerheight]current page.north east);
+    \node[anchor=west, inner sep=0pt]
+      at ([xshift=1.4mm, yshift=-0.5*\dmubannerheight]current page.north west)
+      {\includegraphics[height=5.0mm]{dmu-emblem.png}};
+    \node[anchor=west, inner sep=0pt] (dmu@wmUcn)
+      at ([xshift=7.6mm, yshift=-2.5mm]current page.north west)
+      {\dmu@wm@cn{\dmuuniv}};
+    \node[anchor=west, inner sep=0pt] (dmu@wmUen)
+      at ([xshift=7.6mm, yshift=-5.35mm]current page.north west)
+      {\dmu@wm@en{\dmuuniven}};
+    \draw[white, line width=0.4pt]
+      ($ (dmu@wmUcn.east)+(1.4mm,1.2mm) $) -- ($ (dmu@wmUcn.east)+(1.4mm,-3.0mm) $);
+    \node[anchor=west, inner sep=0pt] (dmu@wmCcn)
+      at ($ (dmu@wmUcn.east)+(2.8mm,0mm) $)
+      {\dmu@wm@cn{\dmucollege}};
+    \node[anchor=west, inner sep=0pt] (dmu@wmCen)
+      at ($ (dmu@wmCcn.west)+(0mm,-2.85mm) $)
+      {\dmu@wm@en{\dmucollegeen}};
+    \draw[white, line width=0.4pt]
+      ($ (dmu@wmCcn.east)+(1.4mm,1.2mm) $) -- ($ (dmu@wmCcn.east)+(1.4mm,-3.0mm) $);
+  \end{tikzpicture}%
+}
+
+\setbeamertemplate{headline}{%
+  \dmu@banner%
+  \vskip0pt%
+  \hbox to 0pt{\hskip0pt\rule{0pt}{\dmubannerheight}\hss}%
+}
+
+% 封面专用环境：保留顶部横幅，隐藏进度条与页码
+\newenvironment{coverframe}
+  {\begin{frame}[plain]\dmu@banner}
+  {\end{frame}}
+
+% frametitle：横幅下方左对齐深蓝粗体 + 标题下 accent 细横线
+\setbeamertemplate{frametitle}{%
+  \vskip2.6mm%
+  \leavevmode%
+  {\color{dmuhead}\bfseries\large \insertframetitle}%
+  \ifx\insertframesubtitle\@empty%
+  \else%
+    {\ \ \color{dmugray}\normalfont\normalsize \insertframesubtitle}%
+  \fi
+  \par\vskip1.3mm%
+  {\color{dmuaccent}\hrule height 0.7pt}%
+  \par\vskip1.4mm%
+}
+
+% footline：底部一行 = contents 进度条（当前节白字高亮、其余灰字，
+% 色块统一为横幅同色蓝紫）+ 右端页码
+\newcommand{\dmusetprogress}[1]{%
+  \def\dmu@progressnames{#1}%
+  \def\dmu@segcount{0}%
+  \foreach \dmu@x in {#1}{%
+    \pgfmathtruncatemacro\dmu@segcount{\dmu@segcount+1}%
+    \xdef\dmu@segcount{\dmu@segcount}}%
+  \pgfmathsetlengthmacro{\dmu@segw}{(\paperwidth-10.6mm-(\dmu@segcount-1)*0.6mm)/\dmu@segcount}%
+}
+\newcommand{\dmu@progressnames}{}
+\newcounter{dmu@seg}
+\setbeamercolor{progress on}{fg=white,bg=dmuprimary}
+\setbeamercolor{progress off}{fg=white!50!dmuprimary,bg=dmuprimary}
+\newcommand{\dmu@progress@seg}[1]{%
+  \ifnum\value{dmu@seg}>0\hspace{0.6mm}\fi
+  \stepcounter{dmu@seg}%
+  \ifnum\insertsectionnumber=\value{dmu@seg}\relax
+    \begin{beamercolorbox}[wd=\dmu@segw,ht=2.4mm,dp=1.0mm,center]{progress on}%
+      \fontsize{6}{6.8}\selectfont #1%
+    \end{beamercolorbox}%
+  \else
+    \begin{beamercolorbox}[wd=\dmu@segw,ht=2.4mm,dp=1.0mm,center]{progress off}%
+      \fontsize{6}{6.8}\selectfont #1%
+    \end{beamercolorbox}%
+  \fi
+}
+
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox to \paperwidth{%
+    \setcounter{dmu@seg}{0}%
+    \foreach \dmu@nm in \dmu@progressnames {%
+      \expandafter\dmu@progress@seg\expandafter{\dmu@nm}%
+    }%
+    \hspace{0.6mm}%
+    \begin{beamercolorbox}[wd=10mm,ht=2.4mm,dp=1.0mm,center]{progress on}%
+      \fontsize{6}{6.8}\selectfont
+      \insertframenumber\,/\,\inserttotalframenumber
+    \end{beamercolorbox}%
+  }%
+}
+
+% -------------------------------------------------------------------------
+% 目录页：callout 条目 = accent 大编号 + 深蓝标题 + 灰色一句话副述
+% （复刻 desktop-wsl imhfc-ecr-mcnf 目录页样式，编号自动）
+% -------------------------------------------------------------------------
+\newcounter{dmu@outl}
+\newenvironment{dmuoutline}{\setcounter{dmu@outl}{0}}{}
+\newcommand{\dmuoutlineitem}[2]{% #1 = 节标题, #2 = 一句话副述
+  \par\vskip1.6mm%
+  \stepcounter{dmu@outl}%
+  \begin{tikzpicture}
+    \node[fill=dmuprimary!6, rounded corners=2pt, inner sep=2.2mm,
+          text width=132mm, align=left]{%
+      {\color{dmuaccent}\bfseries\Large
+       \ifnum\value{dmu@outl}<10 0\fi\arabic{dmu@outl}}\hspace{4mm}%
+      {\color{dmuhead}\bfseries\large #1}\hspace{4mm}%
+      {\color{dmugray}\footnotesize #2}};
+  \end{tikzpicture}\par
+}
+
+% -------------------------------------------------------------------------
+% sectionpage：居中转场页（复刻 imhfc-ecr-mcnf \divider 样式：
+% accent 大编号 / accent 短横线 / 深蓝居中标题 / 灰色斜体一句话副述）
+% 副述用 \dmusetsectiondesc{第一节描述,第二节描述,...} 按节序配置，
+% 不配置则转场页无副述行
+% -------------------------------------------------------------------------
+\newcommand{\dmusetsectiondesc}[1]{\def\dmu@sectiondescs{#1}}
+\newcommand{\dmu@sectiondescs}{}
+\newcounter{dmu@sd}
+\newcommand{\dmu@sectiondesc}{%
+  \setcounter{dmu@sd}{0}%
+  \foreach \dmu@d in \dmu@sectiondescs {%
+    \stepcounter{dmu@sd}%
+    \ifnum\value{dmu@sd}=\insertsectionnumber\dmu@d\fi
+  }%
+}
+\setbeamertemplate{section page}{%
+  \vfill%
+  \begin{center}
+    {\color{dmuaccent}\bfseries\fontsize{40}{40}\selectfont
+     \ifnum\insertsectionnumber<10 0\fi\insertsectionnumber\par}%
+    \vskip2.5mm%
+    {\color{dmuaccent}\rule{40mm}{1.2pt}}\par
+    \vskip5mm%
+    {\color{dmuhead}\bfseries\LARGE \insertsection\par}%
+    \vskip4mm%
+    {\color{dmugray}\itshape\small \dmu@sectiondesc\par}%
+  \end{center}%
+  \vfill%
+}
+\AtBeginSection[]{}
+
+% -------------------------------------------------------------------------
+% 封面：白底 + 中央深蓝大标题 + accent 装饰短线 + 作者区
+% -------------------------------------------------------------------------
+\setbeamertemplate{title page}{%
+  \vfill%
+  \begin{center}
+    {\usebeamercolor[fg]{subtitle}\small\bfseries \insertsubtitle\par}
+    \vskip6mm%
+    {\usebeamercolor[fg]{title}\bfseries\fontsize{19}{26}\selectfont \inserttitle\par}
+    \vskip4mm%
+    \begin{tikzpicture}
+      \fill[dmuprimary] (0,0) rectangle (11mm,1pt);
+      \fill[dmuaccent] (12mm,0) rectangle (22mm,1pt);
+    \end{tikzpicture}\par
+    \vskip10mm%
+    {\usebeamercolor[fg]{author}\normalsize \insertauthor\par}
+    \vskip2mm%
+    {\usebeamercolor[fg]{institute}\small \insertinstitute\par}
+    \vskip1.5mm%
+    {\usebeamercolor[fg]{date}\small \insertdate\par}
+  \end{center}%
+  \vfill%
+}
