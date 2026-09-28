@@ -6,7 +6,7 @@
 ![Skills](https://img.shields.io/badge/skills-10_+_1_subagent-blue)
 ![Harnesses](https://img.shields.io/badge/harnesses-16-orange)
 
-任何任务都是一次科学研究，论文只是最完整的实例。`research-before-build` 纪律层把先例调研带到一切项目；论文管线——文献获取 → 结构化阅读 → 论文出图 → 写作润色 → 参考文献核查 → 投稿前评审 → 审稿回复 → 会议汇报——是它的完整落地。面向运筹学与机器学习研究者。
+任何任务都是一次科学研究，论文只是最完整的实例。`research-before-build` 纪律层在每个探索性任务动手前先查先例；论文管线——文献获取 → 结构化阅读 → 论文出图 → 写作润色 → 参考文献核查 → 投稿前评审 → 审稿回复 → 会议汇报——是它的完整落地。面向运筹学与机器学习研究者。
 
 一份 `skills/` 事实源，多端分发：Claude Code / ZCode / Codex 插件、原生读取 `~/.agents/skills` 的助手（Gemini CLI、Goose、opencode、Kimi Code、pi），以及由 `install.sh` 扇出到各自专属目录的 Harness（Cursor、Crush、Copilot、Amp、Grok Build、Qwen Code、Droid、Kiro）。
 
@@ -15,7 +15,7 @@
 - **一套技能包覆盖全生命周期。** 从一份原始文献清单到会议演讲：Zotero 入库 → 结构化阅读笔记 → 期刊级出图 → LaTeX 润色 → 名词术语黑话审查 → 引用核查 → 对抗式投稿前评审 → 逐条审稿回复 → 控时 Beamer 幻灯。10 个技能 + 1 个 subagent 按一条管线设计，不是十个散装工具。
 - **取事实，不靠模型回忆。** `reference-verifying` 的每条引用事实都来自官方 API 机核（CrossRef / arXiv / PMLR / OpenReview / ACL Anthology / NeurIPS）——命令取数，零模型记忆。机核未决的条目联网核查，证据必须带可访问 URL；每条存疑结论再独立复核一遍。
 - **局外人审计，拒绝自我评分。** `paper-review` 运行三名相互隔离的审稿人（方法严谨 / 领域贡献 / 对抗攻击）加作者辩护仲裁——它针对的失效模式正是"模型给自己打的分"。`jargon-check` 更进一步：隔离 subagent 换独立模型，像陌生人一样读润色后的文本。
-- **纪律层，不只是论文工具。** `research-before-build` 作用于任何非琐碎任务——写代码、选架构、做部署——按风险分级（L0–L3）决定调研深度。论文管线是它最完整的实例化，不是它的边界。
+- **纪律层，不只是论文工具。** `research-before-build` 只作用于探索性任务——方案未定、领域陌生、需要选型/集成/排因——按未知程度（L1–L3）决定调研深度；路径明确的执行类任务不适用。论文管线是它最完整的实例化，不是它的边界。
 - **技能之间会接力。** `paper-review` 的 C/M/N 意见清单直接供 `rebuttal` 使用；`paper-polishing` 自带术语审计 follow-up；`research-before-build` 把确定的阅读清单交给 `zotero-paper-fetching`。这条链是设计出来的，不是巧合。
 - **一份事实源，16 个前端。** 单一 `skills/` 树同时服务三个插件市场（Claude Code、ZCode、Codex）、五个原生读取 `~/.agents/skills` 的 Harness（Gemini CLI、Goose、opencode、Kimi Code、pi），以及八个经幂等扇出接入的 Harness（Cursor、Crush、Copilot、Amp、Grok Build、Qwen Code、Droid、Kiro）。只落符号链接，不污染 `$HOME`。
 - **OR & ML 深耕，引擎领域无关。** 出自供应链韧性研究者之手：`figure-plotting` 内置帕累托前沿、网络拓扑、收敛曲线等运筹学图型配方，并做嵌字体验证；`paper-review` 按稿检测领域 gate（OR 各族、ML+OR、LLM/agent），引擎本身可自由扩展到任何领域。
@@ -24,7 +24,7 @@
 
 | Skill / Agent | 形态 | 一句话 |
 |---|---|---|
-| ⓪ `research-before-build` | skill | 动手前先查现有方案：官方文档、成熟库与文献，按风险分级调研 |
+| ⓪ `research-before-build` | skill | 探索性任务动手前先查现有方案：官方文档、成熟库与文献，按未知程度分级调研 |
 | ① `zotero-paper-fetching` | skill | 自动检索全网相关文献，补全元数据，下载 PDF，并分层导入 Zotero 库 |
 | ② `zotero-paper-note` | skill | 逐篇精读产出结构化笔记，写回 Zotero 条目 |
 | ③ `figure-plotting` | skill | 基于论文手稿设计可视化图表，内置科研配色方案，导出高清矢量图 |
@@ -38,7 +38,7 @@
 
 ### 纪律层与管线层
 
-- **纪律层（⓪）**：`research-before-build` 作用于任何非琐碎任务——写代码、部署、架构选型皆然，不限于论文。它是整个技能包的世界观：动手前先查先例、按风险分级检索、按信任层级采信、以决策影响验收。
+- **纪律层（⓪）**：`research-before-build` 只作用于探索性任务——方案未定、领域陌生，选型、集成、排因皆然，不止论文；路径明确的执行类任务不触发。它是整个技能包的世界观：动手前先查先例、按未知程度分级检索、按信任层级采信、以决策影响验收。
 - **管线层（①–⑦）**：论文生命周期，是这套纪律最完整的实例化——从一份参考文献清单到会议演讲。
 
 ⓪ → ① 是上下游而非包含：`research-before-build` 决定"是否调研、调研什么"；`zotero-paper-fetching` 把确定的文献清单获取入库。
@@ -50,7 +50,7 @@
 
 ## 用法：直接说需求
 
-技能靠描述自动触发，没有需要背的斜杠命令。唯一例外是 `jargon-check`：作为 subagent 需要显式点名调用，让审计发生在写文本的那段对话之外。另外，任何非琐碎的构建任务，`research-before-build` 都会先查先例再动手——无需邀请。
+技能靠描述自动触发，没有需要背的斜杠命令。唯一例外是 `jargon-check`：作为 subagent 需要显式点名调用，让审计发生在写文本的那段对话之外。另外，任何探索性任务，`research-before-build` 都会先查先例再动手——无需邀请。
 
 | 你说 | 触发 | 得到 |
 |---|---|---|

@@ -6,7 +6,7 @@
 ![Skills](https://img.shields.io/badge/skills-10_+_1_subagent-blue)
 ![Harnesses](https://img.shields.io/badge/harnesses-16-orange)
 
-Every task is a piece of research — not just papers. A discipline layer (`research-before-build`) brings prior-art surveying to any project; the paper pipeline — literature acquisition → structured reading → paper figures → writing polish → reference verification → pre-submission review → rebuttal → conference presentation — is its fullest instantiation. Built for OR & ML researchers.
+Every task is a piece of research — not just papers. A discipline layer (`research-before-build`) checks prior art before every exploratory task; the paper pipeline — literature acquisition → structured reading → paper figures → writing polish → reference verification → pre-submission review → rebuttal → conference presentation — is its fullest instantiation. Built for OR & ML researchers.
 
 One `skills/` source of truth, distributed to multiple frontends: the Claude Code / ZCode / Codex plugins, the assistants that read `~/.agents/skills` natively (Gemini CLI, Goose, opencode, Kimi Code, pi), and the harness-specific directories that `install.sh` fans out to (Cursor, Crush, Copilot, Amp, Grok Build, Qwen Code, Droid, Kiro).
 
@@ -15,7 +15,7 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 - **Full lifecycle in one pack.** From a raw reference list to the conference talk: Zotero intake → structured reading notes → journal-grade figures → LaTeX polishing → noun-term jargon sweep → citation audit → adversarial pre-submission review → point-by-point rebuttal → timed Beamer deck. 10 skills + 1 subagent designed as one pipeline, not ten loose utilities.
 - **Facts over model recall.** `reference-verifying` fetches citation facts from official APIs (CrossRef / arXiv / PMLR / OpenReview / ACL Anthology / NeurIPS) — commands, not memory. Undecidable entries get web checks whose evidence must carry accessible URLs, and every adverse finding is independently re-checked.
 - **Outsider audits, not self-grading.** `paper-review` runs three mutually isolated reviewers (methodology rigor / domain contribution / adversarial attack) plus author-defense arbitration — the failure mode it targets is a model grading its own output. `jargon-check` goes further: an isolated subagent on an independent model reads the polished text as a stranger would.
-- **A discipline layer, not just paper tools.** `research-before-build` fires on any non-trivial task — coding, architecture, deployment — and grades the prior-art survey by risk (L0–L3). The paper pipeline is its fullest instantiation, not its boundary.
+- **A discipline layer, not just paper tools.** `research-before-build` fires on exploratory tasks — undecided approaches, unfamiliar territory, stack or architecture choices, risky integrations and debugging — and grades the survey by how far the answer lies outside the project (L1–L3). Well-specified routine work skips it. The paper pipeline is its fullest instantiation, not its boundary.
 - **Skills that hand off.** `paper-review`'s C/M/N issue list feeds `rebuttal` directly; `paper-polishing` ships a jargon-audit follow-up; `research-before-build` hands the decided reading list to `zotero-paper-fetching`. The chain is designed, not incidental.
 - **One source of truth, 16 frontends.** A single `skills/` tree serves three plugin marketplaces (Claude Code, ZCode, Codex), five harnesses reading `~/.agents/skills` natively (Gemini CLI, Goose, opencode, Kimi Code, pi), and eight more via idempotent fan-out (Cursor, Crush, Copilot, Amp, Grok Build, Qwen Code, Droid, Kiro). Symlinks only; `$HOME` stays clean.
 - **OR & ML depth, domain-agnostic engine.** Built by a supply-chain-resilience researcher: `figure-plotting` ships recipes for Pareto fronts, network topologies and convergence curves with embedded-font verification; `paper-review` detects domain gates per manuscript (OR families, ML+OR, LLM/agents) and composes freely beyond them.
@@ -24,7 +24,7 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 
 | Skill / Agent | Form | In one sentence |
 |---|---|---|
-| ⓪ `research-before-build` | skill | Check existing solutions before you build: official docs, mature libraries and literature, with risk-graded survey depth |
+| ⓪ `research-before-build` | skill | Checks prior art before exploratory work begins: official docs, mature libraries and literature, search depth graded by how unknown the territory is |
 | ① `zotero-paper-fetching` | skill | Searches the web for relevant literature, completes metadata, downloads PDFs, and files them into your Zotero library in tiers |
 | ② `zotero-paper-note` | skill | Close-reads papers one by one into structured notes, written back to the Zotero items |
 | ③ `figure-plotting` | skill | Designs figures from your manuscript with built-in scientific color schemes, exported as high-resolution vector graphics |
@@ -38,7 +38,7 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 
 ### Discipline Layer vs. Pipeline Layer
 
-- **Discipline layer (⓪)**: `research-before-build` fires on any non-trivial task — coding, deployment, architecture selection — not only papers. It is the pack's worldview: prior art before building, search graded by risk, sources accepted by trust, verified by decision impact.
+- **Discipline layer (⓪)**: `research-before-build` fires on exploratory tasks — undecided approaches, unfamiliar stacks, integration and debugging unknowns — not on routine, well-specified work. It is the pack's worldview: prior art before building, search graded by how unknown the territory is, sources accepted by trust, verified by decision impact.
 - **Pipeline layer (①–⑦)**: the paper lifecycle, the discipline's most complete instantiation — from a reference list to the conference talk.
 
 ⓪ → ① is a hand-off, not containment: `research-before-build` decides *whether and what* to survey; `zotero-paper-fetching` acquires the decided references into Zotero.
@@ -50,7 +50,7 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 
 ## Usage: Just Say It
 
-Skills auto-trigger from their descriptions — no slash commands to memorize. The one exception is `jargon-check`, a subagent you invoke by name so the audit runs outside the conversation that wrote the text. And for anything non-trivial you build, `research-before-build` surveys prior art before you start — no invitation needed.
+Skills auto-trigger from their descriptions — no slash commands to memorize. The one exception is `jargon-check`, a subagent you invoke by name so the audit runs outside the conversation that wrote the text. And for any exploratory task you take on, `research-before-build` surveys prior art before you start — no invitation needed.
 
 | You say | What fires | What you get |
 |---|---|---|
