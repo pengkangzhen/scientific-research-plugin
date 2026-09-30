@@ -3,7 +3,7 @@
 [English](README.md) | **简体中文**
 
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Skills](https://img.shields.io/badge/skills-10_+_1_subagent-blue)
+![Skills](https://img.shields.io/badge/skills-11_+_1_subagent-blue)
 ![Harnesses](https://img.shields.io/badge/harnesses-16-orange)
 
 任何任务都是一次科学研究，论文只是最完整的实例。`research-before-build` 纪律层在每个探索性任务动手前先查先例；论文管线——文献获取 → 结构化阅读 → 论文出图 → 写作润色 → 参考文献核查 → 投稿前评审 → 审稿回复 → 会议汇报——是它的完整落地。面向运筹学与机器学习研究者。
@@ -12,7 +12,7 @@
 
 ## 亮点
 
-- **一套技能包覆盖全生命周期。** 从一份原始文献清单到会议演讲：Zotero 入库 → 结构化阅读笔记 → 期刊级出图 → LaTeX 润色 → 名词术语黑话审查 → 引用核查 → 对抗式投稿前评审 → 逐条审稿回复 → 控时 Beamer 幻灯。10 个技能 + 1 个 subagent 按一条管线设计，不是十个散装工具。
+- **一套技能包覆盖全生命周期。** 从一份原始文献清单到会议演讲：Zotero 入库 → 结构化阅读笔记 → 按笔记的 PDF 分类高亮 → 期刊级出图 → LaTeX 润色 → 名词术语黑话审查 → 引用核查 → 对抗式投稿前评审 → 逐条审稿回复 → 控时 Beamer 幻灯。11 个技能 + 1 个 subagent 按一条管线设计，不是十一个散装工具。
 - **取事实，不靠模型回忆。** `reference-verifying` 的每条引用事实都来自官方 API 机核（CrossRef / arXiv / PMLR / OpenReview / ACL Anthology / NeurIPS）——命令取数，零模型记忆。机核未决的条目联网核查，证据必须带可访问 URL；每条存疑结论再独立复核一遍。
 - **局外人审计，拒绝自我评分。** `paper-review` 运行三名相互隔离的审稿人（方法严谨 / 领域贡献 / 对抗攻击）加作者辩护仲裁——它针对的失效模式正是"模型给自己打的分"。`jargon-check` 更进一步：隔离 subagent 换独立模型，像陌生人一样读润色后的文本。
 - **纪律层，不只是论文工具。** `research-before-build` 只作用于探索性任务——方案未定、领域陌生、需要选型/集成/排因——按未知程度（L1–L3）决定调研深度；路径明确的执行类任务不适用。论文管线是它最完整的实例化，不是它的边界。
@@ -27,6 +27,7 @@
 | ⓪ `research-before-build` | skill | 探索性任务动手前先查现有方案：官方文档、成熟库与文献，按未知程度分级调研 |
 | ① `zotero-paper-fetching` | skill | 自动检索全网相关文献，补全元数据，下载 PDF，并分层导入 Zotero 库 |
 | ② `zotero-paper-note` | skill | 逐篇精读产出结构化笔记，写回 Zotero 条目 |
+| ② `zotero-pdf-highlighting` | skill | 把阅读笔记的五个类别按颜色写回 PDF 高亮：问题红 / 模型黄 / 方法绿 / 案例蓝 / 结果紫 |
 | ③ `figure-plotting` | skill | 基于论文手稿设计可视化图表，内置科研配色方案，导出高清矢量图 |
 | ④ `paper-polishing` | skill | LaTeX 学术润色：语法、用词、句式、逻辑、语气五维改到可发表 |
 | ④ `jargon-check` | **subagent** | 针对 AI 写作“AI 腔”与“学术黑话”，脱离上下文单独审查术语套话 |
@@ -56,6 +57,7 @@
 |---|---|---|
 | "把这 30 条文献加进 Zotero 并下载 PDF" | `zotero-paper-fetching` | 元数据补全的条目，PDF 按出版商归档 |
 | "读一下这篇文献，做结构化笔记" | `zotero-paper-note` | 笔记回写 Zotero 条目 + `literature.jsonl` |
+| "按笔记给这篇 PDF 上色" | `zotero-pdf-highlighting` | PDF 内嵌五色高亮 + 逐页报告 |
 | "画这张帕累托前沿 / 供应链网络拓扑图" | `figure-plotting` | 矢量 PDF，Times New Roman，字体已嵌入 |
 | "润色一下 Introduction" | `paper-polishing` | 修改后的 LaTeX，标记原样保留 |
 | "审一遍用词"（润色之后） | `jargon-check`（点名调用） | 陌生审稿人视角的黑话审计 |
@@ -112,7 +114,7 @@ cd scientific-research-plugin
 验证：
 
 ```bash
-ls ~/.agents/skills    # 10 个技能
+ls ~/.agents/skills    # 11 个技能
 ls ~/.agents/agents    # jargon-check subagent
 ```
 
@@ -141,10 +143,11 @@ ls ~/.agents/agents    # jargon-check subagent
 ## 目录结构
 
 ```
-├── skills/                      # 10 个自动触发技能（唯一事实源）
+├── skills/                      # 11 个自动触发技能（唯一事实源）
 │   ├── research-before-build/
 │   ├── zotero-paper-fetching/
 │   ├── zotero-paper-note/
+│   ├── zotero-pdf-highlighting/
 │   ├── figure-plotting/
 │   ├── paper-polishing/
 │   ├── term-audit/
@@ -171,7 +174,7 @@ ls ~/.agents/agents    # jargon-check subagent
 - 版本号变更需同步四处并保持一致：三个插件清单（`.claude-plugin/`、`.zcode-plugin/`、`.codex-plugin/`）与 `.claude-plugin/marketplace.json` 条目。
 - 官方 ZCode 市场通道（zai-org/zcode-plugins 的 `plugins/scientific-research-plugin/`）自 2026-09-24 起**暂停**——恢复前不做 fork 同步、不提 PR。若恢复：每次发版提同步 PR，`version` 与 `description_i18n` 逐字一致（官方 `validate.py` 强制校验），公告前先确认对方 `marketplace.json` 确实列出了新版本。
 - `academic-paper-review` 已退役归档至 `attic/`（上游：academic-research-skills）；其有效机制（致命缺陷四标准、实验红线、Devil's Advocate 攻击维度）已并入 `paper-review`。完整来源谱系见 `skills/paper-review/references/source-basis.md`。
-- 本仓库为 v7：v1 只含 4 个写作技能；v2 扩展为科研全流程（`language-polish` 演化为 `paper-polish`）；v3 加入纪律层 `research-before-build`（⓪）与汇报层 `academic-ppt`（⑦）并将 `scientific-review` 更名为 `paper-review`；v4 将 `paper-review` 重构为三盲审对抗评审团（nature-reviewer 式架构、OR/ML+OR 领域 gate、作者辩护仲裁），并退役 `academic-paper-review`；v5 新增 `reference-verify`（⑤ 投稿前参考文献体检，从一次全稿引用核查实战凝练的三层核查法）；v6 新增 `term-audit`（名词术语黑话批量审计：确定性提取 → 五信号排序 → `jargon-check` terms 模式分批并行 → 变体/漂移合并，种子词表源自 Kobak et al. 2025 超额词汇研究）并为 `jargon-check` 增加 `terms` 审计模式；v7 按官方技能命名最佳实践（动名词形式）将五个技能更名：`figure-plot` → `figure-plotting`、`paper-polish` → `paper-polishing`、`reference-verify` → `reference-verifying`、`zotero-paper-fetch` → `zotero-paper-fetching`、`academic-ppt` → `slide-making`——共 10 skill + 1 subagent。
+- 本仓库为 v8：v1 只含 4 个写作技能；v2 扩展为科研全流程（`language-polish` 演化为 `paper-polish`）；v3 加入纪律层 `research-before-build`（⓪）与汇报层 `academic-ppt`（⑦）并将 `scientific-review` 更名为 `paper-review`；v4 将 `paper-review` 重构为三盲审对抗评审团（nature-reviewer 式架构、OR/ML+OR 领域 gate、作者辩护仲裁），并退役 `academic-paper-review`；v5 新增 `reference-verify`（⑤ 投稿前参考文献体检，从一次全稿引用核查实战凝练的三层核查法）；v6 新增 `term-audit`（名词术语黑话批量审计：确定性提取 → 五信号排序 → `jargon-check` terms 模式分批并行 → 变体/漂移合并，种子词表源自 Kobak et al. 2025 超额词汇研究）并为 `jargon-check` 增加 `terms` 审计模式；v7 按官方技能命名最佳实践（动名词形式）将五个技能更名：`figure-plot` → `figure-plotting`、`paper-polish` → `paper-polishing`、`reference-verify` → `reference-verifying`、`zotero-paper-fetch` → `zotero-paper-fetching`、`academic-ppt` → `slide-making`——共 10 skill + 1 subagent；v8 新增 `zotero-pdf-highlighting`（按阅读笔记五类别给 PDF 写分类颜色高亮：PyMuPDF 文件内嵌批注路线、严格五类对齐 Zotero 官方调色板、幂等可重跑）——现共 11 skill + 1 subagent。
 
 ## License
 
