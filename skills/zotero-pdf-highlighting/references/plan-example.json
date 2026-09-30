@@ -1,0 +1,15 @@
+{
+  "item_key": "6XL3KWIB",
+  "attachment_key": "R4T8BM2P",
+  "pdf": null,
+  "spans": [
+    {"category": "研究问题", "text": "disruption risks"},
+    {"category": "研究问题", "text": "intermodal consolidation"},
+    {"category": "数学模型", "text": "two-stage stochastic programming"},
+    {"category": "数学模型", "text": "unmet demand"},
+    {"category": "求解方法", "text": "Benders decomposition", "pages": [8, 10]},
+    {"category": "求解方法", "text": "pareto-optimal cuts"},
+    {"category": "案例研究", "text": "Yangtze River Delta"},
+    {"category": "实验结果", "text": "expected total cost"}
+  ]
+}

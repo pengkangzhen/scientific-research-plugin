@@ -1,0 +1,14 @@
+# zotero-pdf-highlighting — 类别-颜色映射（唯一事实源）
+# 类别严格 5 类，与 zotero-paper-note 笔记的一级章节逐字对齐；
+# 颜色取自 Zotero 官方 8 色批注调色板。改映射只改这里，脚本自动跟随。
+categories:
+  研究问题: "#ff6666"
+  数学模型: "#ffd400"
+  求解方法: "#5fb236"
+  案例研究: "#2ea8e5"
+  实验结果: "#a28ae5"
+
+zotero:
+  # Zotero 数据目录（其下有 storage/<附件 key>/<PDF 文件名>）
+  # 本机 Zotero 装在 Windows，WSL 侧经 /mnt/c 访问；纯 Linux 机器改为 ~/Zotero
+  data_dir: /mnt/c/Users/pengkangzhen/Zotero

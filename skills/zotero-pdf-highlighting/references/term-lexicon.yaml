@@ -1,0 +1,32 @@
+# zotero-pdf-highlighting — 领域泛词表（check_terms.py 信号 2，整词匹配）
+# 收录"说的是领域/行业名，而不是这篇论文做了什么"的词：
+# supply chain / logistics / 机器学习 这类词换任何一篇同领域论文都成立，
+# 标出来不承载该篇内容。与方法通名组合的不算（stochastic programming 是方法专名）。
+# 按你的研究方向自由扩充/删减，一行一个。
+field_generic:
+  - supply chain
+  - supply chain management
+  - logistics
+  - liner shipping
+  - maritime transport
+  - transportation
+  - operations research
+  - machine learning
+  - deep learning
+  - artificial intelligence
+  - optimization
+  - heuristic
+  - network design
+  - container
+  - 供应链
+  - 物流
+  - 海运
+  - 交通运输
+  - 运筹学
+  - 机器学习
+  - 深度学习
+  - 人工智能
+  - 优化
+  - 启发式
+  - 集装箱
+  - 铁路运输
