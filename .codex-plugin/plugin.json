@@ -1,12 +1,12 @@
 {
   "name": "scientific-research-plugin",
-  "version": "0.7.0",
-  "description": "A full-lifecycle research pipeline for OR & ML, 11 skills + 1 subagent take a project from prior-art survey to the conference talk — Zotero literature intake, structured reading notes, note-driven PDF category highlighting, publication-grade figures, LaTeX polishing, noun-term jargon auditing, citation verification against official APIs, three-blind adversarial review, and point-by-point rebuttal. The survey-first discipline applies to every exploratory task, not just papers.",
+  "version": "0.8.0",
+  "description": "A full-lifecycle research pipeline for OR & ML, 12 skills + 1 subagent take a project from prior-art survey to the conference talk — Zotero literature intake, structured reading notes, note-driven PDF category highlighting, publication-grade figures, top-journal-style section drafting, LaTeX polishing, noun-term jargon auditing, citation verification against official APIs, three-blind adversarial review, and point-by-point rebuttal. The survey-first discipline applies to every exploratory task, not just papers.",
   "author": { "name": "pengkangzhen", "url": "https://github.com/pengkangzhen" },
   "homepage": "https://github.com/pengkangzhen/scientific-research-plugin#readme",
   "repository": "https://github.com/pengkangzhen/scientific-research-plugin",
   "license": "MIT",
-  "keywords": ["academic", "research", "zotero", "latex", "peer-review", "references", "rebuttal", "figures", "presentation", "slides"],
+  "keywords": ["academic", "research", "zotero", "latex", "peer-review", "references", "rebuttal", "figures", "writing", "presentation", "slides"],
   "skills": "./skills/",
   "interface": {
     "displayName": "Scientific Research Plugin",
