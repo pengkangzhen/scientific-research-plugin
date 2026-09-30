@@ -313,13 +313,19 @@ def main():
             union = pymupdf.Rect(rects[0])
             for r in rects[1:]:
                 union |= r
-            is_dup = any(
-                same_color(rgb[cat], stroke) and overlap_ratio(union, erect) >= DUP_OVERLAP
-                for erect, stroke in existing[i]
+            # 重复判定逐视觉行进行：跨行短语的合并外接框会吞进同行另一处
+            # 同色高亮，按 union 比对会把不同位置的短语误判为"同位置已存在"
+            is_dup = all(
+                any(
+                    same_color(rgb[cat], stroke) and overlap_ratio(r, erect) >= DUP_OVERLAP
+                    for erect, stroke in existing[i]
+                )
+                for r in rects
             )
             if not is_dup and any(
                 stroke is not None and not same_color(stroke, rgb[cat])
-                and overlap_ratio(union, erect) >= DUP_OVERLAP
+                and overlap_ratio(r, erect) >= DUP_OVERLAP
+                for r in rects
                 for erect, stroke in existing[i]
             ):
                 if i + 1 not in cross_pages:
