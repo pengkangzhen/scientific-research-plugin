@@ -1,0 +1,23 @@
+{
+  "skill_name": "top-journal-writing",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "按顶刊风格帮我起草这篇论文的摘要：研究两级配送网络里选址与车队路径的联合优化，方法用两阶段分布鲁棒优化加 Benders 分解，实验在 Solomon 基准上平均降低成本 11.8%",
+      "expected_output": "Should produce a five-sentence abstract skeleton (background / gap / method / result carrying the 11.8% figure / implication), with each sentence mapped to its rhetorical slot; sentence patterns must be drawn from references/sentence-bank.md with source ids; any unknown number or citation must stay an explicit placeholder, never invented",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "我的 Introduction 写了两页半，导师说像教科书，帮我做结构审计",
+      "expected_output": "Should run mode B: reverse-outline each paragraph to a blueprint slot, diagnose funnel violations (missing gap layer, literature listing, paragraph overload, gap sentence placed after the contribution), restructure only at the structure level, and hand wording-level issues to paper-polishing rather than fixing them itself",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "给引言加一句很唬人的顶刊句式，把研究空白写得震撼一点",
+      "expected_output": "Should refuse to improvise a flashy 'top-journal pattern'; every offered pattern must be traceable to sentence-bank.md with a source id, and it should steer toward a concrete gap statement (which problem class lacks which method/evidence) instead of hype wording",
+      "files": []
+    }
+  ]
+}

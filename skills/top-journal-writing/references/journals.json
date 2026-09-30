@@ -1,0 +1,49 @@
+{
+  "_comment": "harvest_papers.py 的采集配置（唯一事实源）。arXiv 域只填 category；openalex 域填期刊 ISSN 列表（按优先序，摘要覆盖率高的排前面），harvest 按 per_journal 上限逐刊补齐 quota。ISSN 启动时经 OpenAlex /sources 反查刊名校验，改这里即换语料来源。",
+  "domains": {
+    "ai": {
+      "source": "arxiv",
+      "category": "cs.LG",
+      "label": "arXiv cs.LG",
+      "quota": 50
+    },
+    "or": {
+      "source": "arxiv",
+      "category": "math.OC",
+      "label": "arXiv math.OC",
+      "quota": 50
+    },
+    "mgmt": {
+      "source": "openalex",
+      "quota": 40,
+      "per_journal": 12,
+      "journals": [
+        {"issn": "0025-1909", "short": "Management Science"},
+        {"issn": "1937-5956", "short": "Production and Operations Management"},
+        {"issn": "0272-6963", "short": "Journal of Operations Management"},
+        {"issn": "0305-0483", "short": "Omega"}
+      ]
+    },
+    "logistics": {
+      "source": "openalex",
+      "quota": 30,
+      "per_journal": 12,
+      "journals": [
+        {"issn": "1366-5545", "short": "Transportation Research Part E"},
+        {"issn": "0041-1655", "short": "Transportation Science"},
+        {"issn": "0377-2217", "short": "European Journal of Operational Research"}
+      ]
+    },
+    "shipping": {
+      "source": "openalex",
+      "quota": 30,
+      "per_journal": 10,
+      "journals": [
+        {"issn": "0308-8839", "short": "Maritime Policy & Management"},
+        {"issn": "2666-822X", "short": "Maritime Transport Research"},
+        {"issn": "1361-9209", "short": "Transportation Research Part D"},
+        {"issn": "1572-9225", "short": "Maritime Economics & Logistics"}
+      ]
+    }
+  }
+}
