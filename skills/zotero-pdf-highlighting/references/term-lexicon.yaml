@@ -30,3 +30,136 @@ field_generic:
   - 启发式
   - 集装箱
   - 铁路运输
+
+# 语义层种子簇（check_terms_semantic.py 用，多语嵌入的质心种子）
+# 三簇各 10-20 个代表词，改了之后脚本会自动重算质心缓存。
+meta_seeds:        # 结构元词簇：论文文本的组织与测量过程
+  - case study
+  - numerical example
+  - experiment
+  - instance
+  - test problem
+  - problem statement
+  - model formulation
+  - computational results
+  - CPU time
+  - runtime
+  - training time
+  - solution quality
+  - sensitivity analysis
+  - 案例研究
+  - 数值实验
+  - 运行时间
+  - 求解时间
+  - 计算时间
+generic_seeds:     # 领域泛词簇：领域/行业名
+  - supply chain
+  - supply chain management
+  - logistics
+  - liner shipping
+  - transportation
+  - machine learning
+  - deep learning
+  - artificial intelligence
+  - optimization
+  - network design
+  - container
+  - 供应链
+  - 物流
+  - 机器学习
+  - 深度学习
+  - 集装箱
+  - 优化
+  - 人工智能
+  - 海运
+method_seeds:      # 方法名簇：算法/建模框架专名
+  - Benders decomposition
+  - two-stage stochastic programming
+  - linear programming
+  - tabu search
+  - genetic algorithm
+  - DQN
+  - deep Q-network
+  - LSTM-SVR
+  - support vector regression
+  - Markov decision process
+  - dynamic programming
+  - column generation
+  - 组合预测
+  - 混合整数规划
+  - 蒙特卡洛模拟
+  - 模糊约束
+
+# 五色判色种子簇（classify_color.py 用；方法色直接复用上面的 method_seeds）
+# 取材依据 zotero-paper-note 五章节定义：红=研究对象世界的扰动/现象/问题，
+# 黄=模型里的专指成本项/约束/结构名，蓝=真实案例专名与真实数据场景，
+# 紫=实验发现的量与结论短语。每簇 10-15 个代表词，改后自动重算质心缓存。
+# 原则：只收"专指"词（unmet demand cost），不收泛化建模词（objective
+# function / decision variable / constraint 是过滤层灰区词，收进来会把
+# 灰区词错判成黄色）。
+rq_seeds:         # 🔴 红：研究问题——研究对象系统的扰动来源/现象/问题
+  - supply chain resilience
+  - network resilience
+  - disruption risk
+  - facility disruption
+  - demand uncertainty
+  - risk propagation
+  - network robustness
+  - recovery strategy
+  - port congestion
+  - carbon emission
+  - last-mile delivery
+  - relief supplies
+  - capacity expansion
+  - 中断风险
+  - 需求不确定性
+  - 风险传播
+  - 韧性评估
+  - 碳排放
+  - 末端配送
+model_seeds:      # 🟡 黄：数学模型——专指的成本项/约束/结构名
+  - unmet demand cost
+  - fixed opening cost
+  - transportation cost
+  - inventory holding cost
+  - penalty cost
+  - capacity constraint
+  - service level constraint
+  - chance constraint
+  - recourse cost
+  - flow conservation
+  - coverage radius
+  - 运输成本
+  - 缺货成本
+  - 库存持有成本
+  - 容量约束
+  - 服务水平约束
+  - 机会约束
+case_seeds:       # 🔵 蓝：案例研究——真实案例专名与真实数据场景
+  - AEU6
+  - Busan New Port
+  - Sioux Falls network
+  - China Railway Express
+  - real-world logistics network
+  - real-world dataset
+  - industrial data
+  - benchmark network
+  - 中欧班列
+  - 宁波舟山港
+  - 粤港澳大湾区
+result_seeds:     # 🟣 紫：实验结果——发现的量与结论短语
+  - average profit
+  - cost reduction
+  - prediction error
+  - prediction accuracy
+  - optimality gap
+  - convergence speed
+  - average cost
+  - service level improvement
+  - error rate
+  - carbon reduction
+  - 平均利润
+  - 预测误差
+  - 成本降低
+  - 收敛速度
+  - 预测精度

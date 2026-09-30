@@ -73,6 +73,14 @@ uv run <本技能目录>/scripts/check_terms.py --plan /tmp/plan.json
 
 四信号 → 三判级：**结构/仪表黑名单**（case study、CPU time…）与**领域泛词表**（supply chain、liner shipping、机器学习…，`references/term-lexicon.yaml` 可按研究方向扩充）命中 → 红旗；**库内 DF ≥15%**（词出现在 Zotero 库 ≥15% 篇的标题/摘要/标签）→ 红旗，8–15% 灰区（数据自适应兜底）；**方法构词模式**（`修饰语+方法通名`：two-stage stochastic programming、组合预测）→ 术语绿灯。只建议不拦截：红旗/灰区逐个过三测试再定稿。DF 依赖 zotero.sqlite 快照，/mnt/c 读取偶发撕裂时自动跳过（黑名单/泛词表/方法模式不受影响）。
 
+再跑一遍**语义层**（可选但建议，中英通吃，词表没收录的新词也能判）：
+
+```bash
+uv run <本技能目录>/scripts/check_terms_semantic.py --plan /tmp/plan.json
+```
+
+多语嵌入（fastembed + paraphrase-multilingual-MiniLM，本地 ONNX）把候选词投向 term-lexicon.yaml 三簇种子（meta_seeds/generic_seeds/method_seeds，可编辑）的质心：坏簇 ≥0.60 且高于方法簇 → 红旗，方法簇 ≥0.55 → 方法名绿灯，0.55–0.60 → 灰区。模型首次下载需代理（`HTTPS_PROXY=http://100.122.3.64:7890`，经 Tailscale 那台），下载后永久离线；种子改动自动重算质心缓存。两层互补：静态表精确、语义层覆盖未见词（maritime logistics 这类新泛词也能拦），红旗取并集、最终按三测试裁决。
+
 ### Step 5: dry-run 核对
 
 ```bash
