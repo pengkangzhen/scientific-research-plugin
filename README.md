@@ -3,7 +3,7 @@
 **English** | [简体中文](README.zh-CN.md)
 
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Skills](https://img.shields.io/badge/skills-12_+_1_subagent-blue)
+![Skills](https://img.shields.io/badge/skills-12_+_2_subagents-blue)
 ![Harnesses](https://img.shields.io/badge/harnesses-16-orange)
 
 Every task is a piece of research — not just papers. A discipline layer (`research-before-build`) checks prior art before every exploratory task; the paper pipeline — literature acquisition → structured reading → paper figures → section drafting → writing polish → reference verification → pre-submission review → rebuttal → conference presentation — is its fullest instantiation. Built for OR & ML researchers.
@@ -12,10 +12,10 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 
 ## Highlights
 
-- **Full lifecycle in one pack.** From a raw reference list to the conference talk: Zotero intake → structured reading notes → note-driven PDF highlighting → journal-grade figures → top-journal-style section drafting → LaTeX polishing → noun-term jargon sweep → citation audit → adversarial pre-submission review → point-by-point rebuttal → timed Beamer deck. 12 skills + 1 subagent designed as one pipeline, not twelve loose utilities.
+- **Full lifecycle in one pack.** From a raw reference list to the conference talk: Zotero intake → structured reading notes → note-driven PDF highlighting → journal-grade figures → top-journal-style section drafting → LaTeX polishing → noun-term jargon sweep → citation audit → adversarial pre-submission review → point-by-point rebuttal → timed Beamer deck. 12 skills + 2 subagents designed as one pipeline, not twelve loose utilities.
 - **Facts over model recall.** `reference-verifying` fetches citation facts from official APIs (CrossRef / arXiv / PMLR / OpenReview / ACL Anthology / NeurIPS) — commands, not memory. Undecidable entries get web checks whose evidence must carry accessible URLs, and every adverse finding is independently re-checked.
 - **Outsider audits, not self-grading.** `paper-review` runs three mutually isolated reviewers (methodology rigor / domain contribution / adversarial attack) plus author-defense arbitration — the failure mode it targets is a model grading its own output. `jargon-check` goes further: an isolated subagent on an independent model reads the polished text as a stranger would.
-- **A discipline layer, not just paper tools.** `research-before-build` fires on exploratory tasks — undecided approaches, unfamiliar territory, stack or architecture choices, risky integrations and debugging — and grades the survey depth by how unknown the territory is (L1–L2). Well-specified routine work skips it. The paper pipeline is its fullest instantiation, not its boundary.
+- **A discipline layer, not just paper tools.** `research-before-build` fires on exploratory tasks — undecided approaches, unfamiliar territory, stack or architecture choices, risky integrations and debugging — and grades the survey depth by how unknown the territory is (L1–L2) — at research depth it dispatches two parallel `research-scout` subagents, one digging vertically within the field, one sweeping horizontally across fields. Well-specified routine work skips it. The paper pipeline is its fullest instantiation, not its boundary.
 - **Skills that hand off.** `paper-review`'s C/M/N issue list feeds `rebuttal` directly; `paper-polishing` ships a jargon-audit follow-up; `research-before-build` hands the decided reading list to `zotero-paper-fetching`. The chain is designed, not incidental.
 - **One source of truth, 16 frontends.** A single `skills/` tree serves three plugin marketplaces (Claude Code, ZCode, Codex), five harnesses reading `~/.agents/skills` natively (Gemini CLI, Goose, opencode, Kimi Code, pi), and eight more via idempotent fan-out (Cursor, Crush, Copilot, Amp, Grok Build, Qwen Code, Droid, Kiro). Symlinks only; `$HOME` stays clean.
 - **OR & ML depth, domain-agnostic engine.** Built by a supply-chain-resilience researcher: `figure-plotting` ships recipes for Pareto fronts, network topologies and convergence curves with embedded-font verification; `paper-review` detects domain gates per manuscript (OR families, ML+OR, LLM/agents) and composes freely beyond them.
@@ -24,7 +24,7 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 
 | Skill / Agent | Form | In one sentence |
 |---|---|---|
-| ⓪ `research-before-build` | skill | Checks prior art before exploratory work begins: official docs, mature libraries and literature, search depth graded by how unknown the territory is |
+| ⓪ `research-before-build` | skill | Checks prior art before exploratory work begins: official docs, mature libraries and literature, search depth graded by how unknown the territory is; at research depth, two parallel `research-scout` subagents dig one vertical and one horizontal line |
 | ① `zotero-paper-fetching` | skill | Searches the web for relevant literature, completes metadata, downloads PDFs, and files them into your Zotero library in tiers |
 | ② `zotero-paper-note` | skill | Close-reads papers one by one into structured notes, written back to the Zotero items |
 | ② `zotero-pdf-highlighting` | skill | Writes the reading note's five categories back onto the PDF as color-coded highlights (red question / yellow model / green method / blue case / purple results) |
@@ -40,7 +40,7 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 
 ### Discipline Layer vs. Pipeline Layer
 
-- **Discipline layer (⓪)**: `research-before-build` fires on exploratory tasks — undecided approaches, unfamiliar stacks, integration and debugging unknowns — not on routine, well-specified work. It is the pack's worldview: prior art before building, and not just in your own field — strip the domain jargon and ask whether humanity has ever solved a structurally similar problem; research questions pinned down from the task description and the repo's AGENTS.md, two survey dimensions — engineering (docs, issues, mature repos) and academic (papers) — searched vertically within the field then horizontally across fields, candidates ranked by structural match, verified by decision impact.
+- **Discipline layer (⓪)**: `research-before-build` fires on exploratory tasks — undecided approaches, unfamiliar stacks, integration and debugging unknowns — not on routine, well-specified work. It is the pack's worldview: prior art before building, and not just in your own field — strip the domain jargon and ask whether humanity has ever solved a structurally similar problem; research questions pinned down from the task description and the repo's AGENTS.md, two survey dimensions — engineering (docs, issues, mature repos) and academic (papers) — searched vertically within the field and horizontally across fields, two co-primary lines dispatched in parallel as `research-scout` subagents once the territory is unfamiliar enough, candidates ranked by structural match, verified by decision impact.
 - **Pipeline layer (①–⑦)**: the paper lifecycle, the discipline's most complete instantiation — from a reference list to the conference talk.
 
 ⓪ → ① is a hand-off, not containment: `research-before-build` decides *whether and what* to survey; `zotero-paper-fetching` acquires the decided references into Zotero.
@@ -48,11 +48,11 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 ### Skill vs. Subagent
 
 - **skill**: triggered automatically by its description, runs in the main conversation — suited to workflow orchestration (retrieval, polishing, review, rebuttal).
-- **subagent**: invoked explicitly by name, runs in an isolated session — suited to audits that need an outsider's perspective (the core value of `jargon-check`: a different model in a different context, built to catch the writing model's wording blind spots).
+- **subagent**: runs in an isolated session, dispatched explicitly rather than auto-triggered. Two jobs justify the isolation: outsider audits (`jargon-check` — a different model in a different context, built to catch the writing model's wording blind spots) and parallel research lines (`research-scout` — `research-before-build` dispatches them in pairs at research depth, one digging vertically within the field, one sweeping horizontally across fields, each with its own budget slice; isolation buys parallelism and keeps raw search noise out of the main context).
 
 ## Usage: Just Say It
 
-Skills auto-trigger from their descriptions — no slash commands to memorize. The one exception is `jargon-check`, a subagent you invoke by name so the audit runs outside the conversation that wrote the text. And for any exploratory task you take on, `research-before-build` surveys prior art before you start — no invitation needed.
+Skills auto-trigger from their descriptions — no slash commands to memorize. Two subagents sit outside that flow: `jargon-check`, which you invoke by name so the audit runs outside the conversation that wrote the text, and `research-scout`, which `research-before-build` dispatches in parallel pairs at research depth — you never invoke it yourself. And for any exploratory task you take on, `research-before-build` surveys prior art before you start — no invitation needed.
 
 | You say | What fires | What you get |
 |---|---|---|
@@ -103,7 +103,7 @@ ZCode — this repository doubles as its own plugin marketplace (`.claude-plugin
 2. Plugin Marketplace → Add → Add Plugin Marketplace, paste the repo root directory.
 3. Personal → scientific-research-plugin → Scientific Research Plugin → Install.
 
-The `jargon-check` subagent is not part of the ZCode plugin package (ZCode plugin manifests currently declare skills / commands / hooks / MCP servers, not subagents) — run `./install.sh` if you need it there.
+The plugin package carries both subagents (`jargon-check`, `research-scout`) in its `agents/` directory; harnesses that do not load plugin agents get them via `./install.sh` into `~/.agents/agents`.
 
 ### Option 2: Skills install (any Agent Skills-compatible harness)
 
@@ -117,7 +117,7 @@ Verify:
 
 ```bash
 ls ~/.agents/skills    # the 12 skills
-ls ~/.agents/agents    # the jargon-check subagent
+ls ~/.agents/agents    # the subagents (jargon-check, research-scout)
 ```
 
 `install.sh` links everything into `~/.agents/skills` — the Agent Skills open-standard location (the format Anthropic open-sourced in Dec 2025, now adopted by 40+ tools) — and fans out to harnesses that use their own directory. Fan-out only touches harnesses detected as installed, so `$HOME` stays clean; after installing a new harness, re-run `./install.sh`.
@@ -140,7 +140,7 @@ ls ~/.agents/agents    # the jargon-check subagent
 
 Not covered: iFlow CLI (project-scoped `.iflow/` layout with its own skill marketplace — no user-level skills directory to fan out to).
 
-`halter sync --apply` remains available for assistants outside this list. The `jargon-check` subagent has no equivalent in the fan-out targets (they have no subagent mechanism) — it reaches Claude-ecosystem harnesses via `~/.agents/agents`.
+`halter sync --apply` remains available for assistants outside this list. The subagents have no equivalent in the fan-out targets (they have no subagent mechanism) — they reach Claude-ecosystem harnesses via `~/.agents/agents`.
 
 ## Repository Layout
 
@@ -161,7 +161,8 @@ Not covered: iFlow CLI (project-scoped `.iflow/` layout with its own skill marke
 ├── attic/                       # retired skills, kept for provenance
 │   └── academic-paper-review/   # 7-agent journal-review simulation (upstream: academic-research-skills)
 ├── agents/
-│   └── jargon-check.md          # isolated-audit subagent
+│   ├── jargon-check.md          # isolated-audit subagent
+│   └── research-scout.md        # parallel prior-art research subagent (L2 vertical/horizontal lines)
 ├── .claude-plugin/
 │   ├── plugin.json              # Claude Code plugin manifest
 │   └── marketplace.json         # Claude Code / ZCode marketplace catalog (source ./)
@@ -177,7 +178,7 @@ Not covered: iFlow CLI (project-scoped `.iflow/` layout with its own skill marke
 - Version bumps touch all three plugin manifests (`.claude-plugin/`, `.zcode-plugin/`, `.codex-plugin/`) and the `.claude-plugin/marketplace.json` entry in lockstep.
 - The official ZCode marketplace channel (zai-org/zcode-plugins, `plugins/scientific-research-plugin/`) is **paused as of 2026-09-24** — no fork syncs or PRs until resumed. If resumed: sync every release via PR, keeping `version` and `description_i18n` identical (their `validate.py` enforces it), and confirm their `marketplace.json` actually lists the new version before announcing.
 - `academic-paper-review` is retired into `attic/` (upstream: academic-research-skills); its useful mechanisms (fatal-flaw criteria, red flags, Devil's-Advocate attack dimensions) live on inside `paper-review`. See `skills/paper-review/references/source-basis.md` for full provenance.
-- This repo is v9: v1 contained only 4 writing skills; v2 expanded to a research pipeline and evolved `language-polish` into `paper-polish`; v3 added the discipline layer `research-before-build` (⓪) and `academic-ppt` (⑦) and renamed `scientific-review` to `paper-review`; v4 rebuilds `paper-review` as a three-blind adversarial panel (nature-reviewer-style architecture, OR/ML+OR domain gates, author-defense arbitration) and retires `academic-paper-review`; v5 adds `reference-verify` (⑤ pre-submission reference audit, three-layer verification distilled from a full-manuscript citation check); v6 adds `term-audit` (batch noun-term jargon audit: extraction → five-signal ranking → parallel `jargon-check` terms-mode batches → variant/drift merger, seeded by Kobak et al. 2025 excess vocabulary) and the matching `terms` mode on `jargon-check`; v7 renames five skills to gerund forms per Anthropic's skill-naming best practice (`figure-plot` → `figure-plotting`, `paper-polish` → `paper-polishing`, `reference-verify` → `reference-verifying`, `zotero-paper-fetch` → `zotero-paper-fetching`, `academic-ppt` → `slide-making`) — 10 skills + 1 subagent; v8 adds `zotero-pdf-highlighting` (note-driven PDF category highlighting: PyMuPDF embedded-annotation route, strict five categories on the Zotero palette, idempotent re-runs); v9 adds `top-journal-writing` (④ section drafting/restructuring to top-journal blueprints — intro funnel, five-sentence abstract, recipe-style methods, four-step discussion — backed by a sentence bank mined from 200 top-venue papers across AI/OR/management/logistics/shipping via arXiv + OpenAlex harvesting), bringing the pack to 12 skills + 1 subagent.
+- This repo is v10: v1 contained only 4 writing skills; v2 expanded to a research pipeline and evolved `language-polish` into `paper-polish`; v3 added the discipline layer `research-before-build` (⓪) and `academic-ppt` (⑦) and renamed `scientific-review` to `paper-review`; v4 rebuilds `paper-review` as a three-blind adversarial panel (nature-reviewer-style architecture, OR/ML+OR domain gates, author-defense arbitration) and retires `academic-paper-review`; v5 adds `reference-verify` (⑤ pre-submission reference audit, three-layer verification distilled from a full-manuscript citation check); v6 adds `term-audit` (batch noun-term jargon audit: extraction → five-signal ranking → parallel `jargon-check` terms-mode batches → variant/drift merger, seeded by Kobak et al. 2025 excess vocabulary) and the matching `terms` mode on `jargon-check`; v7 renames five skills to gerund forms per Anthropic's skill-naming best practice (`figure-plot` → `figure-plotting`, `paper-polish` → `paper-polishing`, `reference-verify` → `reference-verifying`, `zotero-paper-fetch` → `zotero-paper-fetching`, `academic-ppt` → `slide-making`) — 10 skills + 1 subagent; v8 adds `zotero-pdf-highlighting` (note-driven PDF category highlighting: PyMuPDF embedded-annotation route, strict five categories on the Zotero palette, idempotent re-runs); v9 adds `top-journal-writing` (④ section drafting/restructuring to top-journal blueprints — intro funnel, five-sentence abstract, recipe-style methods, four-step discussion — backed by a sentence bank mined from 200 top-venue papers across AI/OR/management/logistics/shipping via arXiv + OpenAlex harvesting) — 12 skills + 1 subagent; v10 makes `research-before-build`'s L2 truly parallel — the vertical and horizontal lines are dispatched simultaneously as `research-scout` subagents (one per line, own budget slice, per-line stop rules, degradation path for harnesses without subagents), bringing the pack to 12 skills + 2 subagents.
 
 ## License
 
