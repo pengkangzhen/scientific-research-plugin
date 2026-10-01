@@ -8,7 +8,7 @@ license: MIT
 
 # Research Before Build
 
-Purpose: before building, answer one question — **has humanity already solved this problem?** Reinventing the wheel is the biggest waste; community solutions are battle-tested compressed experience. And the usual limitation is not that the problem is unsolvable, but that the question is boxed in by your own field's vocabulary — everyone's knowledge is local, the answer often lies outside your field, and searching with only your domain's jargon is hunting for a door in a blank wall. This skill therefore serves exploratory tasks only (undecided approach, unfamiliar territory, selection/integration/debugging): first pin down what to research from the task description and repo conventions, then pick dimension and direction — dimension by problem nature (engineering track for implementations, academic track for methods), direction by depth of the unknown (dig vertically within the field, borrow horizontally across fields; the deeper the unknown, the more you must strip the domain jargon and distill the problem into its domain-agnostic essence); rank candidates by relevance, accept by decision impact.
+Purpose: before building, answer one question — **has humanity already solved this problem?** Reinventing the wheel is the biggest waste; community solutions are battle-tested compressed experience. And the usual limitation is not that the problem is unsolvable, but that the question is boxed in by your own field's vocabulary — everyone's knowledge is local, the answer often lies outside your field, and searching with only your domain's jargon is hunting for a door in a blank wall. This skill therefore serves exploratory tasks only (undecided approach, unfamiliar territory, selection/integration/debugging): first pin down what to research from the task description and repo conventions, then pick dimension and direction — dimension by problem nature (engineering track for implementations, academic track for methods), direction by depth of the unknown (dig vertically within the field, borrow horizontally across fields — at the deepest tier both at once; the deeper the unknown, the more you must strip the domain jargon and distill the problem into its domain-agnostic essence); rank candidates by relevance, accept by decision impact.
 
 ## Step 1: Triage (mandatory, cheapest)
 
@@ -19,7 +19,7 @@ This skill serves exploratory tasks only. On load, run the gate check first, the
 | Level | Exploratory signature | Search scope |
 |---|---|---|
 | **L1** | Unfamiliar or high-risk: library/framework selection, cross-system integration, deployment, migration, cloud config, obscure errors, performance puzzles, security | **Mandatory external search**: targeted and vertical, engineering vs academic track by problem nature; once a trusted source is hit, move on to evaluation |
-| **L2** | Research-grade: literature reviews, solution design, architecture selection, research proposals (upgrade here when L1 comes up empty — trigger conditions under "Stopping Rules and Safeguards") | Prior-art research **is the task itself**: vertical + horizontal, engineering + academic, multi-source; the breakthrough is often outside the field |
+| **L2** | Research-grade: literature reviews, solution design, architecture selection, research proposals (upgrade here when L1 comes up empty — trigger conditions under "Stopping Rules and Safeguards") | Prior-art research **is the task itself**: vertical + horizontal run in parallel from the first round, dispatched as two `research-scout` subagents (horizontal is co-primary, never a fallback gated on vertical failure), engineering + academic, multi-source; the breakthrough is often outside the field |
 
 When unsure, treat as L2. If the user explicitly asks to skip research, obey.
 
@@ -39,7 +39,7 @@ For each question, state how the answer would change what you do; questions wher
 
 ## Step 3: Search by level
 
-Dimension and direction are independent choices: **dimension** is which sources to search, set by problem nature — implementation, configuration, and troubleshooting questions go to the engineering track first, method, algorithm, and modeling questions to the academic track, and if one track comes up empty switch to the other; **direction** is where to search, set by depth of the unknown — dig vertically within the field first, and only borrow horizontally across fields when that fails. L1 is vertical; L2 adds horizontal.
+Dimension and direction are independent choices: **dimension** is which sources to search, set by problem nature — implementation, configuration, and troubleshooting questions go to the engineering track first, method, algorithm, and modeling questions to the academic track, and if one track comes up empty switch to the other; **direction** is where to search, set by depth of the unknown — L1 digs vertically within the field only; L2 runs both directions at once: vertical and horizontal are two co-primary lines launched together as parallel `research-scout` subagents (different query vocabularies — domain statement for the vertical line, essence statement for the horizontal — so they never duplicate work), neither waiting on the other.
 
 ### L1 — Targeted vertical search (engineering or academic track, by problem nature)
 
@@ -62,15 +62,29 @@ Search for mature open-source repos that "do exactly this thing"; verify the REA
 
 After pinning versions and constraints, construct the queries: engineering queries as **stack + version + symptom + constraint**, academic queries as **problem structure + method family + constraint**; no open-ended searching. The number of search rounds follows decision impact: for most questions, 1–2 targeted searches that hit a trusted source suffice to move on to evaluation — no need to walk every source line.
 
-### L2 — Systematic research (horizontal on top of vertical)
+### L2 — Systematic research (vertical and horizontal in parallel)
 
-Searching vertically with domain terms at L1 is right — you know which field the answer lives in. L2's premise is precisely that you do not; domain vocabulary is the wall, so turn horizontal. On top of L1's two tracks:
+Searching vertically with domain terms at L1 is right — you know which field the answer lives in. L2's premise is precisely that you do not; domain vocabulary is the wall. So at L2 the horizontal line is not a rescue that fires after vertical fails — both directions are mandatory and simultaneous, and both are delegated, not searched in-session: after the zero-cost local prior-art check (which stays in the main session, needing repo context), dispatch the two lines as parallel `research-scout` subagents, each evolving its own queries in its own context. A vertical hit does not call off the horizontal line: Step 4 ranks by structural match, and a structurally isomorphic cross-field answer is often worth more than a superficially similar in-field one — until both lines have reported, there is nothing to compare. The horizontal line:
 
 1. **Ask with the essence statement**: put the sticking point + the problem + the background fully into the query (same for search engines, communities, and models) and ask "has humanity ever solved something like this" — queries built only from domain jargon can only recall answers you already know
 2. **Sweep horizontally**: other tech stacks, other industries, other eras all count — mature methodologies are mostly borrowed (evolution → genetic algorithms, supermarket restocking → Toyota lean, ant foraging → routing optimization); if nothing hits, re-search with 2–3 sets of synonyms from different fields
 3. **Expand sources**: industry white papers, internal knowledge bases (Zotero/notes/wiki), cross-checking multiple independent sources
 
 Worked example: sent out with the essence statement above, the leaderboard-aggregation question hit two unfamiliar fields — educational measurement (students taking exams of different difficulty, latent ability estimated from responses) and esports (Elo / TrueSkill rating ability from win-loss records) — and both tracks answered at once: Elo is engineering practice, TrueSkill and Bradley-Terry are papers. The Bradley-Terry pairwise comparison model was adopted and adapted to the constraints (priors for small samples, evidence budgets for overlapping sources, anchor models fixing the scale). Cross-domain prior art is adopted by problem structure and then adapted — not copied.
+
+**Dispatch protocol — two parallel `research-scout` subagents.** The scout definition carries the line discipline (query construction, trust ladder, per-line stop rules, anti-hallucination, memo format); the work order carries only the task slice, one per line:
+
+```
+Direction: vertical | horizontal
+Questions (this line's slice): … each with its domain statement (vertical) / essence statement (horizontal)
+Constraints: stack + versions + repo no-go zones (from AGENTS.md)
+Sources: [vertical] engineering and/or academic track by problem nature; [horizontal] cross-field sweep, white papers, internal knowledge bases (local paths if any)
+Budget: N of the global 8 (typically 3–4); a scout stops at its slice and never borrows across lines
+```
+
+A task triaged L2 from the start dispatches both scouts together; a task upgraded from L1 arrives with the vertical memo already in hand from its in-session searching — dispatch the horizontal scout alone. When both memos are in, rank and evaluate in the main session (Step 4) — an empty line memo is input to that comparison, not a failure; the main session may re-issue at most one re-phrased work order per line before declaring it exhausted.
+
+**Degradation path**: where no subagent mechanism exists (or `research-scout` is not installed), run both lines in the main session yourself — batch the two lines' search calls in the same message so they still proceed in parallel, keep the same budget split and per-line stop rules, and note in the memo that the lines ran non-isolated.
 
 ## Step 4: Rank by relevance, then evaluate
 
@@ -95,8 +109,8 @@ Rank candidates by **relevance** first — the criterion is **match on problem s
 
 ## Stopping Rules and Safeguards
 
-- Stop in a fixed order, each step triggered by 2 consecutive fruitless rounds (a round = one group of targeted searches around the same phrasing): if only one track has been tried, switch to the other (engineering ↔ academic) first; if both tracks come up empty, escalate to L2, write the essence statement, and search horizontally; only after horizontal searching also fails, stop searching and proceed to implementation, noting "searched, no prior art found"
-- Total external-search budget: at most 8 searches overall; when exhausted, stop — same treatment as stopping on no results
+- Stop per line, each line retired by 2 consecutive fruitless rounds of its own (a round = one group of targeted searches around the same phrasing) — at L2 this counting happens inside each `research-scout`, which stops at its slice and reports: within the vertical line, if only one track has been tried, switch to the other (engineering ↔ academic) first; if both vertical tracks come up empty, escalate to L2 — dispatch the horizontal scout at once (the vertical memo from in-session searching already stands), never sequenced behind further vertical digging; only when both lines at L2 are exhausted (memos in, plus at most one re-issued work order per line), stop searching and proceed to implementation, noting "searched, no prior art found"
+- Total external-search budget: at most 8 searches overall; when exhausted, stop — same treatment as stopping on no results. At L2 split the budget across the two parallel lines from the first round (roughly even until hits start concentrating on one line), so an early vertical hit cannot starve the horizontal line
 - No searching for searching's sake: before every search, state how the result would change your approach
 - **Not found ≠ does not exist**: any claim of "no prior art" must list the places actually checked
 - After adopting a community solution, verify: version compatibility, tests pass, license check, security scan when warranted
