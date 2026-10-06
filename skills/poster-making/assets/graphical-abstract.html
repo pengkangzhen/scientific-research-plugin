@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!-- ============================================================
+  graphical-abstract.html — journal graphical abstract / visual abstract
+  Banner shape, journal specs differ — set width/height from
+  assets/specs.json → graphical_abstracts (default here: Elsevier
+  1328 × 531 px; IEEE 660 × 295 is also supported by the renderer's
+  --width/--height flags; Cell Press wants 1200 × 1200 square —
+  for square, stack the three panels vertically instead).
+
+  Canon: ONE reading flow left→right — context → method → key result.
+  Text budget: <= 30 words total. Everything must survive downscaling
+  to the journal's TOC thumbnail (Elsevier: legible at 200 px height).
+  ============================================================ -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Graphical Abstract</title>
+<style>
+  :root {
+    --c-primary: #0E2841;
+    --c-accent:  #E97132;
+    --c-teal:    #156082;
+    --c-gray:    #5A6B7B;
+    --c-light:   #F2F6F9;
+  }
+  @page { size: 1328px 531px; margin: 0; }   /* from specs.json — Elsevier default */
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  .ga {
+    width: 1328px; height: 531px; box-sizing: border-box;
+    padding: 26px 30px;
+    background: #ffffff;
+    font-family: "Times New Roman", "Liberation Serif", "Nimbus Roman", "SimSun", "宋体", serif;
+    color: #1a1a1a;
+    display: flex; flex-direction: column;
+  }
+  @media screen {
+    html { height: auto; display: flex; justify-content: center; background: #ffffff; }
+    body { transform-origin: top center; scale: min(1, calc(100vw / 1328)); }
+  }
+
+  .flow { flex: 1; display: grid; grid-template-columns: 1fr auto 1.15fr auto 1.15fr; gap: 0; align-items: stretch; }
+  .panel { display: flex; flex-direction: column; gap: 8px; padding: 10px 16px; }
+  .panel.mid { background: var(--c-light); border-radius: 10px; }
+  .panel .kicker { font-size: 21px; letter-spacing: 3px; color: var(--c-accent); font-weight: bold; }
+  .panel .txt { font-size: 25px; line-height: 1.32; }
+  .panel .img {
+    flex: 1; border: 2px dashed var(--c-gray); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--c-gray); font-size: 20px; text-align: center; padding: 8px;
+  }
+  .arrow { align-self: center; font-size: 52px; color: var(--c-teal); font-weight: bold; padding: 0 10px; font-family: sans-serif; }
+
+  .result .img { border-style: solid; border-color: var(--c-teal); background: #ffffff; }
+  .result .headline { font-size: 30px; font-weight: bold; color: var(--c-primary); line-height: 1.25; }
+  .result .headline .n { color: var(--c-accent); font-size: 40px; }
+
+  .footer { padding-top: 10px; font-size: 18px; color: var(--c-gray); text-align: center; }
+</style>
+</head>
+<body>
+<div class="ga">
+  <div class="flow">
+    <!-- 1. context / problem -->
+    <div class="panel">
+      <div class="kicker">THE PROBLEM</div>
+      <div class="txt">Supply networks break when <em>[disruption]</em> hits —
+      pre-positioning decisions must hedge before knowing where.</div>
+      <div class="img">problem schematic<br>(simplified paper Fig. 1, thick strokes)</div>
+    </div>
+
+    <div class="arrow">→</div>
+
+    <!-- 2. method -->
+    <div class="panel mid">
+      <div class="kicker">OUR APPROACH</div>
+      <div class="txt">Distributionally robust two-stage model, solved by
+      <em>[algorithm]</em>.</div>
+      <div class="img">method mini-diagram<br>(3–4 shapes max, no fine text)</div>
+    </div>
+
+    <div class="arrow">→</div>
+
+    <!-- 3. key result -->
+    <div class="panel result">
+      <div class="kicker">KEY RESULT</div>
+      <div class="headline"><span class="n">−18.4%</span> expected cost
+      at equal daily spend</div>
+      <div class="img">hero chart crop<br>(one curve vs. baseline)</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Optional micro-caption: Author et al., <i>Journal</i> 2026 · DOI 10.xxxx/xxxxx
+    <!-- many journals discourage a title strip here — delete if the guide says so -->
+  </div>
+</div>
+</body>
+</html>

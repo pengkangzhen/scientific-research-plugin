@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<!-- ============================================================
+  poster-classic.html — classic multi-column academic conference poster
+  Copy in full, then edit content. Placeholder text doubles as filling
+  instructions (Chinese notes in comments).
+
+  Canvas: A0 portrait (841 × 1189 mm) — change in BOTH places marked
+  [SIZE] below if the conference prescribes another size (see
+  assets/specs.json → conference_posters.sizes). All lengths are
+  PHYSICAL units (mm / pt): what you see is what prints.
+  Fonts: Times New Roman (Latin/digits), SimSun/宋体 fallback (CJK).
+  Palette: same five-color system as slide-making (swap the values to
+  restyle; keep luminance roles).
+  ============================================================ -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Conference Poster — Classic</title>
+<style>
+  :root {
+    /* five-color design system — swap values to restyle */
+    --c-primary: #0E2841;   /* navy   — title band, section heads   */
+    --c-accent:  #E97132;   /* orange — eyebrows, key numbers       */
+    --c-teal:    #156082;   /* teal   — figures captions, links     */
+    --c-gray:    #5A6B7B;   /* gray   — authors, meta, references   */
+    --c-light:   #F2F6F9;   /* light  — panel backgrounds           */
+
+    --body-size: 26pt;      /* ≥24pt iron floor (specs.json)        */
+    --head-size: 40pt;      /* section heading 36–48pt              */
+    --title-size: 78pt;     /* poster title 72–85pt                 */
+    --caption-size: 20pt;   /* caption ≥18pt                        */
+  }
+  @page { size: 841mm 1189mm; margin: 0; }            /* [SIZE] */
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  .poster {
+    width: 841mm;                                       /* [SIZE] */
+    min-height: 1189mm;                                 /* [SIZE] grows if content overflows */
+    box-sizing: border-box;
+    padding: 18mm 20mm;
+    font-family: "Times New Roman", "Liberation Serif", "Nimbus Roman", "SimSun", "宋体", serif;
+    color: #1a1a1a;
+    background: #ffffff;
+    display: flex; flex-direction: column;
+  }
+  @media screen {  /* browser preview auto-scale; print unaffected */
+    html { height: auto; display: flex; justify-content: center; background: #ffffff; }
+    body { transform-origin: top center; scale: min(1, calc(100vw / 3179)); }
+  }
+
+  /* ---------- title band ---------- */
+  .title-band { border-bottom: 3pt solid var(--c-primary); padding-bottom: 10mm; margin-bottom: 10mm; }
+  .title-band .eyebrow { font-size: 22pt; letter-spacing: 4pt; color: var(--c-accent); font-weight: bold; margin-bottom: 4mm; }
+  .title-band h1 { font-size: var(--title-size); line-height: 1.12; color: var(--c-primary); margin: 0 0 6mm 0; font-weight: bold; }
+  .title-band .authors { font-size: 30pt; color: #1a1a1a; }
+  .title-band .authors sup { color: var(--c-teal); }
+  .title-band .affiliations { font-size: 20pt; color: var(--c-gray); margin-top: 2mm; }
+
+  /* ---------- three-column body ---------- */
+  /* anti-top-heavy: rows/figure slots STRETCH to fill the canvas —
+     a poster half empty at the bottom is the #1 visual failure */
+  .body-grid { flex: 1; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12mm; }
+  .col { display: flex; flex-direction: column; gap: 10mm; }
+  section.block { display: flex; flex-direction: column; flex: 1; }
+
+  section.block h2 {
+    font-size: var(--head-size); color: var(--c-primary);
+    border-left: 6pt solid var(--c-accent); padding-left: 6mm;
+    margin: 0 0 5mm 0; line-height: 1.15;
+  }
+  section.block p, section.block li { font-size: var(--body-size); line-height: 1.35; margin: 0 0 4mm 0; text-align: left; }
+  section.block ul { margin: 0; padding-left: 10mm; }
+  section.block li { margin-bottom: 3mm; }
+
+  .panel { background: var(--c-light); padding: 6mm 7mm; border-radius: 2mm; flex: 1; display: flex; flex-direction: column; }
+  .figure-slot { border: 1pt dashed var(--c-gray); display: flex; align-items: center; justify-content: center; flex: 1; min-height: 90mm; font-size: var(--caption-size); color: var(--c-gray); text-align: center; }
+  .figure-slot img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  figcaption { font-size: var(--caption-size); color: var(--c-teal); margin-top: 2.5mm; line-height: 1.3; }
+
+  .keynumber { display: flex; gap: 10mm; }
+  .keynumber .num { font-size: 56pt; font-weight: bold; color: var(--c-accent); line-height: 1; }
+  .keynumber .lbl { font-size: var(--caption-size); color: var(--c-gray); align-self: center; }
+
+  .takeaway { background: var(--c-primary); color: #ffffff; padding: 8mm 9mm; border-radius: 2mm; }
+  .takeaway h2 { color: #ffffff; border-left-color: var(--c-accent); }
+  .takeaway p { color: #ffffff; font-weight: bold; }
+
+  .qr-row { display: flex; gap: 8mm; align-items: center; }
+  .qr-row img, .qr-row .qr-slot { width: 45mm; height: 45mm; background: #fff; border: 1pt dashed var(--c-gray); }
+  .qr-row .qr-note { font-size: var(--caption-size); color: var(--c-gray); }
+
+  .refs { font-size: 18pt; color: var(--c-gray); line-height: 1.3; }
+  .refs li { margin-bottom: 2mm; }
+
+  /* anti-card-wall: hierarchy by type, not by boxes (max 3 bordered
+     containers on the whole poster — .panel and .takeaway already
+     count; do not wrap every section) */
+</style>
+</head>
+<body>
+<div class="poster">
+
+  <header class="title-band">
+    <!-- eyebrow: conference + poster number, e.g. "INFORMS Annual 2026 · Poster 147" -->
+    <div class="eyebrow">CONFERENCE NAME 2026 · POSTER ###</div>
+    <h1>Full Paper Title in Title Case: Method Subtitle and the Application Domain</h1>
+    <!-- authors: superscript affiliations; presenting author underlined -->
+    <div class="authors">First Author<sup>1</sup>, Second Author<sup>2</sup>, Third Author<sup>1,*</sup></div>
+    <div class="affiliations">
+      <sup>1</sup> University Department, City, Country &nbsp;&nbsp;
+      <sup>2</sup> Another Institute, City, Country &nbsp;&nbsp;
+      <sup>*</sup> corresponding@university.edu
+    </div>
+  </header>
+
+  <main class="body-grid">
+
+    <!-- left column: problem + model -->
+    <div class="col">
+      <section class="block">
+        <h2>Background &amp; Problem</h2>
+        <!-- ≤ 60 words: one paragraph of context, one sentence of the gap -->
+        <p>Replace with the problem context in 2–3 sentences. State the gap:
+        existing models fail to handle <em>[what]</em>, which matters because
+        <em>[consequence]</em>.</p>
+        <div class="panel">
+          <!-- problem schematic: reuse the paper's network/topology figure -->
+          <div class="figure-slot">fig: problem / network schematic<br>(reuse paper Figure 1)</div>
+          <figcaption><b>Figure 1.</b> Problem setting — caption written for a
+          1 m reading distance, self-contained.</figcaption>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Model</h2>
+        <p>One paragraph stating the decision problem: sets, first-stage
+        decisions, recourse, objective in words (formulas go to the middle
+        column).</p>
+        <div class="panel">
+          <div class="figure-slot">fig: model notation diagram or small formulation</div>
+          <figcaption><b>Figure 2.</b> Two-stage decision flow.</figcaption>
+        </div>
+      </section>
+    </div>
+
+    <!-- middle column: method core -->
+    <div class="col">
+      <section class="block">
+        <h2>Method</h2>
+        <p>Name the algorithmic framework and the one idea that makes it work.
+        Keep pseudo-code to the skeleton — 8–12 lines maximum.</p>
+        <div class="panel">
+          <div class="figure-slot">algorithm skeleton (drawio export) or framework diagram</div>
+          <figcaption><b>Figure 3.</b> Solution framework — C&amp;CG iteration.</figcaption>
+        </div>
+        <!-- optional minimal formulation; render math as an image from the
+             paper (KaTeX here diverges from the paper's math fonts) -->
+        <div class="panel">
+          <div class="figure-slot">key formulation block (screenshot/crop of paper equations)</div>
+          <figcaption><b>Formulation.</b> Only the master problem coupling constraint.</figcaption>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2>Experimental Setup</h2>
+        <ul>
+          <li>Instances: <em>[instance family, size]</em></li>
+          <li>Benchmarks: <em>[baselines with citations]</em></li>
+          <li>Hardware / solver / time limits: <em>[one line]</em></li>
+        </ul>
+      </section>
+    </div>
+
+    <!-- right column: results + takeaway -->
+    <div class="col">
+      <section class="block">
+        <h2>Results</h2>
+        <div class="keynumber">
+          <div class="num">−18.4%</div>
+          <div class="lbl">expected cost vs. best baseline<br>(median over 50 instances)</div>
+        </div>
+        <div class="panel">
+          <div class="figure-slot">hero result figure (Pareto front / convergence)</div>
+          <figcaption><b>Figure 4.</b> Main result — this is the hero figure,
+          largest on the poster.</figcaption>
+        </div>
+        <p>Two sentences on what the figure shows; defer tables to the QR
+        link.</p>
+      </section>
+
+      <section class="block">
+        <div class="takeaway">
+          <h2>Takeaway</h2>
+          <p>One sentence a visitor should be able to repeat after leaving:
+          what is new, and for whom it changes what.</p>
+        </div>
+        <div class="qr-row" style="margin-top:6mm;">
+          <div class="qr-slot"></div><!-- QR: DOI / arXiv page, ≥12mm printed side, quiet zone 4 modules -->
+          <div class="qr-note">Scan for the full paper, data and code.<br>Preprint: arXiv:2609.#####</div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h2 style="font-size:26pt;">References &amp; Acknowledgments</h2>
+        <ul class="refs">
+          <li>Author, A. (2025). Title. <i>Journal</i>, 12(3), 45–67.</li>
+          <li>Author, B. (2024). Title. In <i>Proc. of Conference</i>, 1–10.</li>
+          <li>Funding: grant number; no conflict of interest.</li>
+        </ul>
+      </section>
+    </div>
+
+  </main>
+</div>
+</body>
+</html>

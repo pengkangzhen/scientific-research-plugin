@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "purpose": "Canvas and format specifications for poster-making — single source of truth. Never hardcode sizes elsewhere; scripts and templates read from here.",
+    "verified": "2026-10-06",
+    "sources": {
+      "elsevier": "https://www.elsevier.com/researcher/author/tools-and-resources/graphical-abstract",
+      "wiley": "https://authors.wiley.com/author-resources/Journal-Authors/Prepare/manuscript-preparation-guidelines.html",
+      "ieee": "https://journals.ieeeauthorcenter.ieee.com/create-your-ieee-journal-article/prepare-supplementary-materials/",
+      "cell": "Cell Press author guidelines (1200x1200 @300dpi), via SSRN survey of 49 publishers",
+      "visual_abstract_primer": "https://andrew-ibrahim-zgsy.squarespace.com (Ibrahim, Visual Abstract Primer v5)",
+      "poster_design": "Purrington poster guide (colinpurrington.com); UCSD/OSU/UCT library guides; Bentsen & Ostergaard 2025 J Cancer Educ"
+    }
+  },
+  "conference_posters": {
+    "note": "Conferences usually prescribe a SIZE, not a template. Always check the call for papers; parameterize the canvas from these presets.",
+    "sizes": {
+      "A0_portrait":  { "width_mm": 841,  "height_mm": 1189, "note": "default conference poster" },
+      "A0_landscape": { "width_mm": 1189, "height_mm": 841 },
+      "A1_portrait":  { "width_mm": 594,  "height_mm": 841 },
+      "A1_landscape": { "width_mm": 841,  "height_mm": 594 },
+      "in_48x36_portrait":  { "width_mm": 914,  "height_mm": 1219, "note": "48x36 inch, common US/INFORMS prescription" },
+      "in_48x36_landscape": { "width_mm": 1219, "height_mm": 914 },
+      "in_42x42":           { "width_mm": 1067, "height_mm": 1067, "note": "square session posters" }
+    },
+    "typography_budget": {
+      "title_pt": [72, 85],
+      "section_heading_pt": [36, 48],
+      "body_min_pt": 24,
+      "caption_min_pt": 18,
+      "max_type_scale_steps": 4,
+      "word_budget": [300, 800],
+      "area_budget": { "text_pct": [20, 25], "graphics_pct": [40, 45], "whitespace_pct": [20, 30] },
+      "reading_distance": { "title_m": "3-5", "body_m": "1-1.5" }
+    }
+  },
+  "graphical_abstracts": {
+    "note": "Per-journal specs; check the target journal's guide for authors — several INFORMS journals and AGU have NO graphical abstract channel at all (plain-text abstract only), for those use social_cards instead.",
+    "entries": {
+      "elsevier": {
+        "width_px": 1328, "height_px": 531, "dpi": 300,
+        "ratio": "banner ~5:2 landscape",
+        "formats": ["TIFF", "EPS", "PDF", "MS Office"],
+        "fonts": "Times / Arial / Courier / Symbol; must stay readable at 200px height in the TOC window",
+        "optional": "per-journal opt-in; displayed on ScienceDirect only, separate file"
+      },
+      "wiley": {
+        "width_px": 1328, "height_px": 531, "dpi": 300,
+        "ratio": "same banner shape as Elsevier (official wording lists 531x1328 h x w)",
+        "formats": ["TIFF", "EPS", "PDF", "MS Office"],
+        "optional": "per-journal opt-in"
+      },
+      "ieee": {
+        "width_px": 660, "height_px": 295, "dpi": 300,
+        "max_file_kb": 45,
+        "formats": ["JPG", "TIF", "PNG", "GIF", "PDF", "EPS", "BMP"],
+        "also_accepts": "16:9 MP4 video abstract <=100MB",
+        "optional": "per-journal, some require peer review of the abstract itself"
+      },
+      "cell_press": {
+        "width_px": 1200, "height_px": 1200, "dpi": 300,
+        "ratio": "square",
+        "optional": "per-journal"
+      },
+      "springer_nature": {
+        "spec": "no publisher-wide spec; follow per-journal Instructions for Authors; Nature-branded ~7:5 landscape",
+        "formats": ["TIFF", "EPS"]
+      }
+    }
+  },
+  "social_cards": {
+    "note": "Screen medium, pixel units. Element canon (Ibrahim visual abstract): claim-style headline + central method/result visual + authors/affiliation + journal citation & DOI. Export PNG (and vector PDF for reprinting).",
+    "entries": {
+      "x_16x9":    { "width_px": 1200, "height_px": 675,  "note": "X/Twitter in-stream standard" },
+      "square_1x1":{ "width_px": 1080, "height_px": 1080, "note": "Instagram / LinkedIn feed variant" },
+      "linkedin":  { "width_px": 1200, "height_px": 628,  "note": "LinkedIn link-card image" },
+      "wechat_hero": { "width_px": 900, "height_px": 383, "note": "WeChat official-account head image 2.35:1" }
+    }
+  },
+  "qr_code": {
+    "note": "better-poster canon: QR links to the paper (DOI / arXiv / personal page). Generate with qrcode Python package, error correction M, >= 1.2cm printed side on posters, quiet zone 4 modules.",
+    "min_side_mm_on_poster": 12
+  }
+}

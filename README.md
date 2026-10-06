@@ -3,16 +3,16 @@
 **English** | [简体中文](README.zh-CN.md)
 
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Skills](https://img.shields.io/badge/skills-12_+_2_subagents-blue)
+![Skills](https://img.shields.io/badge/skills-13_+_2_subagents-blue)
 ![Harnesses](https://img.shields.io/badge/harnesses-16-orange)
 
-Every research task starts with prior art — not just papers. A survey skill (`research-before-build`) checks prior art across engineering and academic sources for research-grade questions before you build; the paper pipeline — literature acquisition → structured reading → paper figures → section drafting → writing polish → reference verification → pre-submission review → rebuttal → conference presentation — is its fullest instantiation. Built for OR & ML researchers.
+Every research task starts with prior art — not just papers. A survey skill (`research-before-build`) checks prior art across engineering and academic sources for research-grade questions before you build; the paper pipeline — literature acquisition → structured reading → paper figures → section drafting → writing polish → reference verification → pre-submission review → rebuttal → conference presentation and poster — is its fullest instantiation. Built for OR & ML researchers.
 
 One `skills/` source of truth, distributed to multiple frontends: the Claude Code / ZCode / Codex plugins, the assistants that read `~/.agents/skills` natively (Gemini CLI, Goose, opencode, Kimi Code, pi), and the harness-specific directories that `install.sh` fans out to (Cursor, Crush, Copilot, Amp, Grok Build, Qwen Code, Droid, Kiro).
 
 ## Highlights
 
-- **Full lifecycle in one pack.** From a raw reference list to the conference talk: Zotero intake → structured reading notes → note-driven PDF highlighting → journal-grade figures → top-journal-style section drafting → LaTeX polishing → noun-term jargon sweep → citation audit → adversarial pre-submission review → point-by-point rebuttal → timed Beamer deck. 12 skills + 2 subagents designed as one pipeline, not twelve loose utilities.
+- **Full lifecycle in one pack.** From a raw reference list to the conference talk and poster: Zotero intake → structured reading notes → note-driven PDF highlighting → journal-grade figures → top-journal-style section drafting → LaTeX polishing → noun-term jargon sweep → citation audit → adversarial pre-submission review → point-by-point rebuttal → timed Beamer deck → single-page visual derivatives (poster, graphical abstract, announcement card). 13 skills + 2 subagents designed as one pipeline, not thirteen loose utilities.
 - **Facts over model recall.** `reference-verifying` fetches citation facts from official APIs (CrossRef / arXiv / PMLR / OpenReview / ACL Anthology / NeurIPS) — commands, not memory. Undecidable entries get web checks whose evidence must carry accessible URLs, and every adverse finding is independently re-checked.
 - **Outsider audits, not self-grading.** `paper-review` runs three mutually isolated reviewers (methodology rigor / domain contribution / adversarial attack) plus author-defense arbitration — the failure mode it targets is a model grading its own output. `jargon-check` goes further: an isolated subagent on an independent model reads the polished text as a stranger would.
 - **A survey skill for research-grade questions, not just paper tools.** `research-before-build` fires where prior art spans both engineering and academic venues — method and solution design, "has humanity studied X", architecture choices for research systems. It dispatches two parallel `research-scout` subagents, one digging vertically within the field, one sweeping horizontally across fields, each covering GitHub-grade and paper-grade sources. Routine engineering unknowns — library picks, integrations, deployment, debugging, security — stay with the harness's native search; settled-path work triggers nothing. The paper pipeline is its fullest instantiation, not its boundary.
@@ -37,11 +37,12 @@ One `skills/` source of truth, distributed to multiple frontends: the Claude Cod
 | ⑤ `reference-verifying` | skill | Verifies citations against official APIs — machine checks, not model memory — to prevent hallucinated references |
 | ⑥ `rebuttal` | skill | Revises the manuscript point by point against reviewer comments, keeping the response letter in sync |
 | ⑦ `slide-making` | skill | Turns your paper into a conference presentation deck or a thesis-proposal/defense Beamer |
+| ⑧ `poster-making` | skill | Turns your paper into single-page visual derivatives: a conference poster (official-template / beamerposter / tikzposter / HTML routes), a journal graphical abstract to publisher pixel specs, and a social-media announcement card — one content-compression pipeline, three canvases |
 
 ### Survey Layer vs. Pipeline Layer
 
 - **Survey layer (⓪)**: `research-before-build` serves research-grade prior-art questions — solution and method design, "has humanity studied/solved X", architecture selection for research systems — not routine engineering unknowns (the harness's native search covers those) nor settled-path execution. It is the pack's worldview: prior art before building, and not just in your own field — strip the domain jargon and ask whether humanity has ever solved a structurally similar problem; research questions pinned down from the task description and the repo's AGENTS.md, retrieval dimension — engineering (docs, issues, mature repos) and academic (papers), both always — retrieval direction — vertical within the field and horizontal across fields as two co-primary lines dispatched in parallel as `research-scout` subagents — and retrieval strategy: queries built by the facet-split + relaxation-ladder method, candidates ranked by structural match, verified by decision impact.
-- **Pipeline layer (①–⑦)**: the paper lifecycle, the survey skill's most complete instantiation — from a reference list to the conference talk.
+- **Pipeline layer (①–⑧)**: the paper lifecycle, the survey skill's most complete instantiation — from a reference list to the conference talk, poster, and announcement card.
 
 ⓪ → ① is a hand-off, not containment: `research-before-build` decides *whether and what* to survey; `zotero-paper-fetching` acquires the decided references into Zotero.
 
@@ -69,6 +70,7 @@ Skills auto-trigger from their descriptions — no slash commands to memorize. T
 | "Review this manuscript the way reviewers would" | `paper-review` | 3-reviewer panel report + C/M/N issue list |
 | "Draft point-by-point responses to the reviews" | `rebuttal` | `\changed{}` markup, compiled PDF, updated letter |
 | "Turn this paper into a 15-minute talk" | `slide-making` | Beamer deck, timed script, speaker notes |
+| "Make the conference poster for this paper" / "I need a graphical abstract for submission" / "Make an announcement card for the new paper" | `poster-making` | A0 poster (vector PDF + PNG), spec-compliant graphical abstract, 16:9 card |
 
 ## Installation
 
@@ -117,7 +119,7 @@ cd scientific-research-plugin
 Verify:
 
 ```bash
-ls ~/.agents/skills    # the 12 skills
+ls ~/.agents/skills    # the 13 skills
 ls ~/.agents/agents    # the subagents (jargon-check, research-scout)
 ```
 
@@ -146,7 +148,7 @@ Not covered: iFlow CLI (project-scoped `.iflow/` layout with its own skill marke
 ## Repository Layout
 
 ```
-├── skills/                      # 12 auto-triggered skills (single source of truth)
+├── skills/                      # 13 auto-triggered skills (single source of truth)
 │   ├── research-before-build/
 │   ├── zotero-paper-fetching/
 │   ├── zotero-paper-note/
@@ -158,7 +160,8 @@ Not covered: iFlow CLI (project-scoped `.iflow/` layout with its own skill marke
 │   ├── paper-review/
 │   ├── reference-verifying/
 │   ├── rebuttal/
-│   └── slide-making/
+│   ├── slide-making/
+│   └── poster-making/
 ├── attic/                       # retired skills, kept for provenance
 │   └── academic-paper-review/   # 7-agent journal-review simulation (upstream: academic-research-skills)
 ├── agents/
@@ -179,7 +182,7 @@ Not covered: iFlow CLI (project-scoped `.iflow/` layout with its own skill marke
 - Version bumps touch all three plugin manifests (`.claude-plugin/`, `.zcode-plugin/`, `.codex-plugin/`) and the `.claude-plugin/marketplace.json` entry in lockstep.
 - The official ZCode marketplace channel (zai-org/zcode-plugins, `plugins/scientific-research-plugin/`) is **paused as of 2026-09-24** — no fork syncs or PRs until resumed. If resumed: sync every release via PR, keeping `version` and `description_i18n` identical (their `validate.py` enforces it), and confirm their `marketplace.json` actually lists the new version before announcing.
 - `academic-paper-review` is retired into `attic/` (upstream: academic-research-skills); its useful mechanisms (fatal-flaw criteria, red flags, Devil's-Advocate attack dimensions) live on inside `paper-review`. See `skills/paper-review/references/source-basis.md` for full provenance.
-- This repo is v11: v1 contained only 4 writing skills; v2 expanded to a research pipeline and evolved `language-polish` into `paper-polish`; v3 added the discipline layer `research-before-build` (⓪) and `academic-ppt` (⑦) and renamed `scientific-review` to `paper-review`; v4 rebuilds `paper-review` as a three-blind adversarial panel (nature-reviewer-style architecture, OR/ML+OR domain gates, author-defense arbitration) and retires `academic-paper-review`; v5 adds `reference-verify` (⑤ pre-submission reference audit, three-layer verification distilled from a full-manuscript citation check); v6 adds `term-audit` (batch noun-term jargon audit: extraction → five-signal ranking → parallel `jargon-check` terms-mode batches → variant/drift merger, seeded by Kobak et al. 2025 excess vocabulary) and the matching `terms` mode on `jargon-check`; v7 renames five skills to gerund forms per Anthropic's skill-naming best practice (`figure-plot` → `figure-plotting`, `paper-polish` → `paper-polishing`, `reference-verify` → `reference-verifying`, `zotero-paper-fetch` → `zotero-paper-fetching`, `academic-ppt` → `slide-making`) — 10 skills + 1 subagent; v8 adds `zotero-pdf-highlighting` (note-driven PDF category highlighting: PyMuPDF embedded-annotation route, strict five categories on the Zotero palette, idempotent re-runs); v9 adds `top-journal-writing` (④ section drafting/restructuring to top-journal blueprints — intro funnel, five-sentence abstract, recipe-style methods, four-step discussion — backed by a sentence bank mined from 200 top-venue papers across AI/OR/management/logistics/shipping via arXiv + OpenAlex harvesting) — 12 skills + 1 subagent; v10 makes `research-before-build`'s L2 truly parallel — the vertical and horizontal lines are dispatched simultaneously as `research-scout` subagents (one per line, own budget slice, per-line stop rules, degradation path for harnesses without subagents), bringing the pack to 12 skills + 2 subagents. v11 refocuses `research-before-build` on research-grade prior-art questions — L1/L2 tiering removed, engineering and academic dimensions both always searched, routine engineering unknowns (library/framework picks, integration, deployment, migration, cloud config, debugging, performance, security) delegated to the harness's native search — and adds question decomposition: PICO-style facet split (OR within facet, AND across) plus a relaxation ladder (full conjunction → drop the domain-binding facet as an evaluation-time filter → step the concept up), synthesized from Cochrane building-block searches, Motro's cooperative query answering, and step-back prompting — with every survey persisted as a dated reading list under `docs/research/` (papers with DOIs/arXiv IDs for `zotero-paper-fetching`, repos with versions to pin).
+- This repo is v12: v1 contained only 4 writing skills; v2 expanded to a research pipeline and evolved `language-polish` into `paper-polish`; v3 added the discipline layer `research-before-build` (⓪) and `academic-ppt` (⑦) and renamed `scientific-review` to `paper-review`; v4 rebuilds `paper-review` as a three-blind adversarial panel (nature-reviewer-style architecture, OR/ML+OR domain gates, author-defense arbitration) and retires `academic-paper-review`; v5 adds `reference-verify` (⑤ pre-submission reference audit, three-layer verification distilled from a full-manuscript citation check); v6 adds `term-audit` (batch noun-term jargon audit: extraction → five-signal ranking → parallel `jargon-check` terms-mode batches → variant/drift merger, seeded by Kobak et al. 2025 excess vocabulary) and the matching `terms` mode on `jargon-check`; v7 renames five skills to gerund forms per Anthropic's skill-naming best practice (`figure-plot` → `figure-plotting`, `paper-polish` → `paper-polishing`, `reference-verify` → `reference-verifying`, `zotero-paper-fetch` → `zotero-paper-fetching`, `academic-ppt` → `slide-making`) — 10 skills + 1 subagent; v8 adds `zotero-pdf-highlighting` (note-driven PDF category highlighting: PyMuPDF embedded-annotation route, strict five categories on the Zotero palette, idempotent re-runs); v9 adds `top-journal-writing` (④ section drafting/restructuring to top-journal blueprints — intro funnel, five-sentence abstract, recipe-style methods, four-step discussion — backed by a sentence bank mined from 200 top-venue papers across AI/OR/management/logistics/shipping via arXiv + OpenAlex harvesting) — 12 skills + 1 subagent; v10 makes `research-before-build`'s L2 truly parallel — the vertical and horizontal lines are dispatched simultaneously as `research-scout` subagents (one per line, own budget slice, per-line stop rules, degradation path for harnesses without subagents), bringing the pack to 12 skills + 2 subagents. v11 refocuses `research-before-build` on research-grade prior-art questions — L1/L2 tiering removed, engineering and academic dimensions both always searched, routine engineering unknowns (library/framework picks, integration, deployment, migration, cloud config, debugging, performance, security) delegated to the harness's native search — and adds question decomposition: PICO-style facet split (OR within facet, AND across) plus a relaxation ladder (full conjunction → drop the domain-binding facet as an evaluation-time filter → step the concept up), synthesized from Cochrane building-block searches, Motro's cooperative query answering, and step-back prompting — with every survey persisted as a dated reading list under `docs/research/` (papers with DOIs/arXiv IDs for `zotero-paper-fetching`, repos with versions to pin); v12 adds `poster-making` (⑧ single-page visual derivatives of a paper: conference poster across official-template / beamerposter / tikzposter / HTML render routes, journal graphical abstract to publisher pixel specs — INFORMS journals and AGU have no GA channel, so the announcement card is the visual abstract there — and social-media announcement cards; canvas specs live in `assets/specs.json` as the single source of truth with sources and verified dates; a render-and-verify loop ships vector PDF + 2× PNG via `scripts/render.mjs`, all four HTML templates render-verified 2026-10-06) — 13 skills + 2 subagents.
 
 ## License
 

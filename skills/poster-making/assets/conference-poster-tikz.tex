@@ -1,0 +1,120 @@
+% ============================================================
+% conference-poster-tikz.tex — fallback LaTeX poster template
+% (tikzposter ships with TeX Live — zero extra installs; use this
+% when beamerposter.cls is unavailable and the network is dead)
+%
+% Copy in full, then edit content. Compile:  xelatex conference-poster-tikz.tex
+% Canvas: A0 portrait ([a0paper,portrait] class options); see specs.json
+% for other presets. Type scale via class option 25pt = largest preset —
+% tikzposter's 25pt still means ~25pt body at A0, which MEETS the
+% >=24pt floor without further tuning.
+% ============================================================
+\documentclass[25pt, a0paper, portrait]{tikzposter}
+\usetheme{Simple}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{caption}   % \captionof{figure} outside floats
+
+% palette aligned with the pack's five-color system
+\definecolorstyle{packColors}{%
+  \definecolor{colorOne}{HTML}{0E2841}   % navy    — title, block frames
+  \definecolor{colorTwo}{HTML}{E97132}   % orange  — accents
+  \definecolor{colorThree}{HTML}{F2F6F9} % light   — block backgrounds
+}{%
+  % background
+  \colorlet{background}{white}
+  \colorlet{frameColor}{colorOne}
+  \colorlet{titleColor}{colorOne}
+  \colorlet{blocktitleBGColor}{colorOne}
+  \colorlet{blocktitleTextColor}{white}
+  \colorlet{blockbodyBGColor}{colorThree}
+  \colorlet{blockbodyTextColor}{black}
+}
+\usecolorstyle{packColors}
+
+\title{Full Paper Title: Method Subtitle and the Application Domain}
+\author{First Author$^{1}$, Second Author$^{2}$, Third Author$^{1,*}$\\
+        {\small $^{1}$University \quad $^{2}$Institute \quad
+         $^{*}$corresponding@university.edu}}
+\institute{\texttt{arXiv:2609.00000} \quad CONFERENCE 2026 \quad Poster No.\ 000}
+
+\begin{document}
+
+\maketitle[width=0.96\textwidth]
+
+\begin{columns}
+
+% ---------- column 1 ----------
+\column{0.31}
+\block{Background \& Problem}{
+  Two--three sentences of context; one sentence stating the gap.
+  \begin{center}
+    \includegraphics[width=0.9\linewidth]{example-image}% -> figs/problem.pdf
+    \captionof{figure}{Problem setting (reuse paper Fig.~1).}
+  \end{center}
+}
+
+\block{Model}{
+  Decision problem in words. Math is native here:
+  \begin{equation*}
+    \min_{\bm{x}}\; c^\top \bm{x}
+    + \max_{P\in\mathcal{P}} \mathbb{E}_{P}\big[Q(\bm{x},\bm{\xi})\big]
+    \quad \text{s.t.}\; A\bm{x}\ge\bm{b}
+  \end{equation*}
+}
+
+% ---------- column 2 ----------
+\column{0.31}
+\block{Method}{
+  Name the framework and the ONE idea that makes it work;
+  pseudocode skeleton 8--12 lines.
+  \begin{center}
+    \includegraphics[width=0.92\linewidth]{example-image}% -> figs/framework.pdf
+    \captionof{figure}{C\&CG solution framework.}
+  \end{center}
+}
+
+\block{Setup}{
+  \begin{itemize}
+    \item Instances: \emph{[family, size]}
+    \item Baselines: \emph{[SAA, Benders]}
+    \item Solver / limits: \emph{[one line]}
+  \end{itemize}
+}
+
+% ---------- column 3 ----------
+\column{0.31}
+\block{Results}{
+  \begin{center}
+    {\fontsize{90}{100}\selectfont\bfseries\color{colorTwo} $-18.4\%$}\\
+    expected cost vs.\ best baseline (median, 50 instances)
+  \end{center}
+  \vspace{4mm}
+  \begin{center}
+    \includegraphics[width=0.92\linewidth]{example-image}% -> figs/pareto.pdf (hero figure)
+    \captionof{figure}{Hero result — cost--robustness tradeoff.}
+  \end{center}
+  \begin{tabular}{lr}
+    \toprule
+    Method & Cost \\ \midrule
+    \textbf{Ours} & \textbf{100.0} \\
+    SAA  & 122.6 \\
+    Det. & 131.4 \\
+    \bottomrule
+  \end{tabular}
+}
+
+\block{Takeaway}{
+  One sentence a visitor can repeat after leaving.\\[4mm]
+  \begin{center}
+    % QR: \usepackage{qrcode} in the preamble, then:
+    % \qrcode[height=4.5cm]{https://doi.org/10.xxxx/xxxxx}
+    \fbox{\parbox[c][4.5cm][c]{4.5cm}{\centering QR placeholder\\(qrcode pkg)}}
+    \\[2mm] Scan for paper, data \& code
+  \end{center}
+}
+
+\end{columns}
+
+\end{document}

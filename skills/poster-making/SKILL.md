@@ -1,0 +1,221 @@
+---
+name: poster-making
+description: >
+  Turn a finished paper into single-page visual derivatives: an academic
+  conference poster (A0/A1), a journal graphical abstract, and a
+  social-media announcement card. Three products, one content-compression
+  pipeline (paper → poster narrative with word budgets, reading-distance
+  type scale, and figure reuse), three render routes chosen by a decision
+  table: official conference template > LaTeX beamerposter/tikzposter
+  (math-heavy) > HTML→Playwright vector PDF (default, visual freedom).
+  Canvas sizes come from assets/specs.json (publisher/platform specs with
+  sources) — never hardcode.
+  Use this skill whenever the user wants a conference/scientific poster,
+  poster session material, a graphical abstract / visual abstract / TOC
+  graphic for journal submission, or a "paper is out" announcement card
+  for X/Twitter, LinkedIn, WeChat — even if they never say "poster"
+  (e.g. "INFORMS accepted my paper, I need the session material").
+  中文触发词："学术海报"、"会议海报"、"海报模板"、"poster"、"A0"、"做海报"、
+  "图形摘要"、"图文摘要"、"graphical abstract"、"TOC 图"、"宣传图"、"论文卡片"、
+  "发表卡片"、"朋友圈论文图"、"公众号头图"。
+license: MIT
+---
+
+# Poster-Making Skill (paper → poster / graphical abstract / announcement card)
+
+Single-page visual derivatives of a finished paper. The skill's core value
+is NOT the rendering (templates + one script do that) but the **content
+compression**: a paper is written to be read at 30 cm; these products are
+read at 1–5 m (poster), in a 200-px thumbnail (graphical abstract), or in a
+scrolling feed (card). Everything below serves that inversion.
+
+Research distillation (2026-10, sources in `assets/specs.json → meta`):
+tool routes checked against CTAN/CRAN/journal author guidelines; type-scale
+floors and word budgets from library guides and Purrington; the
+better-poster debate read through its 2025 empirical evaluation (Bentsen &
+Østergaard: mixed evidence vs. classic) — both templates are bundled, none
+is imposed. Visual-engine iron rules (vector-not-screenshot PDF, canvas
+fill, anti-card-wall) adopted from the official pdf skill's creative
+pipeline. The OR/ML adaptation (which figure becomes the hero, how a
+two-stage model compresses) is this pack's own.
+
+## 0. Typical workflow
+
+1. Gather inputs: paper source (`manuscript.tex` / PDF), figures produced
+   by `figure-plotting`, the **venue's canvas prescription** (conference
+   size policy or journal GA spec), language, deadline.
+2. Decide the product and route via §1; read the target size from
+   `assets/specs.json` (or the call-for-papers if stricter).
+3. Compress content first (§2) — before touching any template. Then copy
+   the matching template in full and edit content.
+4. Render + verify in the §5 loop; deliver PDF + PNG (+ editable source).
+
+## 1. Route decision table
+
+Hard-constraint ordering: **venue compliance (size/template policy) >
+math & figure fidelity > editability > production speed.**
+
+| Situation | Route | Why |
+|---|---|---|
+| Conference provides an official template (any format) | Fill/extract the template (pptx route as in `slide-making` §6.1; tex route directly) | Venue compliance beats everything |
+| Math-heavy poster (formulations are a selling point) | `assets/conference-poster-beamer.tex` (beamerposter; needs the `beamerposter` package — `tlmgr --usermode install beamerposter` or drop the .sty from any CTAN mirror into `~/texmf/tex/latex/beamerposter/`; Overleaf ships it) | Native LaTeX math matches the paper exactly |
+| beamerposter unavailable AND network dead | `assets/conference-poster-tikz.tex` (tikzposter ships with TeX Live; verified zero-error on xelatex) | Zero-install fallback, still real math |
+| Default poster / visual priority / CJK-heavy | `assets/poster-classic.html` or `poster-better.html` → `scripts/render.mjs` | Free layout, exact physical units, vector PDF + PNG in one pass |
+| Graphical abstract | `assets/graphical-abstract.html` → `render.mjs --width <px from specs.json>` | Journal pixel specs; PNG (300 dpi-class) + vector PDF |
+| Announcement card | `assets/social-card.html` → `render.mjs` | Screen specs (16:9 / 1:1 / LinkedIn / WeChat hero) |
+
+Do not maintain parallel formats: one product, one route, one source file.
+
+## 2. Content compression (do this before opening a template)
+
+The #1 poster failure is **abstract relocation** — pasting paper text onto
+a big canvas. Compress in this order:
+
+1. **Claim first.** Write the ONE sentence a visitor must be able to repeat
+   after leaving (number included: "−18.4% expected cost at equal daily
+   spend"). This becomes the better-poster headline or the classic
+   Takeaway box. If you cannot write it, the poster is not ready.
+2. **Hero figure.** Pick ONE figure that proves the claim (usually the
+   tradeoff/Pareto/convergence figure from `figure-plotting`, not the
+   network schematic). It gets the largest area. Every other figure must
+   earn its place — a poster with 8 figures has 0 heroes.
+3. **Word budgets** (specs.json → conference_posters.typography_budget):
+   whole poster 300–800 words; any single text block ≤ 60 words; methods
+   prose ≤ 100 words (pseudocode skeleton 8–12 lines max); background =
+   2–3 sentences + 1 gap sentence. Cut until it hurts, then cut the
+   captions' dependencies ("as shown above" dies; captions are
+   self-contained).
+4. **Numbers as sculptures.** Key numbers become large standalone
+   elements (56–90 pt), never buried in sentences. One or two per poster.
+5. **Math minimization (LaTeX route):** objective + the 1–2 coupling
+   constraints that carry the idea. Not the whole model. Symbol legend one
+   gray line. On the HTML route, crop equations from the paper PDF
+   (`pdfcrop`) rather than re-typesetting — font mismatch is visible.
+6. **Area budget:** text 20–25% / graphics 40–45% / whitespace 20–30%.
+   A half-empty bottom or a text wall both fail (the bundled HTML
+   templates stretch figure slots to enforce the fill rule).
+7. **QR code** links to DOI/arXiv page (paper, data, code). Generate:
+   `uv run --with qrcode, pillow python -c "import qrcode; qrcode.make('https://doi.org/...').save('qr.png')"`
+   — ≥ 12 mm printed side on posters, quiet zone 4 modules (specs.json →
+   qr_code).
+
+## 3. Visual system (shared by all templates)
+
+- **Type scale, reading-distance floors** (A0; specs.json has the numbers):
+  title 72–85 pt (3–5 m) / section heads 36–48 pt / body ≥ 24 pt (1–1.5 m)
+  / captions ≥ 18 pt / ≤ 4 scale steps total. Never shrink type to fit
+  more text — cut text.
+- **Physical units are iron** on posters: HTML templates use mm/pt
+  directly (`@page { size: 841mm 1189mm }`), so what you see is what
+  prints. px belongs to screen products only (GA, cards).
+- **Palette:** the pack's five-color system (navy/orange/teal/gray/light —
+  same values as `slide-making`), so a group's deck and poster read as one
+  family. Swap values, keep luminance roles.
+- **Fonts:** Times New Roman for Latin/digits, SimSun/宋体 for CJK — both
+  template routes ship this stack with fallbacks. For print delivery,
+  verify embedding: `pdffonts poster.pdf` — every row must say `yes`
+  (Chromium subsets-embed automatically; xelatex embeds by default).
+- **Anti-card-wall:** hierarchy comes from type size/weight/spacing, not
+  from bordered boxes. ≤ 3 tinted/bordered containers per poster (the
+  classic template's `.panel`+`.takeaway` already spend most of that).
+  No 2×2 card grids; no decorative stock images; no timelines with
+  connector lines (they misalign in print).
+- **classic vs better-poster:** offer both, one sentence of guidance —
+  classic for technical audiences who read at the poster (OR/ML
+  sessions), better-poster for mixed/broad audiences and high-traffic
+  sessions. Empirical evidence does not crown either (2025 field study);
+  the author's session context decides.
+
+## 4. Product specs (read from assets/specs.json — never hardcode)
+
+| Product | Canvas source | Notes |
+|---|---|---|
+| Conference poster | specs.json → conference_posters.sizes (A0/A1/48×36 in, portrait or landscape) | The venue's size policy wins over presets; change BOTH [SIZE] places in the template |
+| Graphical abstract | specs.json → graphical_abstracts (Elsevier 1328×531, IEEE 660×295 ≤45 KB, Cell 1200×1200 square, …) | **INFORMS journals and AGU have NO GA channel** — for those outlets the announcement card IS the visual abstract |
+| Announcement card | specs.json → social_cards (X 1200×675 / square 1080×1080 / LinkedIn 1200×628 / WeChat hero 900×383) | Element canon: claim headline + one visual + authors + journal/DOI. IEEE ≤45 KB: `pngquant` or JPEG q85 after export |
+
+Banner-shaped GA (Elsevier/Wiley/IEEE) uses the bundled template's
+left→right flow (problem → method → key result); Cell-style square stacks
+the same three panels vertically.
+
+## 5. Render and verify (mandatory loop, after every content change)
+
+### 5.1 Renderer preflight (borrowed from the official pdf skill)
+
+`scripts/render.mjs` needs node ≥ 18 + the `playwright` npm package +
+Chromium (~150–300 MB download). Before installing anything, probe:
+`node render.mjs --help` (import failure = package missing) and check
+`~/.cache/ms-playwright`. **If missing, ask the user first** — state the
+download size; do not auto-install and do not silently fall back to
+screenshots-as-PDF. If the user declines: LaTeX routes still work; the
+HTML route stops (no stealth workarounds).
+
+### 5.2 Render
+
+```bash
+node scripts/render.mjs poster.html                 # PDF + 2x PNG, size from @page
+node scripts/render.mjs ga.html --width 1328px      # journal pixel override
+```
+
+Vector PDF via `page.pdf()` (never screenshot-wrapped), PNG via 2×
+screenshot for journal bitmap specs. The script prints an OVERFLOW-X
+warning on horizontal overflow — treat any warning as a blocker.
+
+### 5.3 LaTeX compile
+
+`xelatex conference-poster-tikz.tex` (verified: 0 errors) or
+`xelatex conference-poster-beamer.tex` ×2 (verified: 0 errors once the
+`beamerposter` package is present — install lines in the template header).
+
+### 5.4 Visual acceptance (same discipline as `figure-plotting`)
+
+1. Render PNG (done by render.mjs; for LaTeX A0 use `pdftoppm -png -r 40
+   poster.pdf prefix`, or `gs -sDEVICE=png16m -r40 -o page.png poster.pdf`
+   where poppler is not installed).
+2. Look at the image: bottom void? clipped columns? overlapping labels?
+   tofu boxes (missing CJK font)? QR present?
+3. Fix template → re-render → re-look. Numbers beat impressions: the
+   canvas must be the prescribed size (render.mjs prints it; verify
+   `2383.94 × 3370.39 pt` ≈ A0 via `gs ... /MediaBox get ==`).
+4. Check fonts embedded (`pdffonts`) before telling the user "done".
+
+## 6. Poster talk (elevator pitch)
+
+Poster sessions are conversations. Deliver alongside the poster:
+- **30-second pitch** (for "so what's this about?"): claim → method in
+  three words → the number → "want detail or the big picture?"
+- **2-minute walkthrough**: problem → why existing tools fail → the ONE
+  idea → hero figure → what changes for the practitioner.
+- **Q&A pre-blocks** (as in `slide-making` §5): the two most likely
+  attacks (feasibility, benchmark fairness) with one-line answers.
+- Offer the QR link verbally when handing over.
+
+## 7. Collaboration red lines
+
+- **The venue's size policy is a hard constraint** — never "round up" a
+  canvas or swap orientation without asking; printers reject at the door.
+- Never delete a user-specified element (logo, funding block, template)
+  to fix overflow — cut content (§2) or ask.
+- No delivery without the §5 loop: render, look, fix, re-render, then
+  report file paths (PDF + PNG + editable source), sizes verified.
+- One product, one route: if the user asks for a second format mid-way,
+  finish the first, then start it as a separate render.
+
+## 8. Bundled assets (copy in full, then edit)
+
+| File | Product / route |
+|---|---|
+| `assets/specs.json` | Canvas + format specs, single source of truth, with sources & verified date |
+| `assets/poster-classic.html` | A0 three-column classic poster (HTML route, verified render) |
+| `assets/poster-better.html` | A0 better-poster 2.0 layout (HTML route, verified render) |
+| `assets/graphical-abstract.html` | Banner GA, Elsevier default px (HTML route, verified render) |
+| `assets/social-card.html` | 16:9 announcement card + variant notes (HTML route, verified render) |
+| `assets/conference-poster-beamer.tex` | Math-heavy poster, beamerposter (Overleaf-ready) |
+| `assets/conference-poster-tikz.tex` | Zero-install LaTeX fallback (xelatex, 0 errors verified) |
+| `scripts/render.mjs` | HTML → vector PDF + 2× PNG, overflow audit |
+
+All four HTML templates share the five-color system and font stack, use
+placeholder text as filling instructions, and were render-verified
+2026-10-06 (classic & better at A0 3179×4494 px; GA at 1328×531; card at
+1200×675). Local images in HTML: same-directory relative paths or base64
+data URIs — absolute file:// paths are unreliable in headless Chromium.

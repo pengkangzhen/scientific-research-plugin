@@ -1,0 +1,177 @@
+% ============================================================
+% conference-poster-beamer.tex — math-heavy conference poster
+% (beamerposter route; template credits: the beamerposter package's
+% own sample, restyled to the pack's five-color system)
+%
+% Copy in full, then edit content. Placeholder text doubles as
+% filling instructions.
+%
+% Compile:  xelatex conference-poster-beamer.tex   (x2 for refs)
+% Requires: beamerposter.sty — on TeX Live:
+%             tlmgr --usermode install beamerposter
+%           (if the remote repo has moved past your local TL year,
+%            point --repository at .../tlnet/historic/systems/texlive/<year>/tlnet-final)
+%           Manual route: grab macros/latex/contrib/beamerposter.zip from any
+%           CTAN mirror, drop beamerposter.sty into ~/texmf/tex/latex/beamerposter/.
+%           Overleaf ships it out of the box.
+% Fonts:    Times New Roman (Latin) / SimSun 宋体 (CJK) via fontspec,
+%           every optional font guarded by \IfFontExistsTF — missing
+%           fonts fall back, never break compilation.
+% Canvas:   A0 portrait via beamerposter [size=a0,orientation=portrait];
+%           see specs.json for other presets (change size= / orientation=).
+% ============================================================
+\documentclass[final]{beamer}
+\usepackage[size=a0,orientation=portrait,scale=1.0]{beamerposter}
+
+\usepackage{amsmath,amssymb,bm}
+\usepackage{fontspec}
+\usepackage{xeCJK}              % CJK typesetting (SimSun) for Chinese posters
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{qrcode}             % \qrcode[height=4cm]{https://doi.org/...}
+
+% ---------- fonts (guarded; Latin Times, CJK SimSun) ----------
+\IfFontExistsTF{Times New Roman}{\setmainfont{Times New Roman}}{%
+  \IfFontExistsTF{Liberation Serif}{\setmainfont{Liberation Serif}}{%
+    \IfFontExistsTF{Nimbus Roman}{\setmainfont{Nimbus Roman}}{}}}
+\IfFontExistsTF{SimSun}{\setCJKmainfont{SimSun}}{%
+  \IfFontExistsTF{Noto Serif CJK SC}{\setCJKmainfont{Noto Serif CJK SC}}{}}
+
+% ---------- explicit type scale (iron floors from specs.json) ----
+% Do NOT tune below: body >= 24pt, captions >= 18pt, heads 36-48pt,
+% title 72-85pt at A0. Reading distance: title 3-5 m, body 1-1.5 m.
+\newcommand{\fTitle}{\fontsize{76}{88}\selectfont\bfseries}
+\newcommand{\fAuthors}{\fontsize{34}{42}\selectfont}
+\newcommand{\fHead}{\fontsize{44}{52}\selectfont\bfseries}
+\newcommand{\fBody}{\fontsize{26}{34}\selectfont}
+\newcommand{\fCaption}{\fontsize{20}{26}\selectfont\itshape}
+\newcommand{\fRef}{\fontsize{18}{24}\selectfont}
+
+% ---------- palette (same five colors as slide-making) ----------
+\usepackage{xcolor}
+\definecolor{cPrimary}{HTML}{0E2841}
+\definecolor{cAccent}{HTML}{E97132}
+\definecolor{cTeal}{HTML}{156082}
+\definecolor{cGray}{HTML}{5A6B7B}
+\definecolor{cLight}{HTML}{F2F6F9}
+
+% ---------- beamer look: quiet theme, block styling -------------
+\setbeamertemplate{navigation symbols}{}
+\usefonttheme{professionalfonts}
+\setbeamercolor{structure}{fg=cPrimary}
+\setbeamercolor{block title}{fg=white,bg=cPrimary}
+\setbeamercolor{block body}{fg=black,bg=cLight}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+
+\title{Full Paper Title: Method Subtitle and the Application Domain}
+\author{First Author$^{1}$ \and Second Author$^{2}$ \and Third Author$^{1,*}$}
+\institute{$^{1}$University Department, City, Country \quad $^{2}$Institute, City, Country\\
+           $^{*}$corresponding@university.edu}
+
+\begin{document}
+
+\begin{frame}[t]{}%
+\begin{columns}[t]
+
+% ================= LEFT: problem + model =================
+\begin{column}{0.31\textwidth}
+  {\fTitle \color{cPrimary} Full Paper Title:\\ Method Subtitle\par}
+  \vspace{4mm}
+  {\fAuthors First Author$^{1}$, Second Author$^{2}$, Third Author$^{1,*}$\par}
+  {\fCaption \color{cGray} $^{1}$University \quad $^{2}$Institute \quad
+    $^{*}$corresponding@university.edu \quad [CONFERENCE 2026, Poster \#\#]\par}
+  \vspace{8mm}
+
+  \begin{block}{\fHead Background \& Problem}
+    \fBody
+    Two--three sentences of context; one sentence stating the gap:
+    existing models fail to handle \emph{[what]}, which matters because
+    \emph{[consequence]}. \par\vspace{3mm}
+    \begin{center}
+      \includegraphics[width=0.92\linewidth]{example-image}% -> figs/problem.pdf (reuse paper Fig. 1)
+      {\fCaption \color{cTeal} Figure 1. Problem setting, self-contained caption.\par}
+    \end{center}
+  \end{block}
+
+  \begin{block}{\fHead Model}
+    \fBody Decision problem in words: sets, first-stage decisions,
+    recourse, objective. \par\vspace{4mm}
+    % Math is why you chose this route — keep the model MINIMAL:
+    % objective + two coupling constraints, not the whole appendix.
+    \begin{equation*}
+      \min_{\bm{x}}\; c^\top \bm{x}
+      + \max_{P\in\mathcal{P}} \mathbb{E}_{P}
+        \big[ Q(\bm{x},\bm{\xi}) \big]
+      \quad \text{s.t.}\;
+      A\bm{x} \ge \bm{b},\; \bm{x}\in\mathcal{X}
+    \end{equation*}
+    \fCaption \color{cGray} Distributionally robust two-stage program;
+    ambiguity set $\mathcal{P}=\{P: W(P,\hat P)\le\rho\}$.
+  \end{block}
+\end{column}
+
+% ================= MIDDLE: method =================
+\begin{column}{0.31\textwidth}
+  \begin{block}{\fHead Method}
+    \fBody Name the framework and the ONE idea that makes it work.
+    Algorithm skeleton in 8--12 pseudocode lines, not more. \par\vspace{3mm}
+    \begin{center}
+      \includegraphics[width=0.95\linewidth]{example-image}% -> figs/framework.pdf (drawio export)
+      {\fCaption \color{cTeal} Figure 2. C\&CG solution framework.\par}
+    \end{center}
+    \fBody Key acceleration: \emph{[e.g.\ Pareto cuts / level sets /
+    warm starts]} — this is the novelty claim, say it plainly.
+  \end{block}
+
+  \begin{block}{\fHead Experimental Setup}
+    \fBody
+    \begin{itemize}
+      \item Instances: \emph{[family, size]}
+      \item Baselines: \emph{[SAA, Benders, heuristic]}
+      \item Hardware / solver / limits: \emph{[one line]}
+    \end{itemize}
+  \end{block}
+\end{column}
+
+% ================= RIGHT: results + takeaway =================
+\begin{column}{0.31\textwidth}
+  \begin{block}{\fHead Results}
+    {\fontsize{64}{70}\selectfont\bfseries \color{cAccent} $-18.4\%$\par}
+    {\fCaption \color{cGray} expected cost vs.\ best baseline (median, 50 instances)\par}
+    \vspace{3mm}
+    \begin{center}
+      \includegraphics[width=0.95\linewidth]{example-image}% -> figs/pareto.pdf (hero figure, largest on the poster)
+      {\fCaption \color{cTeal} Figure 3. Hero result — cost--robustness tradeoff.\par}
+    \end{center}
+    \fBody Two sentences on what the figure shows.
+    \begin{center}
+      \begin{tabular}{lr}
+        \toprule
+        \fBody Method & \fBody Cost \\ \midrule
+        \fBody Ours  & \fBody \textbf{100.0} \\
+        \fBody SAA   & \fBody 122.6 \\
+        \fBody Det.  & \fBody 131.4 \\
+        \bottomrule
+      \end{tabular}
+    \end{center}
+  \end{block}
+
+  \begin{alertblock}{\fHead Takeaway}
+    \fBody One sentence a visitor can repeat after leaving: what is
+    new, and for whom it changes what.
+  \end{alertblock}
+
+  \begin{center}
+    \qrcode[height=4.5cm]{https://doi.org/10.xxxx/xxxxx}\\[2mm]
+    {\fCaption \color{cGray} Scan for paper, data \& code}
+  \end{center}
+
+  {\fRef \color{cGray}
+    \textbf{References.} Author, A. (2025). Title. \emph{Journal}, 12(3).
+    Author, B. (2024). Title. \emph{Proc.\ Conf.}, 1--10.\\
+    \textbf{Funding.} Grant \#; no conflict of interest.\par}
+\end{column}
+
+\end{columns}
+\end{frame}
+\end{document}
