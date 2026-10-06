@@ -3,7 +3,8 @@ name: paper-polishing
 description: >
   语言润色 (language polishing) — Academic English paper polishing for LaTeX manuscripts.
   Polishes grammar, word choice, sentence structure, logic flow, and academic tone while
-  preserving all LaTeX markup; does NOT judge scientific content (use paper-review for that).
+  preserving all LaTeX markup (verified by a placeholder round-trip protocol); does NOT judge
+  scientific content (use paper-review for that).
   触发词："润色"、"语言润色"、"论文润色"、"改英语"、"改写"、"帮我改这段的英文"、"检查语言质量"、"检查语法"、"paraphrase"。
   Use this skill whenever the user asks to polish, refine, improve, or proofread a paper,
   manuscript, or LaTeX file, or mentions language editing, writing quality, or English
@@ -94,8 +95,7 @@ But do NOT sacrifice clarity for brevity. If a longer sentence is clearer, keep 
 
 ## Punctuation Rules (user-specific)
 
-- **Avoid em-dashes** (`---` / `—`) in paper text, response letters, and all academic writing. Replace with a colon `:` to introduce a list or elaboration, parentheses `(...)` for parentheticals, or restructure the sentence.
-- After editing a `.tex` file, run `grep -n '\-\-\-' <file>` on the changed regions to verify no em-dash remains.
+- **Avoid em-dashes** (`---` / `—`) in paper text, response letters, and all academic writing. Replace with a colon `:` to introduce a list or elaboration, parentheses `(...)` for parentheticals, or restructure the sentence. Verified by the em-dash check in the post-edit verification.
 
 ## LaTeX Handling Rules
 
@@ -111,21 +111,46 @@ These rules protect the compilability of the manuscript.
 
 5. **Bibliography references**: Do not change `\cite{key}` commands. If the citation text around a reference is awkward, improve the surrounding prose, not the cite command.
 
+## Markup Extraction & Return Verification
+
+Intending not to break markup is not protection; a verified round-trip is. Apply this protocol to every passage you polish, regardless of input type:
+
+1. **Extract before rewriting**: enumerate every markup island in the passage — `\cite{}`, `\ref{}`, `\label{}`, inline and display math (`$...$`, `\[...\]`, equation/table/figure environments), and any command carrying arguments — and assign each a numbered placeholder `⟨1⟩`, `⟨2⟩`, … This is a scope partition: polishing rules act on prose only; islands are out of scope.
+2. **Verify before returning**: every placeholder must come back verbatim — same token, same position relative to its sentence; braces and environment delimiters must balance. For pasted text, check against your own extraction list and report the check. A failed check blocks the output: fix and re-verify; never hand back an unverified passage.
+
+After applying edits to a `.tex` file, run the post-edit verification on the changed regions and report the results:
+
+1. **Em-dash check**: `grep -n '\-\-\-' <file>` — no em-dash may remain (house rule).
+2. **Round-trip check**: the markup islands present after editing equal the set extracted before rewriting — nothing lost, mutated, or newly introduced.
+3. **Delimiter check**: `$` / `\[` / `\]` counts are even on the changed lines, and every `\begin{X}` has its matching `\end{X}`.
+
 ## Output Format
 
 The output format depends on the input type.
 
+Every change is reported as a **numbered hunk**: `# [severity|dimension] "before" → "after" — one-line rationale`. Severity is determined by the triggering dimension: `critical` = grammar & correctness (dimension 1) plus any markup-safety violation; `major` = precision, academic tone, cohesion (dimensions 2–4); `minor` = conciseness and punctuation/style preferences (dimension 5). Group hunks by severity, critical first.
+
 ### Case 1: Pasted text (most common)
 
-Output a **before/after comparison** with inline diffs, then the clean polished version:
+Output the severity-grouped hunk list, the round-trip check line, then the clean polished version:
 
 ```
 ## Changes
 
-1. "In order to" → "To" (tone)
-2. "shows" → "show" (grammar: subject-verb agreement)
-3. "better than other methods" → "outperforms all baselines by 3.2%" (precision)
-4. "It can be seen that" → (deleted, let the data speak)
+Critical:
+1. [critical|grammar] "shows" → "show" — subject-verb agreement, plural subject "results"
+2. [critical|markup] inline math returned as $\pi*$ instead of $\pi^*$ — caught by the round-trip check, reverted verbatim
+
+Major:
+3. [major|tone] "In order to" → "To" — verbose opener
+4. [major|precision] "better than other methods" → "outperforms all baselines by 3.2%" — vague comparison replaced by the measured number
+
+Minor:
+5. [minor|concision] "It can be seen that" → deleted — let the data speak
+
+## Round-trip check
+
+⟨1⟩ \cite{chen2023repositioning} ✓  ⟨2⟩ $\pi^*$ ✓ — all placeholders returned verbatim, delimiters balanced
 
 ## Polished
 
@@ -136,27 +161,31 @@ Do NOT use the Edit tool for pasted text — the user will copy the polished ver
 
 ### Case 2: File path with line range or section
 
-Present the Changes Summary first, then apply edits one by one using the Edit tool so the user can review and approve/reject each one.
+Present the Changes Summary first (same hunk format with line numbers), then apply edits one by one using the Edit tool so the user can review and approve/reject each one. After the last accepted edit, run the post-edit verification and report all three results.
 
 Changes Summary format:
 
 ```
-Grammar (3):
-- L45: "the proposed method" → added missing article
-- L67: "achieves" → "achieved" (past tense for experimental results)
+Critical:
+- L67: [critical|grammar] "achieves" → "achieved" — past tense for experimental results
 
-Precision (2):
-- L23: "good results" → "competitive accuracy"
+Major:
+- L23: [major|precision] "good results" → "competitive accuracy" — vague claim made precise
+- L45: [major|cohesion] "This method" → "The decomposition method" — dangling reference resolved
+
+Minor:
+- L12: [minor|concision] "due to the fact that" → "because" — filler removed
 ```
 
 ## Workflow
 
 1. Determine input type (pasted text, file+lines, file+section, or entire file)
 2. If entire file: warn user and suggest section-by-section instead
-3. Analyze the text against all five polishing dimensions
-4. For pasted text: output Changes + Polished version directly
-5. For file edits: present Changes Summary first, then apply edits one by one via Edit tool
-6. Paragraph scale or larger: dispatch the jargon-check follow-up audit automatically (see "Follow-up" below)
+3. Extract markup islands into numbered placeholders (see "Markup Extraction & Return Verification")
+4. Analyze the text against all five polishing dimensions
+5. For pasted text: output Changes + round-trip check + Polished version directly
+6. For file edits: present Changes Summary first, then apply edits one by one via Edit tool, then run the post-edit verification and report its results
+7. Paragraph scale or larger: dispatch the jargon-check follow-up audit automatically (see "Follow-up" below)
 
 ## Follow-up: Terminology Audit
 

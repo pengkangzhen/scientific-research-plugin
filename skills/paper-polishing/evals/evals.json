@@ -1,23 +1,109 @@
 {
   "skill_name": "paper-polishing",
+  "rubric": {
+    "source": "Severity weighting and minimal-type-set principles adapted from MQM (Multidimensional Quality Metrics), MQM Council, CC BY 4.0 — https://www.themqm.org/mqm-pillars/typology and https://www.themqm.org/mqm-pillars/the-mqm-scoring-models",
+    "error_types": [
+      {"id": "grammar", "dimension": 1, "mqm_parent": "Linguistic conventions", "severity": "critical"},
+      {"id": "markup-safety", "dimension": null, "mqm_parent": "Design and markup", "severity": "critical", "note": "placeholder lost or mutated; delimiter or environment imbalance"},
+      {"id": "precision", "dimension": 2, "mqm_parent": "Accuracy", "severity": "major"},
+      {"id": "tone", "dimension": 3, "mqm_parent": "Style", "severity": "major"},
+      {"id": "cohesion", "dimension": 4, "mqm_parent": "Style", "severity": "major"},
+      {"id": "concision", "dimension": 5, "mqm_parent": "Style", "severity": "minor"},
+      {"id": "punctuation", "dimension": null, "mqm_parent": "Locale conventions", "severity": "minor", "note": "em-dash house rule and similar style punctuation"}
+    ],
+    "severity_weights": {"minor": 1, "major": 5, "critical": 25},
+    "scoring": "Errors counted against the skill: (a) planted corpus errors left unfixed, (b) new errors introduced in the polished text (any markup mutation counts critical), (c) unjustified claim inflation. Penalty = sum(severity weights) / (words / 100); TQ = 100 - Penalty; regression threshold TQ >= 95.",
+    "principles": [
+      "minimal type set — score only the seven types above, nothing else",
+      "each error is counted once, at its highest applicable severity",
+      "hierarchy first — when two types could both apply, the lower dimension number wins"
+    ]
+  },
+  "corpus": [
+    {
+      "id": "c1",
+      "scale": "passage",
+      "passage": "In order to solve the empty container repositioning problem, we propose a two-stage heuristic---the master stage assigns vessels and the local stage repositions containers. Extensive experiments shows that our method achieves good results. It can be seen that the proposed approach outperforms the baseline methods (see \\cite{song2023empty} for the problem setting), and the average cost reduction is reported in Table \\ref{tab:results}.",
+      "annotations": [
+        {"span": "In order to", "type": "tone", "severity": "major", "expected_fix": "To"},
+        {"span": "---", "type": "punctuation", "severity": "minor", "expected_fix": "replace em-dash with a colon or restructure the sentence"},
+        {"span": "experiments shows", "type": "grammar", "severity": "critical", "expected_fix": "experiments show"},
+        {"span": "achieves good results", "type": "precision", "severity": "major", "expected_fix": "state the measured metric, e.g. achieves an average cost reduction of 3.2%"},
+        {"span": "It can be seen that", "type": "concision", "severity": "minor", "expected_fix": "delete"},
+        {"span": "\\cite{song2023empty}", "type": "markup-safety", "severity": "critical", "expected_fix": "extracted as a placeholder, returned verbatim"},
+        {"span": "\\ref{tab:results}", "type": "markup-safety", "severity": "critical", "expected_fix": "extracted as a placeholder, returned verbatim"}
+      ]
+    },
+    {
+      "id": "c2",
+      "scale": "passage",
+      "passage": "We test the proposed algorithm on 20 randomly generated instances. The algorithm achieves an average optimality gap of 0.0%, and our method works well under all settings.",
+      "annotations": [
+        {"span": "The algorithm achieves", "type": "grammar", "severity": "critical", "expected_fix": "achieved — past tense for experimental results"},
+        {"span": "works well", "type": "precision", "severity": "major", "expected_fix": "quantify or delete"},
+        {"span": "under all settings", "type": "precision", "severity": "major", "expected_fix": "scope the claim to the tested settings (no-inflate rule)"}
+      ]
+    },
+    {
+      "id": "c3",
+      "scale": "passage",
+      "passage": "We apply Benders decomposition to the two-stage model. This method converges in a finite number of iterations. The proposed approach is also effective. It solves instances with up to 200 nodes within minutes.",
+      "annotations": [
+        {"span": "This method / The proposed approach / It", "type": "cohesion", "severity": "major", "expected_fix": "resolve the reference chain to one consistent, specific reference such as 'The decomposition algorithm'"},
+        {"span": "is also effective", "type": "precision", "severity": "major", "expected_fix": "quantify or merge into the adjacent sentence"}
+      ]
+    },
+    {
+      "id": "c4",
+      "scale": "passage",
+      "passage": "The total cost is\n\\[ C = \\sum_{i \\in V} c_i x_i + \\sum_{j \\in W} f_j y_j \\]\nwhere $c_i$ and $f_j$ denotes the unit costs. Preliminary results shows that the model reduces the total cost by 12% (see Figure \\ref{fig:convergence}).",
+      "annotations": [
+        {"span": "denotes", "type": "grammar", "severity": "critical", "expected_fix": "denote — compound subject"},
+        {"span": "results shows", "type": "grammar", "severity": "critical", "expected_fix": "results show"},
+        {"span": "\\[ ... \\] display equation, $c_i$, $f_j$, \\ref{fig:convergence}", "type": "markup-safety", "severity": "critical", "expected_fix": "all extracted as placeholders and returned verbatim; display-math delimiters balanced"}
+      ]
+    }
+  ],
   "evals": [
     {
       "id": 1,
       "prompt": "polish the abstract section in els-cas-templates/manuscript.tex",
-      "expected_output": "Should improve grammar, tighten academic tone, fix any vague language in the abstract while preserving all LaTeX commands like \\textyen{}, $K=2$, \\textit{}, etc.",
+      "expected_output": "Should improve grammar, tighten academic tone, fix vague language in the abstract while every LaTeX island (\\textyen{}, $K=2$, \\textit{}, \\cite, \\ref) round-trips verbatim. Changes presented as severity-grouped numbered hunks ([critical|grammar] etc.); after edits, report the post-edit verification trio (em-dash grep, round-trip check, delimiter check); paragraph scale or larger triggers the jargon-check follow-up.",
       "files": ["els-cas-templates/manuscript.tex"]
     },
     {
       "id": 2,
-      "prompt": "帮我润色这段话：In order to solve the empty container repositioning problem, we propose a method that can effectively reduce the transportation cost. The experiment results shows that our method is better than other methods. It can be seen that the proposed approach has good performance.",
-      "expected_output": "Should fix: 'In order to' → 'To', 'shows' → 'show', 'better than other methods' → specific improvement claim, 'good performance' → precise metric, remove 'It can be seen that'",
-      "files": []
+      "prompt": "帮我润色这段话（corpus c1）：In order to solve the empty container repositioning problem, we propose a two-stage heuristic---the master stage assigns vessels and the local stage repositions containers. Extensive experiments shows that our method achieves good results. It can be seen that the proposed approach outperforms the baseline methods (see \\cite{song2023empty} for the problem setting), and the average cost reduction is reported in Table \\ref{tab:results}.",
+      "expected_output": "Pasted-text path: severity-grouped numbered Changes + a round-trip check line + clean Polished version; no Edit tool use. All annotations of c1 fixed per their expected_fix; \\cite and \\ref return verbatim.",
+      "files": [],
+      "corpus_refs": ["c1"]
     },
     {
       "id": 3,
       "prompt": "polish the file els-cas-templates/manuscript.tex, just grammar check",
-      "expected_output": "Should only apply dimension 1 (grammar/correctness) and ask user if they want full polish. Should NOT rewrite for tone or conciseness.",
+      "expected_output": "Should only apply dimension 1 (critical-severity grammar hunks) and ask the user whether a full polish is wanted. Should NOT rewrite for tone or conciseness.",
       "files": ["els-cas-templates/manuscript.tex"]
+    },
+    {
+      "id": 4,
+      "prompt": "polish this passage (corpus c4, contains display math and inline math)",
+      "expected_output": "Display equation \\[...\\], inline $c_i$/$f_j$, and \\ref{fig:convergence} extracted as numbered placeholders before rewriting and returned verbatim; round-trip check reported; 'denotes'→'denote', 'shows'→'show'; no edit inside the math environments.",
+      "files": [],
+      "corpus_refs": ["c4"]
+    },
+    {
+      "id": 5,
+      "prompt": "polish this passage (corpus c2, results reporting)",
+      "expected_output": "'achieves'→'achieved' (past tense); 'works well' quantified or deleted; 'under all settings' scoped to tested settings per the no-inflate rule; no severity inflation of the 0.0% gap claim.",
+      "files": [],
+      "corpus_refs": ["c2"]
+    },
+    {
+      "id": 6,
+      "prompt": "regression: score the output of eval 2 with the rubric and report TQ",
+      "expected_output": "Penalty computed from unfixed planted errors and newly introduced errors using weights minor=1/major=5/critical=25 per 100 words; TQ = 100 - Penalty; TQ >= 95 passes; a mutated \\cite would alone cost 25 (critical).",
+      "files": [],
+      "corpus_refs": ["c1"]
     }
   ]
 }
