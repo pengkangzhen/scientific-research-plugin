@@ -7,9 +7,9 @@
       "name": "scientific-research-plugin",
       "source": "./",
       "version": "0.9.0",
-      "description": "A full-lifecycle research pipeline for OR & ML, 12 skills + 2 subagents take a project from prior-art survey to the conference talk — Zotero literature intake, structured reading notes, note-driven PDF category highlighting, publication-grade figures, top-journal-style section drafting, LaTeX polishing, noun-term jargon auditing, citation verification against official APIs, three-blind adversarial review, and point-by-point rebuttal. The survey-first discipline applies to every exploratory task, not just papers.",
+      "description": "A full-lifecycle research pipeline for OR & ML, 12 skills + 2 subagents take a project from prior-art survey to the conference talk — Zotero literature intake, structured reading notes, note-driven PDF category highlighting, publication-grade figures, top-journal-style section drafting, LaTeX polishing, noun-term jargon auditing, citation verification against official APIs, three-blind adversarial review, and point-by-point rebuttal. Its prior-art survey covers research-grade questions across engineering and academic sources, not just papers.",
       "description_i18n": {
-        "zh-CN": "面向运筹学与机器学习的全流程科研流水线：12 个技能 + 2 个子代理，把一个项目从先例调研一路带到会议汇报 PPT——Zotero 文献入库、结构化阅读笔记、按笔记的 PDF 分类高亮、论文出图、顶刊风格章节起草、LaTeX 润色、名词术语黑话审计、官方 API 引文核查、三盲对抗审稿、逐条审稿回复。先调研后动手的纪律适用于一切探索性任务，不止论文。"
+        "zh-CN": "面向运筹学与机器学习的全流程科研流水线：12 个技能 + 2 个子代理，把一个项目从先例调研一路带到会议汇报 PPT——Zotero 文献入库、结构化阅读笔记、按笔记的 PDF 分类高亮、论文出图、顶刊风格章节起草、LaTeX 润色、名词术语黑话审计、官方 API 引文核查、三盲对抗审稿、逐条审稿回复。先例调研覆盖研究级问题——工程与学术双源并查，不止论文。"
       },
       "displayName": "Scientific Research Plugin",
       "displayName_i18n": {
