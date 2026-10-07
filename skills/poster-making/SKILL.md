@@ -1,26 +1,22 @@
 ---
 name: poster-making
 description: >
-  Turn a finished paper into single-page visual derivatives: an academic
-  conference poster (A0/A1), a journal graphical abstract, and a
-  social-media announcement card. One content-compression pipeline
-  (poster narrative with word budgets, reading-distance type scale, and
-  figure reuse); render route chosen by a decision table: official
+  Single-page visual derivatives of a finished paper: academic conference
+  poster (A0/A1), journal graphical abstract, social-media announcement
+  card. One content-compression pipeline (word budgets,
+  type scale, figure reuse); render route by decision table: official
   conference template > LaTeX beamerposter/tikzposter (math-heavy) >
   HTML→Playwright vector PDF (default). Canvas sizes come from
   assets/specs.json — never hardcode.
-  Use this skill whenever the user wants a conference/scientific poster,
-  a graphical abstract / visual abstract / TOC graphic for journal
-  submission, or a "paper is out" announcement card for X/Twitter,
-  LinkedIn, WeChat — even if they never say "poster". Also covers
-  Xiaohongshu (RedBook) multi-image note cards: cover + auto-paginated
-  content cards (1080×1440, CJK-first) with an optional cookie-based
-  auto-publish — a Python/uv pipeline (§4.5, full playbook in
+  Use for a conference/scientific poster, a graphical / visual abstract
+  or TOC graphic for journal submission, or a "paper is out" announcement
+  card for X/Twitter, LinkedIn, WeChat — even without the word "poster".
+  Also covers Xiaohongshu (RedBook) multi-image note cards: cover +
+  auto-paginated cards (1080×1440, CJK-first) with optional cookie-based
+  auto-publish — a Python/uv pipeline (§4.5, playbook in
   references/xhs-playbook.md), not render.mjs.
-  Triggers: "poster", "A0", "make a poster", "conference poster",
-  "graphical/visual abstract", "TOC graphic", "announcement card",
-  "paper card", "publication card", "social-media paper figure",
-  "WeChat moment figure", "Xiaohongshu", "RedBook", "xhs", "note cards".
+  Triggers: "poster", "A0", "graphical/visual abstract", "TOC graphic",
+  "announcement card", "Xiaohongshu", "RedBook", "xhs", "note cards".
 license: MIT
 ---
 
