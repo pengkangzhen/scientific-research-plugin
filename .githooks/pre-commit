@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Frontmatter guard: strict-YAML-check every tracked file with frontmatter
+# before the commit lands. Activated by install.sh via core.hooksPath.
+set -euo pipefail
+root="$(git rev-parse --show-toplevel)"
+python3 "$root/scripts/check_frontmatter.py"

@@ -173,11 +173,16 @@ Not covered: iFlow CLI (project-scoped `.iflow/` layout with its own skill marke
 ├── .zcode-plugin/plugin.json    # ZCode plugin manifest
 ├── .codex-plugin/plugin.json    # Codex plugin manifest
 ├── .agents/plugins/marketplace.json  # Codex (~/.agents) marketplace catalog
+├── scripts/
+│   └── check_frontmatter.py     # strict-YAML frontmatter guard (pre-commit + install.sh gate)
+├── .githooks/
+│   └── pre-commit               # runs scripts/check_frontmatter.py (activated via core.hooksPath)
 └── install.sh                   # bare install: ~/.agents hub + per-harness fan-out
 ```
 
 ## Maintenance Conventions
 
+- Frontmatter of every tracked markdown file is strict-YAML-validated by `scripts/check_frontmatter.py`, gated twice: at commit time (`.githooks/pre-commit`, activated by `install.sh` via `core.hooksPath`) and before `install.sh` fans out — strict parsers in fan-out harnesses reject bad scalars (e.g. `": "` inside a plain single-line scalar).
 - Edit skills in this repo only; `install.sh` creates symlinks — local changes take effect immediately, and pushing publishes them.
 - Version bumps touch all three plugin manifests (`.claude-plugin/`, `.zcode-plugin/`, `.codex-plugin/`) and the `.claude-plugin/marketplace.json` entry in lockstep.
 - The official ZCode marketplace channel (zai-org/zcode-plugins, `plugins/scientific-research-plugin/`) is **paused as of 2026-09-24** — no fork syncs or PRs until resumed. If resumed: sync every release via PR, keeping `version` and `description_i18n` identical (their `validate.py` enforces it), and confirm their `marketplace.json` actually lists the new version before announcing.

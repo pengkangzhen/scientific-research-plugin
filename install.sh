@@ -13,6 +13,10 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Gate: strict-YAML frontmatter check on every tracked file before fan-out —
+# some target harnesses parse frontmatter strictly and choke on bad scalars.
+python3 "$REPO_ROOT/scripts/check_frontmatter.py"
+
 link_group() {
   local src_dir="$1" dst_dir="$2" kind="$3"
   mkdir -p "$dst_dir"
@@ -69,4 +73,10 @@ for target in "${FANOUT_TARGETS[@]}"; do
     echo "- $harness: not found (no $marker_dir), skipped"
   fi
 done
+
+# Activate the versioned git hooks (pre-commit frontmatter guard) in this clone.
+if git -C "$REPO_ROOT" rev-parse --git-dir >/dev/null 2>&1; then
+  git -C "$REPO_ROOT" config core.hooksPath "$REPO_ROOT/.githooks"
+  echo "✓ git hooks: core.hooksPath -> .githooks (pre-commit frontmatter guard)"
+fi
 echo "Done. Harnesses beyond the fan-out list: halter sync --apply"
