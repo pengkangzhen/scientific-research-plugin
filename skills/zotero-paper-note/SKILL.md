@@ -1,6 +1,16 @@
 ---
 name: zotero-paper-note
-description: 读取 Zotero 中的文献并生成结构化阅读笔记，把笔记添加回 Zotero 条目下，同时追加一行结构化 JSON 记录到 literature.jsonl 供后续批量分析。当用户提供论文标题/作者/DOI/Zotero 条目，要求"读这篇文献""给这篇文献做笔记""总结这篇 paper 并加到 Zotero""帮我做文献阅读笔记"（英文如 "read this paper" / "take notes on this paper"）时使用。适用于运筹学、供应链韧性、物流网络、选址优化、风险建模等领域。务必在用户提到 Zotero + 文献阅读/做笔记的组合，或要求把笔记写回 Zotero 时触发本技能。
+description: >
+  Read a paper from Zotero, generate a structured reading note, attach it
+  back to the Zotero item, and append one structured JSON line to
+  literature.jsonl for later batch analysis. Use when the user provides a
+  paper title/authors/DOI/Zotero item and asks to "read this paper",
+  "take notes on this paper", "summarize this paper into Zotero", "make
+  reading notes for me" (or English "read this paper" / "take notes on
+  this paper"). Always trigger on the combination of Zotero + paper
+  reading/note-taking, or when the user asks for notes written back into
+  Zotero. Built around operations research, supply-chain resilience,
+  logistics networks, facility location, and risk modeling.
 license: MIT
 ---
 

@@ -3,26 +3,24 @@ name: poster-making
 description: >
   Turn a finished paper into single-page visual derivatives: an academic
   conference poster (A0/A1), a journal graphical abstract, and a
-  social-media announcement card. Three products, one content-compression
-  pipeline (paper → poster narrative with word budgets, reading-distance
-  type scale, and figure reuse), three render routes chosen by a decision
-  table: official conference template > LaTeX beamerposter/tikzposter
-  (math-heavy) > HTML→Playwright vector PDF (default, visual freedom).
-  Canvas sizes come from assets/specs.json (publisher/platform specs with
-  sources) — never hardcode.
+  social-media announcement card. One content-compression pipeline
+  (poster narrative with word budgets, reading-distance type scale, and
+  figure reuse); render route chosen by a decision table: official
+  conference template > LaTeX beamerposter/tikzposter (math-heavy) >
+  HTML→Playwright vector PDF (default). Canvas sizes come from
+  assets/specs.json — never hardcode.
   Use this skill whenever the user wants a conference/scientific poster,
-  poster session material, a graphical abstract / visual abstract / TOC
-  graphic for journal submission, or a "paper is out" announcement card
-  for X/Twitter, LinkedIn, WeChat — even if they never say "poster"
-  (e.g. "INFORMS accepted my paper, I need the session material").
-  Also covers Xiaohongshu (RedBook) multi-image note cards: cover +
-  auto-paginated content cards (1080×1440, CJK-first) with an optional
-  cookie-based auto-publish — a Python/uv pipeline (§4.5, full playbook in
+  a graphical abstract / visual abstract / TOC graphic for journal
+  submission, or a "paper is out" announcement card for X/Twitter,
+  LinkedIn, WeChat — even if they never say "poster". Also covers
+  Xiaohongshu (RedBook) multi-image note cards: cover + auto-paginated
+  content cards (1080×1440, CJK-first) with an optional cookie-based
+  auto-publish — a Python/uv pipeline (§4.5, full playbook in
   references/xhs-playbook.md), not render.mjs.
-  中文触发词："学术海报"、"会议海报"、"海报模板"、"poster"、"A0"、"做海报"、
-  "图形摘要"、"图文摘要"、"graphical abstract"、"TOC 图"、"宣传图"、"论文卡片"、
-  "发表卡片"、"朋友圈论文图"、"公众号头图"、"小红书"、"红书笔记"、"小红书卡片"、
-  "笔记卡片"、"xhs"。
+  Triggers: "poster", "A0", "make a poster", "conference poster",
+  "graphical/visual abstract", "TOC graphic", "announcement card",
+  "paper card", "publication card", "social-media paper figure",
+  "WeChat moment figure", "Xiaohongshu", "RedBook", "xhs", "note cards".
 license: MIT
 ---
 

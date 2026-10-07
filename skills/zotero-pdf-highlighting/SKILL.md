@@ -1,6 +1,18 @@
 ---
 name: zotero-pdf-highlighting
-description: 按 zotero-paper-note 阅读笔记的五个章节（研究问题/数学模型/求解方法/案例研究/实验结果，严格 5 类），对 Zotero 条目挂载的文献 PDF 中的**关键词**写入分类颜色高亮——红 #ff6666、黄 #ffd400、绿 #5fb236、蓝 #2ea8e5、紫 #a28ae5（Zotero 官方批注调色板）。当用户要求"按笔记高亮这篇 PDF""给文献关键词上色""把阅读笔记落到 PDF 上""分类高亮这篇文献""五色标记"，或英文 "highlight the PDF by note categories" / "color-code the paper" 时使用。写入文件内嵌原生 PDF 高亮，Zotero 阅读器直接显示；完全离线，任意 Zotero 版本可用。
+description: >
+  Following the five sections of a zotero-paper-note reading note
+  (research question / mathematical model / solution method / case study /
+  experimental results — strictly these 5), write category-colored
+  highlights onto the **keywords** of the PDF attached to a Zotero item —
+  red #ff6666, yellow #ffd400, green #5fb236, blue #2ea8e5, purple
+  #a28ae5 (Zotero's official annotation palette). Use when the user asks
+  to "highlight this PDF by my notes", "color the paper's keywords",
+  "apply my reading notes onto the PDF", "category-highlight this paper",
+  "five-color marking", or English "highlight the PDF by note categories"
+  / "color-code the paper". Writes native embedded PDF highlights that
+  display directly in the Zotero reader; fully offline, works with any
+  Zotero version.
 license: MIT
 ---
 

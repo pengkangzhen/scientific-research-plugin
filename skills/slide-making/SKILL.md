@@ -1,22 +1,22 @@
 ---
 name: slide-making
 description: >
-  Academic presentation slides — the full pipeline from a paper (LaTeX/PDF) to a
-  talk-ready deck: LaTeX Beamer route + visual design system (extract the official
-  template if provided, else build palette/layout from scratch) + math & figure
-  reuse + time-budgeted talk script + packaging the slide PDF back into the
-  official pptx with speaker notes.
-  Two bundled templates: conference-beamer (conference talks) and defense-beamer
+  Academic presentation slides — the full pipeline from a paper (LaTeX/PDF)
+  to a talk-ready deck: LaTeX Beamer route + visual design system (extract
+  the official template if provided, else build palette/layout from
+  scratch) + math & figure reuse + time-budgeted talk script + packaging
+  the slide PDF back into the official pptx with speaker notes. Bundles
+  two templates: conference-beamer (conference talks) and defense-beamer
   (thesis proposal / defense / group meetings).
-  Use this skill whenever the user wants to turn a paper/manuscript into
-  conference or seminar presentation slides, build a Beamer deck, fit slides into
-  the official template, write a time-budgeted talk script, or package a slide
-  PDF back into a pptx with speaker notes — also for thesis proposal/defense/
-  group-meeting decks — even if they never say "PPT" (e.g. "I'm giving a talk on
-  this paper next week").
-  中文触发词："会议PPT"、"演讲PPT"、"做幻灯片"、"把论文做成PPT"、"Beamer"、
-  "会议模板"、"讲稿"、"演讲稿"、"演讲者备注"、"贴回模板"、"开题报告"、"答辩PPT"、
-  "组会汇报"、"组会pre"、"开题Beamer"。
+  Use this skill whenever the user wants to turn a paper into conference/
+  seminar slides, build a Beamer deck, fit slides into the official
+  template, write a time-budgeted talk script, or package a slide PDF
+  back into a pptx with speaker notes — even if they never say "PPT"
+  (e.g. "I'm giving a talk on this paper next week").
+  Triggers: "conference slides", "talk slides", "make slides", "turn the
+  paper into slides", "Beamer", "conference template", "talk script",
+  "speaker notes", "thesis proposal", "defense slides", "group-meeting
+  presentation".
 license: MIT
 ---
 

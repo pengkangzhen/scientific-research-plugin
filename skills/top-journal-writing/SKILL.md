@@ -1,6 +1,21 @@
 ---
 name: top-journal-writing
-description: 顶刊仿写——按领域顶刊的结构蓝图与真实语料句式库起草或结构性重写论文章节：引言倒漏斗四层、摘要五句公式、方法像菜谱、结果图主文辅、讨论四步走、结论两到四句收口；句式库出自 200 篇顶刊/顶会语料（arXiv cs.LG/math.OC、MS/POM/JOM/Omega、TRE/TRSC/EJOR、MPM/TRD/MTR）的自动挖掘。当用户说"仿写""按顶刊风格写/重写 Introduction、Abstract、Discussion""写摘要/引言/讨论/结论""结构不对、改结构""拆解这篇论文的写法"，或说 "draft / rewrite a section in the style of top journals"、"deconstruct this paper's writing" 时使用。只管结构与句式层面的起草和重构；已有文本的语言润色走 paper-polishing，名词术语审计走 term-audit，投稿评审走 paper-review。
+description: >
+  Top-journal imitation writing — draft or structurally rewrite paper
+  sections following the structural blueprints and real-corpus sentence
+  patterns of a field's top journals: four-layer inverted-funnel
+  introduction, five-sentence abstract formula, methods written like a
+  recipe, results with figure-first text-second, four-step discussion,
+  two-to-four-sentence closing conclusion; the sentence-pattern library is
+  auto-mined from 200 top-journal/top-conference papers (arXiv cs.LG/
+  math.OC, MS/POM/JOM/Omega, TRE/TRSC/EJOR, MPM/TRD/MTR). Use when the
+  user says "imitation writing", "write/rewrite the Introduction,
+  Abstract, or Discussion in top-journal style", "draft the abstract/
+  introduction/discussion/conclusion", "fix the structure", or
+  "deconstruct this paper's writing" / "draft a section in top-journal
+  style". Structure and sentence patterns only; language polish goes to
+  paper-polishing, terminology audit to term-audit, submission review to
+  paper-review.
 license: MIT
 ---
 # top-journal-writing：顶刊仿写
