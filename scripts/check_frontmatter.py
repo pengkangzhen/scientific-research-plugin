@@ -2,9 +2,10 @@
 """Strict frontmatter guard for the whole repo.
 
 Scans every git-tracked file starting with a `---` fence and strict-parses
-its frontmatter with yaml.safe_load. Some distribution frontends parse
-frontmatter strictly and reject bad scalars (e.g. ": " inside a plain
-single-line scalar), so nothing ships until every fence parses.
+its frontmatter with yaml.safe_load; SKILL.md descriptions must also fit the
+1024-char skill limit. Some distribution frontends parse frontmatter strictly
+and reject bad scalars (e.g. ": " inside a plain single-line scalar), so
+nothing ships until every fence parses.
 
 Exit 0 = all pass; exit 1 prints one line per failure.
 """
@@ -24,6 +25,7 @@ except ImportError:
         sys.exit("neither PyYAML nor uv found — install uv to run this guard")
 
 FRONT = re.compile(r"^---\n(.*?)\n---\n", re.S)
+DESCRIPTION_LIMIT = 1024  # Claude Code skill-description hard limit
 
 
 def main() -> int:
@@ -49,6 +51,12 @@ def main() -> int:
             data = yaml.safe_load(match.group(1))
             if not isinstance(data, dict):
                 raise ValueError(f"frontmatter is {type(data).__name__}, not a mapping")
+            if path.name == "SKILL.md":
+                n_chars = len(str(data.get("description") or ""))
+                if n_chars > DESCRIPTION_LIMIT:
+                    raise ValueError(
+                        f"description is {n_chars} chars, over the {DESCRIPTION_LIMIT} limit"
+                    )
         except (ValueError, yaml.YAMLError) as e:
             mark = getattr(e, "problem_mark", None)
             loc = f" @ line {mark.line + 1}, col {mark.column + 1}" if mark else ""
