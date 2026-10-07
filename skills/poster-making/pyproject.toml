@@ -1,0 +1,20 @@
+[project]
+name = "poster-making-xhs"
+version = "0.1.0"
+description = "小红书图片卡片生成与发布管线（poster-making 技能的 xhs 子管线）"
+authors = [
+    {name = "pengkangzhen",email = "pengkangzhen@outlook.com"}
+]
+requires-python = ">=3.11"
+dependencies = [
+    "markdown (>=3.10.2,<4.0.0)",
+    "playwright (>=1.58.0,<2.0.0)",
+    "pygments (>=2.19,<3.0)",
+    "pyyaml (>=6.0.3,<7.0.0)",
+    "xhs (>=0.2.13,<0.3.0)",
+    "python-dotenv (>=1.2.2,<2.0.0)",
+]
+
+[tool.uv]
+# 纯脚本项目，不作为可安装包构建
+package = false

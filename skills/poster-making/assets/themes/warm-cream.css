@@ -1,0 +1,164 @@
+/* 暖奶油主题 - Warm Cream Theme */
+/* 签名元素（见 themes.yaml signature 字段）：封面手账胶带贴纸。
+   配色源自 assets/themes/themes.yaml 的 warm-cream 字段：
+   accent_color #ea580c / title_gradient #7c2d12→#c2410c / card_bg #fffaf0 / cover_bg #fffbf2
+   下方使用的 #f97316、#fdba74、#fff7ed 均为 accent_color 的明度变体，不另起色源。 */
+
+/* 字体角色由 render_xhs.py 按 themes.yaml 注入（display=圆体/body/utility），此处不再声明 font-family */
+
+/* 标题样式：标题色取自 title_gradient 首尾色 */
+.card-content h1 {
+    font-weight: 700;
+    border-bottom: 2px solid #f3e8d8;
+    color: #7c2d12;
+}
+
+.card-content h2 {
+    font-weight: 600;
+    border-left-color: #ea580c;
+    color: #7c2d12;
+}
+
+.card-content h3 {
+    font-weight: 600;
+    color: #c2410c;
+}
+
+/* 引用块：边线与引号为 accent_color，底色为 accent_color 的极浅透明变体 */
+.card-content blockquote {
+    border-left-color: #ea580c;
+    background: linear-gradient(135deg, rgba(234, 88, 12, 0.06) 0%, rgba(234, 88, 12, 0.02) 100%);
+    color: #6b4f3f;
+    font-style: normal;
+}
+
+.card-content blockquote::before {
+    color: #ea580c;
+}
+
+/* 行内代码 */
+.card-content code {
+    background: #fff7ed;
+    color: #c2410c;
+    border: 1px solid #fdba74;
+}
+
+/* 代码块：浅暖底，配合清单 highlight_style: solarized-light */
+.card-content pre {
+    border-left-color: #ea580c;
+    background: linear-gradient(180deg, #fff7ed 0%, #fef3e2 100%);
+    color: #7c2d12;
+}
+
+.card-content pre code {
+    color: inherit;
+    background: transparent;
+    border: none;
+}
+
+/* 链接 */
+.card-content a {
+    color: #ea580c;
+    border-bottom-color: #ea580c;
+}
+
+.card-content a:hover {
+    color: #c2410c;
+}
+
+/* 强调 */
+.card-content strong {
+    color: #7c2d12;
+    font-weight: 600;
+}
+
+.card-content em {
+    color: #ea580c;
+}
+
+/* 表格（font-family 由 font_utility 注入；斑马纹暖色由 zebra_color 注入） */
+.card-content th {
+    background: #fff7ed;
+    border-bottom: 2px solid #ea580c;
+    font-weight: 600;
+}
+
+.card-content td {
+    border-bottom: 1px solid #f3e8d8;
+}
+
+/* 列表标记 */
+.card-content li::marker {
+    color: #ea580c;
+}
+
+/* 标签 - 圆角胶囊样式：底色/边框为 accent_color 的极浅与浅化变体 */
+.tag {
+    display: inline-block;
+    background: #fff7ed;
+    color: #c2410c;
+    border: 1px solid #fdba74;
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    box-shadow: none;
+    margin: 6px 10px 6px 0;
+}
+
+.tags-container {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid #f3e8d8;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+}
+
+/* 页码 */
+.page-number {
+    color: #c9a889;
+    text-shadow: none;
+    font-weight: 500;
+}
+
+/* KaTeX 公式样式 */
+.katex {
+    font-size: 1.05em;
+}
+
+.katex-display {
+    margin: 24px 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+/* 分割线：渐变中点为 accent_color */
+.card-content hr {
+    background: linear-gradient(90deg, transparent 0%, #ea580c 50%, transparent 100%);
+}
+
+/* 卡片顶部装饰线：title_gradient 尾色 → accent_color 亮化变体 */
+.card-inner::before {
+    background: linear-gradient(90deg, #c2410c 0%, #f97316 100%);
+}
+
+/* === 签名元素：封面手账胶带贴纸 === */
+/* 一条斜贴在卡片顶边的半透明胶带，像手账里固定照片用的和纸胶带，
+   替代默认的单条渐变装饰条；色值为 accent_color / cover_bg 的透明变体 */
+.cover-inner::before {
+    content: '';
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    right: auto;
+    width: 300px;
+    height: 48px;
+    transform: translateX(-50%) rotate(-3deg);
+    background: rgba(234, 88, 12, 0.28);
+    border-left: 3px dashed rgba(255, 251, 242, 0.85);
+    border-right: 3px dashed rgba(255, 251, 242, 0.85);
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(124, 45, 18, 0.1);
+}

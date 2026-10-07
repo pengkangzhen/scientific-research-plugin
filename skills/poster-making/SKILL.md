@@ -15,15 +15,21 @@ description: >
   graphic for journal submission, or a "paper is out" announcement card
   for X/Twitter, LinkedIn, WeChat — even if they never say "poster"
   (e.g. "INFORMS accepted my paper, I need the session material").
+  Also covers Xiaohongshu (RedBook) multi-image note cards: cover +
+  auto-paginated content cards (1080×1440, CJK-first) with an optional
+  cookie-based auto-publish — a Python/uv pipeline (§4.5, full playbook in
+  references/xhs-playbook.md), not render.mjs.
   中文触发词："学术海报"、"会议海报"、"海报模板"、"poster"、"A0"、"做海报"、
   "图形摘要"、"图文摘要"、"graphical abstract"、"TOC 图"、"宣传图"、"论文卡片"、
-  "发表卡片"、"朋友圈论文图"、"公众号头图"。
+  "发表卡片"、"朋友圈论文图"、"公众号头图"、"小红书"、"红书笔记"、"小红书卡片"、
+  "笔记卡片"、"xhs"。
 license: MIT
 ---
 
-# Poster-Making Skill (paper → poster / graphical abstract / announcement card)
+# Poster-Making Skill (paper → poster / graphical abstract / announcement card / RedBook note)
 
-Single-page visual derivatives of a finished paper. The skill's core value
+Single-page visual derivatives of a finished paper (plus one multi-image
+exception: Xiaohongshu note cards, §4.5). The skill's core value
 is NOT the rendering (templates + one script do that) but the **content
 compression**: a paper is written to be read at 30 cm; these products are
 read at 1–5 m (poster), in a 200-px thumbnail (graphical abstract), or in a
@@ -63,6 +69,7 @@ math & figure fidelity > editability > production speed.**
 | Default poster / visual priority / CJK-heavy | `assets/poster-classic.html` or `poster-better.html` → `scripts/render.mjs` | Free layout, exact physical units, vector PDF + PNG in one pass |
 | Graphical abstract | `assets/graphical-abstract.html` → `render.mjs --width <px from specs.json>` | Journal pixel specs; PNG (300 dpi-class) + vector PDF |
 | Announcement card | `assets/social-card.html` → `render.mjs` | Screen specs (16:9 / 1:1 / LinkedIn / WeChat hero) |
+| Xiaohongshu (RedBook) note cards | `scripts/render_xhs.py` + `publish_xhs.py` (Python/uv pipeline, §4.5) | 3:4 scrolling-feed format, CJK-first, auto-pagination, optional auto-publish |
 
 Do not maintain parallel formats: one product, one route, one source file.
 
@@ -133,10 +140,38 @@ a big canvas. Compress in this order:
 | Conference poster | specs.json → conference_posters.sizes (A0/A1/48×36 in, portrait or landscape) | The venue's size policy wins over presets; change BOTH [SIZE] places in the template |
 | Graphical abstract | specs.json → graphical_abstracts (Elsevier 1328×531, IEEE 660×295 ≤45 KB, Cell 1200×1200 square, …) | **INFORMS journals and AGU have NO GA channel** — for those outlets the announcement card IS the visual abstract |
 | Announcement card | specs.json → social_cards (X 1200×675 / square 1080×1080 / LinkedIn 1200×628 / WeChat hero 900×383) | Element canon: claim headline + one visual + authors + journal/DOI. IEEE ≤45 KB: `pngquant` or JPEG q85 after export |
+| Xiaohongshu note cards | Fixed 1080×1440 (3:4) in `render_xhs.py` — deliberately NOT in specs.json (platform screen format, not a publisher canvas) | Copy contract, themes, and publishing flow in `references/xhs-playbook.md` |
 
 Banner-shaped GA (Elsevier/Wiley/IEEE) uses the bundled template's
 left→right flow (problem → method → key result); Cell-style square stacks
 the same three panels vertically.
+
+## 4.5 Xiaohongshu (RedBook) note cards — xhs pipeline
+
+The one product here that is NOT single-page: a RedBook note is a cover
+image + 1–N content images consumed in a vertical feed. It runs on its own
+Python/uv pipeline (not `render.mjs`):
+
+```bash
+cd <this skill dir>
+uv sync && uv run --no-sync playwright install chromium   # once
+uv run --no-sync python scripts/render_xhs.py note.md -o ./xhs_cards/<slug>/ -m auto-split
+uv run --no-sync python scripts/publish_xhs.py -t "标题" -d "正文" -i cover.png card_1.png --dry-run   # then --private, then public
+```
+
+Two content modes — creation rights decide:
+- **User supplied full copy → render verbatim.** Never rewrite a word.
+- **User gave only a topic/material → write per the copy contract in
+  `references/xhs-playbook.md`, render, and fix any ⚠️ warning by editing
+  the copy (never by patching the renderer).**
+
+Everything operational lives in `references/xhs-playbook.md` (single
+source for the copy contract: publish title ≤20 UTF-16 units, ranking
+entries 3–10 with ≤32-char one-liners; theme registry
+`assets/themes/themes.yaml`; layout samples in `layouts/`). Publishing
+needs `XHS_COOKIE` in `.env` (template `env.example.txt`; never committed)
+— the gate is dry-run → private → public, spaced out to avoid platform
+rate limits.
 
 ## 5. Render and verify (mandatory loop, after every content change)
 
@@ -200,6 +235,10 @@ Poster sessions are conversations. Deliver alongside the poster:
   report file paths (PDF + PNG + editable source), sizes verified.
 - One product, one route: if the user asks for a second format mid-way,
   finish the first, then start it as a separate render.
+- **XHS publish gate (§4.5):** no public post before `--dry-run` passes
+  and a `--private` trial looks right; the cookie lives in `.env`, never
+  in git; never publish a card that rendered with a truncation ⚠️ — fix
+  the copy and re-render.
 
 ## 8. Bundled assets (copy in full, then edit)
 
@@ -213,6 +252,12 @@ Poster sessions are conversations. Deliver alongside the poster:
 | `assets/conference-poster-beamer.tex` | Math-heavy poster, beamerposter (Overleaf-ready) |
 | `assets/conference-poster-tikz.tex` | Zero-install LaTeX fallback (xelatex, 0 errors verified) |
 | `scripts/render.mjs` | HTML → vector PDF + 2× PNG, overflow audit |
+| `scripts/render_xhs.py` | XHS: Markdown → cover + auto-paginated card PNGs (1080×1440; layouts `default` / `ranking`) |
+| `scripts/publish_xhs.py` | XHS auto-publish: dry-run → private → public (cookie in `.env`) |
+| `assets/themes/` | XHS theme registry — `themes.yaml` (single source) + theme CSS + `DESIGN_GUIDE.md` |
+| `layouts/` | XHS layout sample images (re-render after layout changes, see its README) |
+| `references/xhs-playbook.md` | XHS full playbook: copy contract, creation guide, themes, publishing flow |
+| `pyproject.toml` / `uv.lock` / `env.example.txt` | uv environment + credential template for the XHS pipeline |
 
 All four HTML templates share the five-color system and font stack, use
 placeholder text as filling instructions, and were render-verified

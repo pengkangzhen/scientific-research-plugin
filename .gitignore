@@ -9,3 +9,7 @@ __pycache__/
 *.snm
 *.toc
 *.synctex.gz
+
+# Python env & credentials for poster-making xhs pipeline
+.venv/
+.env

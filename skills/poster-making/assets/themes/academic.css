@@ -1,0 +1,156 @@
+/* 学术极简主题 - Academic Minimal Theme */
+/* 签名元素（见 themes.yaml signature 字段）：封面论文页眉双细线 + 正文 §节标记。
+   签名之外保持安静：版式骨架与基础样式一致，仅换字体角色与 accent 系色值。
+   颜色取值纪律：#2563eb=accent_color；#1e293b/#334155=title_gradient 两端；
+   其余 slate 系（#e2e8f0/#f1f5f9/#f8fafc 等）为 card_bg 白的灰阶变体。 */
+
+/* 字体角色由 render_xhs.py 按 themes.yaml 注入（display/body/utility），此处不再声明 font-family */
+
+/* 标题样式 */
+.card-content h1 {
+    font-weight: 700;
+    border-bottom: 2px solid #e2e8f0;
+    color: #1e293b;
+}
+
+/* 签名：§ 节标记（§=节，与 h3 的 ▸=要点 形成「结构即信息」的层级） */
+.card-content h2::before {
+    content: '§ ';
+    color: #2563eb;
+    font-family: 'Times New Roman', 'Songti SC', serif;
+}
+
+.card-content h2 {
+    font-weight: 600;
+    border-left-color: #2563eb;
+    color: #1e293b;
+}
+
+.card-content h3 {
+    font-weight: 600;
+    color: #334155;
+}
+
+/* 引用块 */
+.card-content blockquote {
+    border-left-color: #2563eb;
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.04) 0%, rgba(37, 99, 235, 0.01) 100%);
+    color: #475569;
+    font-style: normal;
+}
+
+.card-content blockquote::before {
+    color: #2563eb;
+}
+
+/* 行内代码 */
+.card-content code {
+    background: #f1f5f9;
+    color: #2563eb;
+    border: 1px solid #e2e8f0;
+}
+
+/* 代码块 */
+.card-content pre {
+    border-left-color: #2563eb;
+    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+}
+
+/* 链接 */
+.card-content a {
+    color: #2563eb;
+    border-bottom-color: #2563eb;
+}
+
+.card-content a:hover {
+    color: #1d4ed8;
+}
+
+/* 强调 */
+.card-content strong {
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.card-content em {
+    color: #2563eb;
+}
+
+/* 表格 - 学术风格（font-family 由 font_utility 注入：Times New Roman 数字） */
+.card-content th {
+    background: #f8fafc;
+    border-bottom: 2px solid #2563eb;
+    font-weight: 600;
+}
+
+.card-content td {
+    border-bottom: 1px solid #f1f5f9;
+}
+
+/* 列表 */
+.card-content li::marker {
+    color: #2563eb;
+}
+
+/* 标签 - 圆角矩形样式 */
+.tag {
+    display: inline-block;
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    box-shadow: none;
+    margin: 6px 10px 6px 0;
+}
+
+.tags-container {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+}
+
+/* 页码（font-family 由 font_utility 注入） */
+.page-number {
+    color: #94a3b8;
+    text-shadow: none;
+    font-weight: 500;
+}
+
+/* KaTeX 公式样式 */
+.katex {
+    font-size: 1.05em;
+}
+
+.katex-display {
+    margin: 24px 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+/* 分割线 */
+.card-content hr {
+    background: linear-gradient(90deg, transparent 0%, #2563eb 50%, transparent 100%);
+}
+
+/* 卡片顶部装饰线 */
+.card-inner::before {
+    background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%);
+}
+
+/* === 签名元素：封面论文页眉双细线 === */
+/* 学位论文/期刊页眉的「粗+细」双规则线，替代默认的单条渐变装饰条 */
+.cover-inner::before {
+    height: 7px;
+    background: none;
+    border-top: 2px solid #1e293b;
+    border-bottom: 1px solid #64748b;
+    border-radius: 0;
+    opacity: 0.85;
+}

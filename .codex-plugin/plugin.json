@@ -1,12 +1,12 @@
 {
   "name": "scientific-research-plugin",
-  "version": "0.11.0",
-  "description": "A full-lifecycle research pipeline for OR & ML, 13 skills + 2 subagents take a project from prior-art survey to the conference talk and poster — Zotero literature intake, structured reading notes, note-driven PDF category highlighting, publication-grade figures, top-journal-style section drafting, LaTeX polishing, noun-term jargon auditing, citation verification against official APIs, three-blind adversarial review, and point-by-point rebuttal. Its prior-art survey covers research-grade questions across engineering and academic sources, not just papers.",
+  "version": "0.12.0",
+  "description": "A full-lifecycle research pipeline for OR & ML, 13 skills + 2 subagents take a project from prior-art survey to the conference talk, poster, and social note cards — Zotero literature intake, structured reading notes, note-driven PDF category highlighting, publication-grade figures, top-journal-style section drafting, LaTeX polishing, noun-term jargon auditing, citation verification against official APIs, three-blind adversarial review, point-by-point rebuttal, and Xiaohongshu (RedBook) multi-image note cards with optional auto-publish. Its prior-art survey covers research-grade questions across engineering and academic sources, not just papers.",
   "author": { "name": "pengkangzhen", "url": "https://github.com/pengkangzhen" },
   "homepage": "https://github.com/pengkangzhen/scientific-research-plugin#readme",
   "repository": "https://github.com/pengkangzhen/scientific-research-plugin",
   "license": "MIT",
-  "keywords": ["academic", "research", "zotero", "latex", "peer-review", "references", "rebuttal", "figures", "writing", "presentation", "slides", "poster"],
+  "keywords": ["academic", "research", "zotero", "latex", "peer-review", "references", "rebuttal", "figures", "writing", "presentation", "slides", "poster", "xiaohongshu", "redbook"],
   "skills": "./skills/",
   "interface": {
     "displayName": "Scientific Research Plugin",

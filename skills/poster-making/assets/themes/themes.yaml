@@ -1,0 +1,49 @@
+# 小红书卡片主题清单（唯一事实源）
+# render_xhs.py 启动时读取本文件获取全部主题定义；
+# 每个主题的排版细节在 assets/themes/<css> 中实现，CSS 内的颜色值必须取自本清单对应字段（或其明度变体），禁止另起色源。
+#
+# 字段说明：
+#   name            主题中文名（--list-styles 展示、渲染日志）
+#   cover_bg        封面背景（CSS background 值）
+#   card_bg         正文卡片容器背景色
+#   accent_color    强调色（标题边线、引用块、链接、行内代码、标签等）
+#   title_gradient  封面标题与卡片顶部装饰线的渐变
+#   css             assets/themes/ 下的主题样式文件名
+#   highlight_style 可选；Pygments 代码高亮风格名，缺省则不注入高亮样式
+#                   （须与主题代码块底色匹配：深底用 monokai/dracula，浅底用 solarized-light/friendly）
+#   font_display    可选；封面主标题与正文 h1/h2 的字体族（CSS font-family 值）。
+#                   缺省回退基础无衬线栈。设计新主题时应至少给齐 display 与 body 两个字体角色。
+#   font_body       可选；正文字体族，缺省回退基础无衬线栈
+#   font_utility    可选；表格与页码等数据场景字体族，缺省随 font_body
+#   zebra_color     可选；表格偶数行底色，缺省冷灰 rgba(248,250,252,0.6)。
+#                   必须取自 accent_color 或 card_bg 的明度变体，避免与主题色调脱节
+#   signature       主题签名元素的一句话描述（--list-styles 展示；设计新主题前先读
+#                   assets/themes/DESIGN_GUIDE.md 过一遍设计自检清单）
+
+academic:
+  name: 学术极简
+  cover_bg: "linear-gradient(180deg, #fafafa 0%, #f5f5f5 100%)"
+  card_bg: "#ffffff"
+  accent_color: "#2563eb"
+  title_gradient: "linear-gradient(180deg, #1e293b 0%, #334155 100%)"
+  css: academic.css
+  highlight_style: monokai
+  font_display: "'Songti SC', 'STSong', 'SimSun', serif"
+  font_body: "'PingFang SC', 'Helvetica Neue', 'Noto Sans SC', sans-serif"
+  font_utility: "'Times New Roman', 'Songti SC', serif"
+  zebra_color: "rgba(241, 245, 249, 0.7)"
+  signature: "论文页眉双细线 + §节标记；宋体标题、Times New Roman 数字，整体像一页论文"
+
+warm-cream:
+  name: 暖奶油
+  cover_bg: "linear-gradient(180deg, #fffbf2 0%, #fdf1e0 100%)"
+  card_bg: "#fffaf0"
+  accent_color: "#ea580c"
+  title_gradient: "linear-gradient(180deg, #7c2d12 0%, #c2410c 100%)"
+  css: warm-cream.css
+  highlight_style: solarized-light
+  font_display: "'Yuanti SC', 'PingFang SC', 'Noto Sans SC', sans-serif"
+  font_body: "'PingFang SC', 'Helvetica Neue', 'Noto Sans SC', sans-serif"
+  font_utility: "'Avenir Next', 'Helvetica Neue', sans-serif"
+  zebra_color: "rgba(253, 244, 230, 0.8)"
+  signature: "封面手账胶带贴纸 + 暖色斑马纹表格；圆体标题，整体像一页便签手账"
