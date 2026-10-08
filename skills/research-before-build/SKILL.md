@@ -1,24 +1,19 @@
 ---
 name: research-before-build
-description: "Research before building. Fires only on research-grade prior-art questions — solution or method design for a research problem, \"has humanity studied/solved X\", architecture selection where approaches compete, literature grounding before building research code — and requires surveying prior art across BOTH engineering venues (official docs, GitHub issues, mature open-source repos) and academic venues (papers, white papers), vertically within the field and horizontally across fields, before designing or concluding; candidates ranked by trust and structural match, accepted by decision impact. NOT for routine engineering unknowns — library/framework selection, cross-system integration, deployment, migration, cloud config, obscure errors, performance puzzles, security — the AI harness's native search handles those directly; and not for execution work with a settled path. Triggers: \"check prior art\", \"research before implementing\", \"find existing work on X\", \"has this been studied\", \"don't reinvent the wheel\"."
+description: "Prior-art survey before building — has humanity already solved this problem? Surveys engineering venues (official docs, GitHub issues, mature open-source repos) AND academic venues (papers, white papers), vertically within the field and horizontally across fields, via two parallel research-scout lines; candidates ranked by trust and structural match; output is a persisted memo with a reading list. User-invoked: type /research-before-build when you want to know how a problem has been solved before designing or building; the assistant may propose this skill when a task graduates to research-grade mid-execution, but only the user invokes it. NOT for routine engineering unknowns — library/framework selection, cross-system integration, deployment, migration, cloud config, obscure errors, performance puzzles, security — the harness's native search handles those; not for execution with a settled path."
 metadata:
-  short-description: Research before building — survey engineering and academic prior art, in and across fields, for research-grade questions
+  short-description: Research before building — user-invoked survey of engineering and academic prior art, in and across fields
 license: MIT
+disable-model-invocation: true
 ---
 
 # Research Before Build
 
 Purpose: before building, answer one question — **has humanity already solved this problem?** Reinventing the wheel is the biggest waste; community solutions are battle-tested compressed experience. This skill serves **research-grade prior-art questions** — the ones whose prior art lives in two worlds that rarely cite each other: engineering (repos, tools, docs) and academic (papers). Ask "quantify geopolitical risk in a logistics network" and the answer splits across GitHub simulation projects and OR journals; covering one world is half an answer. The usual limitation is not that the problem is unsolvable, but that the question is boxed in by your own field's vocabulary — everyone's knowledge is local, the answer often lies outside your field, and searching with only your domain's jargon is hunting for a door in a blank wall; hence the horizontal line is co-primary, never a fallback. What this skill is **not**: a wrapper over search. Routine engineering unknowns — library/framework picks, cross-system integration, deployment, migration, cloud config, obscure errors, performance puzzles, security — are handled by the AI harness's native exploration; this skill does not intercept them, and neither does it gate execution work whose path is settled. In scope: pin down what to research from the task description and repo conventions, decide each question's retrieval strategy (facet split + relaxation ladder), then search by dimension (engineering AND academic, both always) and direction (vertical within the field, horizontal across fields — in parallel); rank candidates by relevance, accept by decision impact.
 
-## Step 1: Scope gate (mandatory, cheapest)
+## Step 1: Invocation is the gate
 
-On load, sort the task into exactly one of three bins:
-
-- **Execution with a settled path** — the user specified the approach, in-project patterns apply directly, the change is locatable locally → out of scope: just execute, no searching.
-- **Routine engineering unknown** — library/framework selection, cross-system integration, deployment, migration, cloud config, obscure errors, performance puzzles, security → out of scope: the harness explores these natively with its own search, no protocol needed. (The moment such a pick turns out to shape the research design itself — a wrong choice would survive into the paper or the production architecture — it has graduated to research-grade and belongs below.)
-- **Research-grade prior-art question** → in scope: solution or method design for a research problem, "has humanity studied/solved X", architecture selection where approaches compete, literature grounding before building research code.
-
-When unsure between the last two bins, treat as research-grade — a survey is cheap next to a wrong foundation. If the user explicitly asks to skip research, obey.
+Being invoked — the user typed `/research-before-build`, or accepted the assistant's proposal to run it — **is** the scope decision: the question is research-grade; there is no in-skill re-triage into settled-path or routine-engineering bins. What remains at runtime is a single **downshift valve**: if reading the task shows the path is already settled or one targeted lookup answers it, say so in one line (Step 5's no-decision-impact clause) and stop — no scouts, no file.
 
 ## Step 2: Pin down what to research (mandatory before searching)
 
@@ -51,7 +46,7 @@ Two independent choices define the search space — the retrieval strategy from 
 
 **Direction — where to search: vertical and horizontal, co-primary and simultaneous**, dispatched as parallel `research-scout` subagents: the vertical line digs within the field with domain-statement queries; the horizontal line sweeps across fields with essence-statement queries (different query vocabularies, so they never duplicate work), neither waiting on the other. A vertical hit does not call off the horizontal line: Step 4 ranks by structural match, and a structurally isomorphic cross-field answer is often worth more than a superficially similar in-field one — until both lines have reported, there is nothing to compare.
 
-**Local prior art first** (zero cost, before any dispatch, stays in the main session — it needs repo context): in-project implementations, commit history, installed skills, installed dependencies — whatever already does the job, use it and stop looking; other local files (lockfiles, README/AGENTS.md) are not prior-art evidence, only inputs for pinning versions and constraints.
+**Local artifacts are inputs, never terminal hits**: invoking this skill is a mandate to survey the world's prior art, and an in-repo implementation may be exactly what is wrong — nothing local ends the search. What local context still does: failed attempts in commit history feed Step 2's sticking point; lockfiles and README/AGENTS.md pin versions and no-go zones for Step 4's gates; an existing in-project implementation may enter Step 4 as one more candidate — the zero-migration-cost baseline to beat — not as a pre-search terminator.
 
 Query discipline (for the in-session degraded run; the scouts carry their own copy): engineering queries as **stack + version + symptom + constraint**, academic queries as **problem structure + method family + constraint**; no open-ended searching. Trust ladder, high to low: official docs / official SDKs / vendor best practices > GitHub issues/discussions with maintainer replies > high-vote Stack Overflow (always check freshness and version match) > personal blogs / AI-generated content (leads only, never evidence). For repo candidates, verify the README and core code actually do the thing; record stars, maintenance activity, license, reusable parts.
 
@@ -94,15 +89,20 @@ The memo lands in two places: the conversation, for the immediate decision, and 
 
 ```
 ## Prior-art memo — <topic>, <date>
-- Scope searched: official docs X, repo Y, issue Z (list the sources actually checked)
-- Candidates (by relevance, high to low): A / B / C
-- Evaluation: A compatible with current version ✓; B abandoned ✗; C license conflict ✗
+- Scope searched (both dimensions, both directions, per line): engineering — official docs X, repos Y, issues Z; academic — arXiv, Scholar, OpenAlex; horizontal — fields swept, synonym sets used
+- Candidates — three sections by origin, assembled from the two scout memos; each section ranked by relevance within (a flat priority list hides which side a candidate came from — the memo is a reading artifact, and zone-reading beats re-decoding every entry; intra-section order keeps Step 4's structural-match ranking doing the work):
+  - Engineering side (vertical line's engineering track — ready-made code, official docs, tools): A / B / C
+  - Academic side (vertical line's academic track — in-field papers, white papers): D / E
+  - Cross-domain side (horizontal line's essence-statement hits, paper or repo, each tagged with its borrowed-from field): F [← psychometrics] / G [← esports]
+- Evaluation (draws on all three sections; adopted pieces often come from different sides — code from engineering, method from cross-domain): A compatible with current version ✓; B abandoned ✗; F from another field, adaptation scoped ✓
 - Decision: adopt A and adapt (reason);
   or "none applicable, implement ourselves (checked X/Y/Z, none satisfies constraint N)"
-- Reading list (the minimal deliverable):
-  - Papers: title — DOI / arXiv ID — venue, year → hand to `zotero-paper-fetching` for acquisition into Zotero (official-API metadata verification, PDF, tiered filing)
+- Reading list (the minimal deliverable; papers and repos are its two acquisition channels, drawn from all three sections):
+  - Papers: title — DOI / arXiv ID — venue, year → hand to `zotero-paper-fetching` for acquisition into Zotero (official-API metadata verification, PDF, tiered filing); cross-domain hits append borrowed-from field + adaptation delta (what was changed to fit) — that note is the related-work trail
   - Repos: name — URL — version/commit to pin — license — stars, last release → adoption means dependency or clone; the pinned version is the provenance record
 ```
+
+Section membership is decided by **origin** (which line and track retrieved the candidate), never by artifact type — a cross-domain repo stays in the cross-domain section and enters the reading list's repo channel; the section answers "where was this found", the reading-list channel answers "how is it acquired", and the two never collide. An empty section is itself a finding, printed as such (not omitted): the horizontal line coming back empty triggers Step 3's re-issue decision; an empty engineering side against a dense academic side says the answer lives in papers, and the reading effort should follow. The cross-section comparison is not lost to sectioning — Evaluation and Decision draw on all three sections, and the borrowed-field + adaptation note on cross-domain candidates is what related-work writing will quote later.
 
 **Research with no decision impact is pure overhead.** When the results change nothing, one sentence in the conversation suffices — and no file either; the reading list exists only when the memo does.
 
