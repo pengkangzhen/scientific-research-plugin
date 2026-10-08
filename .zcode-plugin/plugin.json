@@ -1,6 +1,6 @@
 {
   "name": "scientific-research-plugin",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "description": "A full-lifecycle research pipeline for OR & ML, 14 skills + 2 subagents take a project from prior-art survey to the conference talk, poster, and social note cards — Zotero literature intake, structured reading notes, note-driven PDF category highlighting, publication-grade figures, top-journal-style section drafting, LaTeX polishing, noun-term jargon auditing, defensive-writing (over-hedging) auditing, citation verification against official APIs, three-blind adversarial review, point-by-point rebuttal, and Xiaohongshu (RedBook) multi-image note cards with optional auto-publish. Its prior-art survey covers research-grade questions across engineering and academic sources, not just papers.",
   "description_i18n": {
     "en": "A full-lifecycle research pipeline for OR & ML, 14 skills + 2 subagents take a project from prior-art survey to the conference talk, poster, and social note cards — Zotero literature intake, structured reading notes, note-driven PDF category highlighting, publication-grade figures, top-journal-style section drafting, LaTeX polishing, noun-term jargon auditing, defensive-writing (over-hedging) auditing, citation verification against official APIs, three-blind adversarial review, point-by-point rebuttal, and Xiaohongshu (RedBook) multi-image note cards with optional auto-publish. Its prior-art survey covers research-grade questions across engineering and academic sources, not just papers.",

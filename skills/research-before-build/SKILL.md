@@ -48,7 +48,7 @@ Two independent choices define the search space — the retrieval strategy from 
 
 **Local artifacts are inputs, never terminal hits**: invoking this skill is a mandate to survey the world's prior art, and an in-repo implementation may be exactly what is wrong — nothing local ends the search. What local context still does: failed attempts in commit history feed Step 2's sticking point; lockfiles and README/AGENTS.md pin versions and no-go zones for Step 4's gates; an existing in-project implementation may enter Step 4 as one more candidate — the zero-migration-cost baseline to beat — not as a pre-search terminator.
 
-Query discipline (for the in-session degraded run; the scouts carry their own copy): engineering queries as **stack + version + symptom + constraint**, academic queries as **problem structure + method family + constraint**; no open-ended searching. Trust ladder, high to low: official docs / official SDKs / vendor best practices > GitHub issues/discussions with maintainer replies > high-vote Stack Overflow (always check freshness and version match) > personal blogs / AI-generated content (leads only, never evidence). For repo candidates, verify the README and core code actually do the thing; record stars, maintenance activity, license, reusable parts.
+Query discipline (for the in-session degraded run; the scouts carry their own copy): engineering queries as **stack + version + symptom + constraint**, academic queries as **problem structure + method family + constraint**; no open-ended searching. Trust ladder, high to low: official docs / official SDKs / vendor best practices > GitHub issues/discussions with maintainer replies > high-vote Stack Overflow (always check freshness and version match) > personal blogs / AI-generated content (leads only, never evidence). For repo candidates, verify the README and core code actually do the thing; record stars, maintenance activity, license, reusable parts — `scripts/check_repo.py <owner/name>` fetches stars, last push, archived flag, license, and the pin commit from the GitHub API as facts, not memory (the trust/freshness/migration judgement itself stays here in Step 4).
 
 ### Dispatch protocol — two parallel `research-scout` subagents
 
@@ -63,7 +63,7 @@ Sources: [vertical] engineering and academic tracks, both in scope (problem natu
 Budget: N of the global 8 (typically 3–4); a scout stops at its slice and never borrows across lines
 ```
 
-When both memos are in, rank and evaluate in the main session (Step 4) — an empty line memo is input to that comparison, not a failure; the main session may re-issue at most one re-phrased work order per line before declaring it exhausted.
+When both memos are in, rank and evaluate in the main session (Step 4) — an empty line memo is input to that comparison, not a failure; the main session may re-issue at most one re-phrased work order per line before declaring it exhausted. (In Claude Code with the plugin enabled, this is hook-enforced: work orders missing any of the five fields are denied with the missing list, and a third dispatch of the same line is refused — fix the order, not the hook.)
 
 ### The horizontal line
 
@@ -85,7 +85,7 @@ Rank candidates by **relevance** first — the criterion is **match on problem s
 
 ## Step 5: Output a prior-art memo, persisted as a reading list (mandatory)
 
-The memo lands in two places: the conversation, for the immediate decision, and a file — `docs/research/<yyyy-mm-dd>-<topic-slug>.md` in the project — so the survey survives the session (re-asking the same question re-burns budget; related-work writing wants the trail; a deleted or relicensed repo stays traceable). The file is also the pipeline's hand-off artifact:
+The memo lands in two places: the conversation, for the immediate decision, and a file — `docs/research/<yyyy-mm-dd>-<topic-slug>.md` in the project — so the survey survives the session (re-asking the same question re-burns budget; related-work writing wants the trail; a deleted or relicensed repo stays traceable). Scaffold with `scripts/new_memo.py <topic-slug>`; before closing, `scripts/lint_memo.py` must pass (sections, channels, IDs, URLs, licenses); before the papers reach `zotero-paper-fetching`, `scripts/verify_reading_list.py` machine-resolves every DOI/arXiv ID against CrossRef/arXiv — facts over model recall. The scripts travel with the skill directory; where the harness has no shell, keep the manual discipline. The file is also the pipeline's hand-off artifact:
 
 ```
 ## Prior-art memo — <topic>, <date>
@@ -109,7 +109,7 @@ Section membership is decided by **origin** (which line and track retrieved the 
 ## Stopping Rules and Safeguards
 
 - Per-line stopping happens inside each `research-scout`: 2 consecutive fruitless rounds of its own (a round = one group of targeted searches around the same phrasing) retire the line; the main session may re-issue at most one re-phrased work order per line before declaring it exhausted
-- Total external-search budget: at most 8 searches overall, split across the two parallel lines from the first round (typically 3–4 each, roughly even until hits start concentrating on one line); scouts stop at their slice and never borrow across lines — only the main session re-issues
+- Total external-search budget: at most 8 searches overall, split across the two parallel lines from the first round (typically 3–4 each, roughly even until hits start concentrating on one line); scouts stop at their slice and never borrow across lines — only the main session re-issues. In Claude Code (plugin enabled) the ceilings are hook-enforced — per-scout line cap and a global counter keyed to the invocation marker; the counter is the truth, not memory, and writing the memo closes the survey
 - No searching for searching's sake: before every search, state how the result would change your approach
 - **Not found ≠ does not exist**: any claim of "no prior art" must list the places actually checked
 - After adopting a community solution, verify: version compatibility, tests pass, license check, security scan when warranted
