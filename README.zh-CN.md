@@ -3,16 +3,16 @@
 [English](README.md) | **简体中文**
 
 ![License](https://img.shields.io/badge/license-MIT-green)
-![Skills](https://img.shields.io/badge/skills-13_+_2_subagents-blue)
+![Skills](https://img.shields.io/badge/skills-14_+_2_subagents-blue)
 ![Harnesses](https://img.shields.io/badge/harnesses-16-orange)
 
-每个研究任务都从先例调研开始，论文只是最完整的实例。`research-before-build` 调研技能在研究级问题动手前，工程与学术双源并行查先例；论文管线——文献获取 → 结构化阅读 → 论文出图 → 章节起草 → 写作润色 → 参考文献核查 → 投稿前评审 → 审稿回复 → 会议汇报与海报——是它的完整落地。面向运筹学与机器学习研究者。
+每个研究任务都从先例调研开始，论文只是最完整的实例。`research-before-build` 调研技能在研究级问题动手前，工程与学术双源并行查先例；论文管线——文献获取 → 结构化阅读 → 论文出图 → 章节起草 → 写作润色 → 防御性写作审查 → 参考文献核查 → 投稿前评审 → 审稿回复 → 会议汇报与海报——是它的完整落地。面向运筹学与机器学习研究者。
 
 一份 `skills/` 事实源，多端分发：Claude Code / ZCode / Codex 插件、原生读取 `~/.agents/skills` 的助手（Gemini CLI、Goose、opencode、Kimi Code、pi），以及由 `install.sh` 扇出到各自专属目录的 Harness（Cursor、Crush、Copilot、Amp、Grok Build、Qwen Code、Droid、Kiro）。
 
 ## 亮点
 
-- **一套技能包覆盖全生命周期。** 从一份原始文献清单到会议演讲与海报：Zotero 入库 → 结构化阅读笔记 → 按笔记的 PDF 分类高亮 → 期刊级出图 → 顶刊风格章节起草 → LaTeX 润色 → 名词术语黑话审查 → 引用核查 → 对抗式投稿前评审 → 逐条审稿回复 → 控时 Beamer 幻灯 → 单页视觉衍生品（学术海报、图形摘要、发表宣传卡片）。13 个技能 + 2 个 subagent 按一条管线设计，不是十三个散装工具。
+- **一套技能包覆盖全生命周期。** 从一份原始文献清单到会议演讲与海报：Zotero 入库 → 结构化阅读笔记 → 按笔记的 PDF 分类高亮 → 期刊级出图 → 顶刊风格章节起草 → LaTeX 润色 → 名词术语黑话审查 → 防御性写作审查 → 引用核查 → 对抗式投稿前评审 → 逐条审稿回复 → 控时 Beamer 幻灯 → 单页视觉衍生品（学术海报、图形摘要、发表宣传卡片）。14 个技能 + 2 个 subagent 按一条管线设计，不是十四个散装工具。
 - **取事实，不靠模型回忆。** `reference-verifying` 的每条引用事实都来自官方 API 机核（CrossRef / arXiv / PMLR / OpenReview / ACL Anthology / NeurIPS）——命令取数，零模型记忆。机核未决的条目联网核查，证据必须带可访问 URL；每条存疑结论再独立复核一遍。
 - **局外人审计，拒绝自我评分。** `paper-review` 运行三名相互隔离的审稿人（方法严谨 / 领域贡献 / 对抗攻击）加作者辩护仲裁——它针对的失效模式正是"模型给自己打的分"。`jargon-check` 更进一步：隔离 subagent 换独立模型，像陌生人一样读润色后的文本。
 - **研究级问题的调研技能，不只是论文工具。** `research-before-build` 作用于先例横跨工程与学术两个世界的研究级问题——方案/方法设计、"人类研究过 X 吗"、研究系统的架构选型；同时派发两个并行 `research-scout` 子代理，一个纵向深挖本领域、一个横向扫描跨领域，各自覆盖 GitHub 级与论文级来源。日常工程未知（选库、集成、部署、排障、安全）交给 harness 原生检索；路径已定的执行不触发。论文管线是它最完整的实例化，不是它的边界。
@@ -33,6 +33,7 @@
 | ④ `paper-polishing` | skill | LaTeX 学术润色：语法、用词、句式、逻辑、语气五维改到可发表 |
 | ④ `jargon-check` | **subagent** | 针对 AI 写作“AI 腔”与“学术黑话”，脱离上下文单独审查术语套话 |
 | ④ `term-audit` | skill | 名词术语黑话批量审计漏斗：确定性提取 + 五信号排序 → `jargon-check` terms 模式分批并行 → 变体分组 + 漂移合并 |
+| ④ `hedge-audit` | skill | 全稿防御性写作（过度对冲）审计：Results 退路从句、Abstract/引言贡献弱化、任意章节 hedge 堆叠、与 Limitations 重复的 caution——按章节给删除 / 移 Discussion / 移 Limitations / 保留四档处置 + 分章密度梯度 |
 | ⑤ `paper-review` | skill | 三位隔离评审 + 作者答辩仲裁，输出 C/M/N 问题清单 |
 | ⑤ `reference-verifying` | skill | 通过官方 API 机器核查文献引用，而非模型记忆，防止幻觉引用 |
 | ⑥ `rebuttal` | skill | 根据审稿意见逐条修订论文手稿，并同步 Response Letter |
@@ -66,6 +67,7 @@
 | "润色一下 Introduction" | `paper-polishing` | 修改后的 LaTeX，标记原样保留 |
 | "审一遍用词"（润色之后） | `jargon-check`（点名调用） | 陌生审稿人视角的黑话审计 |
 | "把全篇名词术语都审一遍" | `term-audit` | 排序候选表、分批判定报告、变体/漂移表 |
+| "查一下 Results 有没有防御性写作" / "全稿是不是过度对冲" | `hedge-audit` | 逐条判定表 + 搬迁地图 + 分章 hedge 密度 |
 | "投稿前把参考文献全查一遍" | `reference-verifying` | 字段级核对表 + 严重度分级 |
 | "像审稿人一样审这篇稿子" | `paper-review` | 三审稿人评审报告 + C/M/N 意见清单 |
 | "按审稿意见逐条写回复" | `rebuttal` | `\changed{}` 标注、编译后的 PDF、更新的回复信 |
@@ -119,7 +121,7 @@ cd scientific-research-plugin
 验证：
 
 ```bash
-ls ~/.agents/skills    # 13 个技能
+ls ~/.agents/skills    # 14 个技能
 ls ~/.agents/agents    # 两个 subagent（jargon-check、research-scout）
 ```
 
@@ -148,7 +150,7 @@ ls ~/.agents/agents    # 两个 subagent（jargon-check、research-scout）
 ## 目录结构
 
 ```
-├── skills/                      # 13 个自动触发技能（唯一事实源）
+├── skills/                      # 14 个自动触发技能（唯一事实源）
 │   ├── research-before-build/
 │   ├── zotero-paper-fetching/
 │   ├── zotero-paper-note/
@@ -157,6 +159,7 @@ ls ~/.agents/agents    # 两个 subagent（jargon-check、research-scout）
 │   ├── top-journal-writing/
 │   ├── paper-polishing/
 │   ├── term-audit/
+│   ├── hedge-audit/
 │   ├── paper-review/
 │   ├── reference-verifying/
 │   ├── rebuttal/
@@ -182,7 +185,7 @@ ls ~/.agents/agents    # 两个 subagent（jargon-check、research-scout）
 - 版本号变更需同步四处并保持一致：三个插件清单（`.claude-plugin/`、`.zcode-plugin/`、`.codex-plugin/`）与 `.claude-plugin/marketplace.json` 条目。
 - 官方 ZCode 市场通道（zai-org/zcode-plugins 的 `plugins/scientific-research-plugin/`）自 2026-09-24 起**暂停**——恢复前不做 fork 同步、不提 PR。若恢复：每次发版提同步 PR，`version` 与 `description_i18n` 逐字一致（官方 `validate.py` 强制校验），公告前先确认对方 `marketplace.json` 确实列出了新版本。
 - `academic-paper-review` 已退役归档至 `attic/`（上游：academic-research-skills）；其有效机制（致命缺陷四标准、实验红线、Devil's Advocate 攻击维度）已并入 `paper-review`。完整来源谱系见 `skills/paper-review/references/source-basis.md`。
-- 本仓库为 v13：v1 只含 4 个写作技能；v2 扩展为科研全流程（`language-polish` 演化为 `paper-polish`）；v3 加入纪律层 `research-before-build`（⓪）与汇报层 `academic-ppt`（⑦）并将 `scientific-review` 更名为 `paper-review`；v4 将 `paper-review` 重构为三盲审对抗评审团（nature-reviewer 式架构、OR/ML+OR 领域 gate、作者辩护仲裁），并退役 `academic-paper-review`；v5 新增 `reference-verify`（⑤ 投稿前参考文献体检，从一次全稿引用核查实战凝练的三层核查法）；v6 新增 `term-audit`（名词术语黑话批量审计：确定性提取 → 五信号排序 → `jargon-check` terms 模式分批并行 → 变体/漂移合并，种子词表源自 Kobak et al. 2025 超额词汇研究）并为 `jargon-check` 增加 `terms` 审计模式；v7 按官方技能命名最佳实践（动名词形式）将五个技能更名：`figure-plot` → `figure-plotting`、`paper-polish` → `paper-polishing`、`reference-verify` → `reference-verifying`、`zotero-paper-fetch` → `zotero-paper-fetching`、`academic-ppt` → `slide-making`——共 10 skill + 1 subagent；v8 新增 `zotero-pdf-highlighting`（按阅读笔记五类别给 PDF 写分类颜色高亮：PyMuPDF 文件内嵌批注路线、严格五类对齐 Zotero 官方调色板、幂等可重跑）——现共 11 skill + 1 subagent；v9 新增 `top-journal-writing`（④ 顶刊风格章节起草/重构：引言倒漏斗、摘要五句公式、方法菜谱、讨论四步走蓝图 + 句式库——从 arXiv 与 OpenAlex 采集的 AI/OR/管理/物流/航运五域 200 篇顶刊语料自动挖掘，句句带出处）——现共 12 skill + 1 subagent；v10 令 `research-before-build` 的 L2 真正并行——纵向与横向两条调研线同时派发为 `research-scout` 子代理（每线一个、预算切片、按线停止规则，无子代理机制的 Harness 走降级路径）——现共 12 skill + 2 subagent；v11 将 `research-before-build` 聚焦到研究级先例问题——删除 L1/L2 分层，工程与学术双维恒开，日常工程未知（选库/选框架、集成、部署、迁移、云配置、排障、性能、安全）交还 harness 原生检索——并新增问题拆解：PICO 式面分解（面内 OR、面间 AND）+ 松弛阶梯（全组配 → 丢最绑定场景的面转为评估期过滤 → 概念升上位），合成自 Cochrane 组块检索、Motro 查询松弛与 step-back prompting——且每份调研落盘为带日期的阅读清单，存于 `docs/research/`（论文带 DOI/arXiv ID 供 `zotero-paper-fetching`，repo 带钉定版本）；v12 新增 `poster-making`（⑧ 论文的单页视觉衍生品：学术会议海报按官方模板 / beamerposter / tikzposter / HTML 四条渲染路线择优，图形摘要按出版商像素规格生成——INFORMS 系期刊与 AGU 无图形摘要通道，那里宣传卡片就是图形摘要——外加社媒发表宣传卡片；画布规格以 `assets/specs.json` 为唯一事实源，带出处与核验日期；渲染-验证循环经 `scripts/render.mjs` 同时交付矢量 PDF 与 2× PNG，四个 HTML 模板于 2026-10-06 渲染验证通过）；v13 将独立技能 `redbook-publish`（上游：comeonzhj/Auto-Redbook-Skills）并入 `poster-making` 成为其 xhs 管线（§4.5）：小红书多图笔记卡片——封面 + 自动分页正文，1080×1440（3:4），`default`/`ranking` 两种版式，主题清单 `assets/themes/themes.yaml`，版式文案契约唯一事实源在 `references/xhs-playbook.md`——外加 dry-run → 私密 → 公开三道闸门把守的 Cookie 自动发布——仍是 13 skill + 2 subagent。
+- 本仓库为 v14：v1 只含 4 个写作技能；v2 扩展为科研全流程（`language-polish` 演化为 `paper-polish`）；v3 加入纪律层 `research-before-build`（⓪）与汇报层 `academic-ppt`（⑦）并将 `scientific-review` 更名为 `paper-review`；v4 将 `paper-review` 重构为三盲审对抗评审团（nature-reviewer 式架构、OR/ML+OR 领域 gate、作者辩护仲裁），并退役 `academic-paper-review`；v5 新增 `reference-verify`（⑤ 投稿前参考文献体检，从一次全稿引用核查实战凝练的三层核查法）；v6 新增 `term-audit`（名词术语黑话批量审计：确定性提取 → 五信号排序 → `jargon-check` terms 模式分批并行 → 变体/漂移合并，种子词表源自 Kobak et al. 2025 超额词汇研究）并为 `jargon-check` 增加 `terms` 审计模式；v7 按官方技能命名最佳实践（动名词形式）将五个技能更名：`figure-plot` → `figure-plotting`、`paper-polish` → `paper-polishing`、`reference-verify` → `reference-verifying`、`zotero-paper-fetch` → `zotero-paper-fetching`、`academic-ppt` → `slide-making`——共 10 skill + 1 subagent；v8 新增 `zotero-pdf-highlighting`（按阅读笔记五类别给 PDF 写分类颜色高亮：PyMuPDF 文件内嵌批注路线、严格五类对齐 Zotero 官方调色板、幂等可重跑）——现共 11 skill + 1 subagent；v9 新增 `top-journal-writing`（④ 顶刊风格章节起草/重构：引言倒漏斗、摘要五句公式、方法菜谱、讨论四步走蓝图 + 句式库——从 arXiv 与 OpenAlex 采集的 AI/OR/管理/物流/航运五域 200 篇顶刊语料自动挖掘，句句带出处）——现共 12 skill + 1 subagent；v10 令 `research-before-build` 的 L2 真正并行——纵向与横向两条调研线同时派发为 `research-scout` 子代理（每线一个、预算切片、按线停止规则，无子代理机制的 Harness 走降级路径）——现共 12 skill + 2 subagent；v11 将 `research-before-build` 聚焦到研究级先例问题——删除 L1/L2 分层，工程与学术双维恒开，日常工程未知（选库/选框架、集成、部署、迁移、云配置、排障、性能、安全）交还 harness 原生检索——并新增问题拆解：PICO 式面分解（面内 OR、面间 AND）+ 松弛阶梯（全组配 → 丢最绑定场景的面转为评估期过滤 → 概念升上位），合成自 Cochrane 组块检索、Motro 查询松弛与 step-back prompting——且每份调研落盘为带日期的阅读清单，存于 `docs/research/`（论文带 DOI/arXiv ID 供 `zotero-paper-fetching`，repo 带钉定版本）；v12 新增 `poster-making`（⑧ 论文的单页视觉衍生品：学术会议海报按官方模板 / beamerposter / tikzposter / HTML 四条渲染路线择优，图形摘要按出版商像素规格生成——INFORMS 系期刊与 AGU 无图形摘要通道，那里宣传卡片就是图形摘要——外加社媒发表宣传卡片；画布规格以 `assets/specs.json` 为唯一事实源，带出处与核验日期；渲染-验证循环经 `scripts/render.mjs` 同时交付矢量 PDF 与 2× PNG，四个 HTML 模板于 2026-10-06 渲染验证通过）；v13 将独立技能 `redbook-publish`（上游：comeonzhj/Auto-Redbook-Skills）并入 `poster-making` 成为其 xhs 管线（§4.5）：小红书多图笔记卡片——封面 + 自动分页正文，1080×1440（3:4），`default`/`ranking` 两种版式，主题清单 `assets/themes/themes.yaml`，版式文案契约唯一事实源在 `references/xhs-playbook.md`——外加 dry-run → 私密 → 公开三道闸门把守的 Cookie 自动发布；v14 新增 `hedge-audit`（④ 全稿防御性写作/过度对冲审计：Results 退路从句、null 结果自我解释、Abstract/引言贡献弱化、任意章节 hedge 堆叠、与 Limitations 重复的 caution；R1–R5 五病理型 + 按章节的删除/移 Discussion/移 Limitations/保留四档处置，搬迁前对照现有章节查重，分章 hedge 密度梯度，keep-list 保护合法统计精度）——现共 14 skill + 2 subagent。
 
 ## License
 
