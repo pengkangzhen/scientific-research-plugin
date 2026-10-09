@@ -1,0 +1,89 @@
+%% Cover letter — venue-transfer skill (public template)
+%% Template source: skills/venue-transfer/assets/cover_letter_template.tex
+%% Copy into docs/paper/manuscript/ as cover_letter.tex and fill every <SLOT>.
+%% (Placeholders are <...>, never [...]: a "[" right after "\\" is parsed as a
+%%  line-spacing optional argument and breaks compilation.)
+%% A local frozen copy cover_letter_personal.tex (sender block, closing role,
+%% signature — git-ignored, never published) may sit next to this file;
+%% prefer it when present.
+%% One page is a hard cap — if it overflows, cut content, never margins.
+%% The wording must stand alone when pasted as plain text into a submission form.
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}                 % signature image
+\usepackage{newtxtext}                % Times family — matches the manuscript
+\usepackage{xcolor}
+\definecolor{accent}{HTML}{1F3A5F}    % the letter's ONLY color: deep navy
+\usepackage[hidelinks]{hyperref}      % clickable email/URL, kept black
+
+\setlength{\parindent}{0pt}           % block paragraphs — no indent,
+\setlength{\parskip}{0.45\baselineskip} % space between paragraphs instead
+\pagestyle{empty}                     % single page, no page number
+
+\begin{document}
+
+%% ---- Letterhead: sender block (left) + date (right, snug above the rule).
+%% ---- Snug mechanism: the blank line ends the paragraph; "\nointerlineskip"
+%% ---- kills the interline glue TeX would insert before the rule's box (a
+%% ---- full \baselineskip), and "\vspace{-\parskip}" cancels the paragraph
+%% ---- skip — leaving ~2mm between text and rule. ----
+\noindent{\bfseries\scshape <SENDER NAME>}\\[2pt]
+{\small <DEPARTMENT>\\
+<INSTITUTION>\\
+<CITY, COUNTRY>\\[2pt]
+<SENDER EMAIL>}\hfill{\small <DATE, e.g. 20 October 2026>}
+
+\nointerlineskip\vspace{-\parskip}\vspace{6pt}%
+\noindent\textcolor{accent}{\rule{\linewidth}{0.8pt}}
+
+%% ---- Recipient block: the office, not a person — the EIC's identity is
+%% ---- usually unknowable or rotating, and a misnamed salutation costs more
+%% ---- than a generic one. Publisher address verified from the journal's
+%% ---- official page, never from memory.
+\vspace{1em}
+\noindent
+The Editor-in-Chief\\
+\textsc{<JOURNAL FULL NAME>}\\
+<PUBLISHER, ADDRESS LINE 1>\\
+<CITY, COUNTRY>
+
+%% ---- Subject: typographic conventions (house style, match the body):
+%% ---- manuscript title in \textbf{``...''}, journal name in \textit{...}.
+\vspace{1.2em}
+\noindent\textbf{Subject:} Submission of the manuscript ``\textbf{<MANUSCRIPT TITLE>}''
+
+%% ---- Salutation ----
+\vspace{1em}
+\noindent Dear Editor,
+
+% ¶1 — submission statement: title bold, journal italic, article type; then
+%      why THIS journal concretely (scope keywords from the journal's own
+%      aims-and-scope page); pre-empt the one misfit an editor will notice.
+<Paragraph 1 — why this journal.>
+
+% ¶2 — what the paper does and claims: problem, approach, headline result;
+%      optionally a 2–3 item \begin{itemize} of contributions.
+<Paragraph 2 — what the paper does.>
+
+% ¶3 — fit: which readership / section of the journal this serves.
+<Paragraph 3 — fit.>
+
+% ¶4 — declarations: original, not published nor under consideration
+%      elsewhere, all authors approved; public code/data URL when available.
+<Paragraph 4 — declarations.>
+
+%% ---- Closing: "Best regards," + signature image + role ----
+\vspace{1.2em}
+\noindent Best regards,\\[0.6em]
+%% Electronic signature — signature.png sits next to cover_letter.tex;
+%% if it is missing the letter still compiles, leaving blank space instead.
+\IfFileExists{signature.png}{%
+  \includegraphics[height=1.05cm]{signature.png}\\[2pt]
+}{%
+  \vspace{1.4em}% blank space for an ink signature
+}
+<ROLE, e.g. Corresponding Author>
+
+\end{document}

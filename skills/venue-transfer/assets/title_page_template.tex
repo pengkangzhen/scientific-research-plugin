@@ -1,0 +1,103 @@
+%% Title page — venue-transfer skill (public template)
+%% Template source: skills/venue-transfer/assets/title_page_template.tex
+%% Copy into docs/paper/manuscript/ as title_page.tex and fill every <SLOT>.
+%% (Placeholders are <...>, never [...]: a "[" right after "\\" is parsed as a
+%%  line-spacing optional argument and breaks compilation.)
+%% A local frozen copy title_page_personal.tex (first author, corresponding-
+%% author block, affiliation (a), standing grants — git-ignored, never
+%% published) may sit next to this file; prefer it when present.
+%% The title wording must match the manuscript and the cover letter exactly.
+%% Layout: title block centered like a book face, declarations as a left-
+%% aligned info sheet below; navy is the page's ONLY color, one head rule +
+%% one foot rule frame the page.
+%% One page is a hard cap — ENFORCED AT COMPILE TIME: overflow fails with an
+%% error, not a silent second page. Fix by tightening the \vspace values or
+%% the author list, never the margins.
+%% Declaration blocks follow Elsevier conventions; add venue-specific ones
+%% (e.g. generative-AI use) only when the submission system asks for them.
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{newtxtext}                % Times family — matches the manuscript
+\usepackage{xcolor}
+\definecolor{accent}{HTML}{1F3A5F}    % the page's ONLY color: deep navy
+
+\setlength{\parindent}{0pt}           % block paragraphs — no indent,
+\setlength{\parskip}{0.5em}           % space between paragraphs instead
+\pagestyle{empty}                     % single page, no page number
+
+% Info-sheet section heading: short navy dash + small caps.
+\newcommand{\tpsection}[1]{%
+  \vspace{1.15em}\par
+  \noindent{\color{accent}\rule[0.22em]{1.1em}{0.8pt}}\hspace{0.55em}{\scshape #1}\par
+  \vspace{0.45em}}
+
+\begin{document}
+
+%% ---- Head rule: same navy accent as the cover letter (same upload set) ----
+\noindent\textcolor{accent}{\rule{\linewidth}{0.8pt}}
+\vspace{2.4em}
+
+%% ---- Title block: the title-page face, centered ----
+\begin{center}
+{\small\scshape Type of the Paper: <Article Type, e.g. Full Length Article>}\\[1.5em]
+{\Large\bfseries
+<MANUSCRIPT TITLE — EXACTLY as in the manuscript and the cover letter>\par}
+\vspace{1.2em}
+\textcolor{accent}{\rule{0.35\linewidth}{0.6pt}}\\[1.3em]
+%% Authors: the first author (a) heads the list, middle co-authors slot in
+%% signing order with superscript affiliations, the corresponding author
+%% closes with a,*.
+<FIRST AUTHOR NAME>\textsuperscript{a},
+<CO-AUTHOR>\textsuperscript{b},
+<CO-AUTHOR>\textsuperscript{c},
+<CORRESPONDING AUTHOR NAME>\textsuperscript{a,*}\\[0.9em]
+{\small
+\textsuperscript{a}~<AFFILIATION A — department, institution, city, country>\\[0.15em]
+\textsuperscript{b}~<AFFILIATION B — department, institution, city, country>\\[0.15em]
+\textsuperscript{c}~<AFFILIATION C — department, institution, city, country>}
+\end{center}
+
+%% ---- Info sheet: left-aligned declarations below the face ----
+
+\tpsection{*Corresponding Author}
+{\small
+\begin{tabular}{@{}l@{\hspace{1.4em}}l@{}}
+Name & <CORRESPONDING AUTHOR NAME>\\
+Email & <CORRESPONDING AUTHOR EMAIL>\\
+ORCID & <ORCID, optional>\\
+Address & <DEPARTMENT, INSTITUTION>,\\
+ & <STREET, CITY, POSTCODE, COUNTRY>\\
+\end{tabular}}
+
+\tpsection{Co-authors}
+% One row each, "Name & email" — every author except the corresponding one,
+% same order as the author list above.
+{\small
+\begin{tabular}{@{}l@{\hspace{1.4em}}l@{}}
+<FIRST AUTHOR NAME> & <FIRST AUTHOR EMAIL>\\
+<CO-AUTHOR NAME> & <email>\\
+<CO-AUTHOR NAME> & <email>\\
+\end{tabular}}
+
+\tpsection{Funding}
+{\small <FUNDING STATEMENT — agencies and grant numbers for THIS paper; delete this block if unfunded.>\par}
+
+\tpsection{Acknowledgements}
+{\small We would like to thank all the editors and reviewers for their valuable time and comments to improve the quality of this paper.\par}
+
+\tpsection{Conflict of Interest}
+{\small The authors declare no conflict of interest.\par}
+
+%% ---- Foot rule: closes the frame opened at the head ----
+\vfill
+\noindent\textcolor{accent}{\rule{\linewidth}{0.8pt}}
+
+%% ---- ONE-PAGE HARD GATE: at this point the page counter reflects the page
+%% ---- being typeset; content spilling to a second page fails compilation.
+\ifnum\value{page}>1
+  \errmessage{Title page overflows to \arabic{page} pages: ONE page is a hard cap (tighten \string\vspace\space values, never margins)}
+\fi
+
+\end{document}
