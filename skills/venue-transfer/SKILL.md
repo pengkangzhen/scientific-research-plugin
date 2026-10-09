@@ -22,18 +22,19 @@ You are a journal-submission strategist. Follow the workflow below strictly. You
 
 ## Project Files (Auto-locate on Launch)
 
-One home for the whole submission lifecycle, organized by event — the writing layer, then one folder per venue-round holding that round's full exchange:
+One home at the project root for the whole submission lifecycle, organized by event — the writing layer, then one folder per venue-round holding that round's full exchange:
 
 ```text
-docs/paper/
+paper/
 ├── manuscript/                  # WRITING: the LaTeX project (main .tex, sections, .bib, figures/,
-│                                #   cover letter & title page sources) — working copy, git-managed
+│                                #   cover letter, title page & highlights sources) — working copy, git-managed
 ├── candidate_journals.csv       # Stage-0 sheet, one row per venue
 ├── submission_log.md            # one row per upload event, all venues — the cross-venue index
 └── submissions/<venue>/vN/      # one round's full exchange (upload + verdict in one place):
     ├── manuscript.pdf           #   frozen when the PDF is not git-tracked
     ├── cover_letter.pdf         #   uploaded this round
     ├── title_page.pdf           #   uploaded this round
+    ├── highlights.txt           #   uploaded this round, when the venue asks for highlights
     ├── response_letter.pdf      #   point-by-point reply to the previous round's reviews — v2 on
     ├── decision_letter.md       #   this round's verdict — a desk-reject letter included
     └── reviewer1.md, ...        #   verbatim reviews, if any
@@ -46,8 +47,8 @@ docs/paper/
 
 Create missing pieces from the templates below when their stage first runs. Locate the inputs:
 
-1. **Manuscript**: the `.tex` containing `\begin{document}` under `docs/paper/manuscript/`; for projects predating this layout, search the whole project instead (if several, the longest)
-2. **Cover letter / title page sources**: `docs/paper/manuscript/` first; else search `submission*/`, `paper*/`, `**/cover_letter*.tex`, `**/title_page*.tex`; to create or refresh them, the frozen templates live in the `dear-editor` skill
+1. **Manuscript**: the `.tex` containing `\begin{document}` under `paper/manuscript/`; for projects predating this layout, search the whole project instead (if several, the longest)
+2. **Cover letter / title page sources**: `paper/manuscript/` first; else search `submission*/`, `paper*/`, `**/cover_letter*.tex`, `**/title_page*.tex`; to create or refresh them, the frozen templates live in the `dear-editor` skill
 
 ## Non-Negotiable Red Lines
 
@@ -82,6 +83,7 @@ Apply the chosen venue's lens **before** first submission — the same checklist
 4. **Keep venue-specific text localized.** Anything venue-aimed belongs in title / abstract / intro / contribution list / highlights / cover letter / title page fields — never welded into deep method or results prose. This is what makes later flips cheap.
 5. Figures, tables, methods, and experiments do **not** change for venue fit — only for content reasons.
 6. Compile and verify — zero errors, zero unresolved references, and the cover letter and the title page each at exactly one page (gate mechanics owned by `dear-editor`: the title page fails compilation on overflow, the letter is checked via its log's `Output written on ... (N page` line — if either overflows, cut content or tighten spacing, never margins) — then confirm with the user before anything is uploaded.
+7. **Assemble the upload package** into this round's folder — create `paper/submissions/<venue>/vN/` now and copy in `cover_letter.pdf`, `title_page.pdf`, `highlights.txt` (when the venue asks for highlights; its source lives in `manuscript/`), and `manuscript.pdf` only when the compiled PDF is not git-tracked (when it is tracked, the Stage-2 tag carries it). This folder is the package handed to the uploader; Stage 2 seals it as the frozen record. **Layout gate**: uploadables have exactly two homes — `manuscript/` (sources) and the round folder (package copies); `ls` the manuscript root and the project root and confirm no ad-hoc `submission*/` or `upload*/` directory exists.
 
 ## Stage 2 — Submission Snapshot (At Upload Time)
 
@@ -96,9 +98,9 @@ Immediately after the user uploads to the editorial system:
 
    Tag naming: `submission/<VENUE>-vN` — `v1` first submission, `v2` first revision, `v3` second revision; a new venue restarts at `v1` under its own name.
 3. Push the tag **to the private remote only**. If the repository has a public mirror (e.g. a code-release repo separate from the private working repo), never push submission tags there.
-4. **Upload folder**: freeze that round's submitted materials into `docs/paper/submissions/<venue>/vN/` — cover letter and title page on `v1`; the response letter answering the previous round's reviews from `v2` on; plus, when the compiled PDF is *not* tracked (ignored by `.gitignore`), a copy of `manuscript.pdf` too, since a tag alone cannot reproduce what was submitted. When the PDF *is* tracked, the tag carries the manuscript and the folder carries the rest. The round's verdict and reviews join the same folder when they arrive (Stage 3). Dates live in the log, not in folder files.
+4. **Seal the round folder** `paper/submissions/<venue>/vN/` (assembled in Stage 1, step 7): after the upload, verify every file still matches what was actually submitted — anything tweaked during the upload session is refreshed first, because the folder must capture the exact state the editor and reviewers saw. From `v2` on, the response letter answering the previous round's reviews is assembled there too. The round's verdict and reviews join the same folder when they arrive (Stage 3). Dates live in the log, not in folder files.
 5. When the editorial manuscript number (MS # / EM ID) arrives, record it in the log.
-6. Append one row to `docs/paper/submission_log.md`:
+6. Append one row to `paper/submission_log.md`:
 
    ```markdown
    | Date | Venue | MS # | Tag | Commit | Status | Outcome | Key notes |
@@ -110,7 +112,7 @@ Immediately after the user uploads to the editorial system:
 
 For **every** status change (under review → revision → rejected / accepted):
 
-1. Archive the letter and, if any, **all reviewer comments verbatim** into the same round folder — `docs/paper/submissions/<venue>/vN/` — that this decision answers. The verbatim text is the record of what this venue actually said — the source for the log's driver notes and for any future response letter — do not summarize and discard.
+1. Archive the letter and, if any, **all reviewer comments verbatim** into the same round folder — `paper/submissions/<venue>/vN/` — that this decision answers. The verbatim text is the record of what this venue actually said — the source for the log's driver notes and for any future response letter — do not summarize and discard.
 2. Backfill the log row: Status → new state; Outcome → decision + date; Key notes → **the rejection drivers in the editor's own terms** (scope mismatch? evaluation breadth? novelty bar? missing comparison?).
 3. Distinguish the paths — both rejection paths converge on the same next move (venue re-selection, Stage 4, then flip):
    - **Desk rejection** (usually ≤ 2 weeks, no or one-line reviews): the manuscript never met the editor's 30-second scan. No content signal — scope/novelty *presentation* signal only. Archive the letter, backfill the log; the recorded drivers feed venue re-selection (Stage 0 sheet risk notes). If the letter contains substantive content-level remarks despite being a desk decision, surface them to the user as advisory input to venue choice — still not as revision mandates.
@@ -140,7 +142,7 @@ Re-aim the manuscript at the new venue. The core move is a **lens flip** — wha
 1. Rewrite in this order (each feeds the next): **title skeleton → abstract first 1–2 sentences → keywords → intro ¶1–2 → contribution ordering → highlights → cover letter** (rewritten from scratch per venue — keep the skeleton and the typesetting, change the "why this journal" core).
 2. Keep the claim–evidence calibration intact: a lens flip changes *what leads*, never *what is claimed*. Since rejection comments are never absorbed, a weakness that stayed open through a transfer stays open — no rewrite may quietly upgrade the corresponding claim.
 3. **Template check** before formatting: same-publisher family (e.g. Elsevier `cas-*`) usually means zero re-layout; cross-publisher moves (Springer `sn-article`, T&F, IEEE) cost a class swap — the `.bib` carries over, the `.bst` changes.
-4. Compile, verify (same gate as Stage 1, step 6 — cover letter and title page stay at one page; re-typeset via `dear-editor` if the flip touched their fields), confirm — then Stage 2 for the new submission (`v1` under the new venue's tag name).
+4. Compile, verify (same gates as Stage 1, steps 6–7 — cover letter and title page stay at one page, and the package re-assembles into the new round folder; re-typeset via `dear-editor` if the flip touched their fields), confirm — then Stage 2 for the new submission (`v1` under the new venue's tag name).
 5. After tagging, record what changed for the transfer:
 
    ```bash

@@ -49,16 +49,22 @@ You are a typesetter of submission documents. The cover letter and the title pag
 
 ## Placement
 
-Copy the template (or the personal copy, when present) into the paper's manuscript directory as `cover_letter.tex` / `title_page.tex`, together with `signature.png` — sources live with the LaTeX project (repo convention: `docs/paper/manuscript/`).
+Copy the template (or the personal copy, when present) into the paper's manuscript directory as `cover_letter.tex` / `title_page.tex`, together with `signature.png` — sources live with the LaTeX project (repo convention: `paper/manuscript/` at the project root). Locate that directory the same way `venue-transfer` does:
+
+1. **Standard layout**: the `.tex` containing `\begin{document}` under `paper/manuscript/` — the sources land next to it.
+2. **Legacy projects** predating the layout: search the whole project for the `.tex` containing `\begin{document}` (if several, the longest); hunt existing sources via `submission*/`, `paper*/`, `**/cover_letter*.tex`, `**/title_page*.tex` and refresh them in place.
+
+Never create a staging directory for uploadables — no `submission*/`, `upload*/`, or ad-hoc package folder at the LaTeX root or the project root. Sources and their compiled PDFs stay in the manuscript directory; the upload package assembles only via `venue-transfer` Stage 1 (step 7) into `paper/submissions/<venue>/vN/`. When invoked directly and the user wants a package, ask for the venue and round first, then apply that rule.
 
 ## Compile Gates (Both Documents)
 
 - Zero errors, zero unresolved references, no Overfull warnings.
 - **One page each — hard cap.** The title page enforces it at compile time: overflow fails with `! Title page overflows ...`. The cover letter is checked via its log's `Output written on ... (N page` line. If either overflows: cut content or tighten spacing, **never margins**.
 - The letter's wording must survive plain-text pasting into submission forms.
+- **Layout gate**: the run has created no `submission*/` / `upload*/` directory anywhere — sources and PDFs sit in the manuscript directory only; package copies are `venue-transfer`'s round-folder job.
 
 ## Hand-offs
 
 - **← `venue-transfer`** Stage 1/5 supplies the venue argument and the round's inputs, then triggers typesetting.
-- **→ `venue-transfer`** Stage 2 freezes the compiled PDFs into `submissions/<venue>/vN/` at upload time.
+- **→ `venue-transfer`** Stage 1 assembles the upload package into `paper/submissions/<venue>/vN/`; Stage 2 seals it at upload time.
 - **→ `paper-polishing`** if the letter's prose needs polish beyond the caller's draft.
