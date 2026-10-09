@@ -13,9 +13,9 @@ __pycache__/
 *.fdb_latexmk
 
 # Private assets — never publish (frozen personal copies: names, emails, grants, signature)
-skills/venue-transfer/assets/signature.png
-skills/venue-transfer/assets/cover_letter_personal.tex
-skills/venue-transfer/assets/title_page_personal.tex
+skills/dear-editor/assets/signature.png
+skills/dear-editor/assets/cover_letter_personal.tex
+skills/dear-editor/assets/title_page_personal.tex
 
 # Python env & credentials for poster-making xhs pipeline
 .venv/
