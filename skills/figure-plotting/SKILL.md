@@ -53,6 +53,7 @@ drawio 示意图与流程图同样遵守硬性规范：Times 风字体、矢量�
 2. **字体**：Times New Roman，缺字体环境按回退链 `Times New Roman → Times → Liberation Serif → Nimbus Roman`（样式文件已内置，WSL/Linux 不再静默换成 DejaVu）。中文图（中文期刊/学位论文）用 `load_style(zh=True)`：拉丁字符与数字走 Times，中文走宋体（`SimSun → Songti SC → Noto Serif CJK SC` 按平台回退）。
 3. **标签默认英文**（国际投稿），即使数据包含中文；中文论文场景用户明说后才切中文模式，中文一律宋体，不混入黑体/楷体。
 4. **图例**：同一子图内 ≥2 组视觉可分的序列（靠颜色 / 线型 / marker / 填充任一维度区分）必须配图例且逐组完整；数据图路线由 `save_fig` 内置图例审计强制（缺失或不完整会报错拒绝导出），drawio 路线靠视觉验收闭环核查。
+5. **图题克制**：`\caption{}` 只写一个名词短语图题（如「ECR 网络拓扑示意」/ "ECR network topology"），禁止解释性长句；图的解释、节点/弧符号对照、构造说明一律写在正文引用该图（`\ref`）的段落里。把 figure 环境写进 .tex 时同样执行——caption 只报名字，解读给正文。
 
 ## 尺寸与字号（按最终印刷尺寸设计）
 
@@ -80,6 +81,7 @@ drawio 示意图与流程图同样遵守硬性规范：Times 风字体、矢量�
 - [ ] Times New Roman（中文图：中文宋体），最终印刷尺寸下字号 ≥ 6 pt
 - [ ] 字体已嵌入：pdffonts 核对 emb 全 yes（drawio 导出的 PDF 同样检查；无 pdffonts 环境用 `mutool info -F`）
 - [ ] 图内无标题——标题只写在 LaTeX `\caption{}`，删除 `plt.title`
+- [ ] `\caption{}` 是名词短语图题（如「ECR 网络拓扑示意」），无解释性长句——解释全部在正文引用该图的段落里
 - [ ] 色盲安全配色 + 灰度可辨
 - [ ] 轴标签齐全、带单位
 - [ ] 误差棒 / 置信带有定义

@@ -47,7 +47,7 @@ uv run --project <drawio-programmatic 路径> drawio-toolkit upsert-buffered-reg
 
 - 给用户实时预览：`@drawio/mcp`（ZCode 已注册）的 `open_drawio_xml` 可把当前 XML 在浏览器 draw.io 编辑器打开；`search_shapes` 可查 stencil，但工业风 stencil 慎用于学术图——两篇论文（mako、fsm-stackelberg）的图均为纯几何词汇。
 - 实例带真实地理坐标（港口/城市经纬度）时，**按相对方位布局 + 底色带（海域等）**远比抽象分层框图有说服力（已验证：mako `ecr_schematic`、fsm `fig_ecr_schematic`）。
-- **图内不放成段文字**：注释性长句（"stage-1 sea moves / vessel call…"、"Representative arcs —…"这类）一律不进图，全部写在 LaTeX `\caption{}` 里；图内只留图形、数学符号、短标注和图例。画完自检：数一数图里超过一行的文字块，有就搬进 caption。
+- **图内不放成段文字**：注释性长句（"stage-1 sea moves / vessel call…"、"Representative arcs —…"这类）一律不进图，也不进图题——`\caption{}` 只留名词短语图题（SKILL.md 硬性规范 5），解释性内容写进正文引用该图的段落；图内只留图形、数学符号、短标注和图例。画完自检：数一数图里超过一行的文字块，有就搬进正文。
 - 手绘感来自层级：主角节点加大加深（更粗描边、更深填充），主流程弧加粗，注记一律细线斜体；全员同权重 = 自动生成感。
 - **程序化改 XML 的防截断**：`ET.tree.write()` 先清空文件再序列化，任何属性值忘了 `str()`（如 float 的 `-0.5`）都会留下截断损坏且无备份。改 .drawio 一律先写临时文件再 `os.replace()` 原子替换；损坏后若节点几何未变，删掉生成性 cell（凸包）按补丁历史重建、toolkit 重跑即可恢复。
 - **新建 cell 必须带 `as="geometry"`**：`<mxGeometry>` 缺 `as` 属性时 XML 仍良构、ET 不报错，但 drawio 导出时该 cell 几何失效，内容 bbox 被算到远处 → PDF 平铺成 N 页（表现为"只有最后一页有内容"）。症状性修法：遍历所有 mxGeometry 补 `as="geometry"`。另：浮动边（sourcePoint/targetPoint 式）加 Array 路径点同样会触发 bbox 爆炸，曲线/折线要用 `shape=mxgraph.basic.polygon` + `polyline=1` 的开放折线替代。
