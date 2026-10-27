@@ -2,7 +2,9 @@
 name: venue-transfer
 description: >
   Venue transfer — journal-submission lifecycle manager: build the candidate-journal
-  sheet, apply venue-targeted rewrites (title lens, abstract opening, keywords,
+  sheet, search the target journal's recent neighbor papers (scope-fit evidence —
+  named in the cover letter, cited in the manuscript where genuinely relevant),
+  apply venue-targeted rewrites (title lens, abstract opening, keywords,
   intro framing, contribution order, highlights, cover letter), snapshot every
   submitted state at upload time (git tag + submission log, or a frozen archive
   when the PDF is not tracked), triage rejections (desk vs. review; rejection
@@ -10,9 +12,9 @@ description: >
   feed venue re-selection only), and execute the narrative-flip rewrite loop
   between venues. Triggers: "venue transfer",
   "desk rejection", "rejected, where next", "resubmit to another journal",
-  "submission snapshot", "submission log", "candidate journals", "换刊", "转投".
-  Same-venue major/minor revision belongs to `rebuttal`; this skill owns
-  everything between two submissions.
+  "submission snapshot", "submission log", "candidate journals", "neighbor papers",
+  "邻居论文", "换刊", "转投". Same-venue major/minor revision belongs to `rebuttal`;
+  this skill owns everything between two submissions.
 license: MIT
 ---
 
@@ -64,7 +66,7 @@ Run when no sheet exists or the user opens the topic with "where should this go"
 
 1. Read the manuscript's abstract and contributions; extract the **claim type** (method novelty / domain application / decision support / computational study) and the **evaluation shape** (single-case depth vs. multi-instance breadth; any known structural gaps).
 2. Draft 8–15 candidates spanning at least three archetypes: home-domain journals (application is the norm), methods journals (mechanism story must lead), and adjacent interdisciplinary journals.
-3. For each candidate, verify by web search: current IF/JCR quartile (note conflicting sources), median time to first decision, desk-rejection reputation, template family, open-access cost. Fill the sheet:
+3. For each candidate, verify by web search: current IF/JCR quartile (note conflicting sources), median time to first decision, desk-rejection reputation, template family, open-access cost — and for the final 2–3 candidates, a quick neighbor-paper count (protocol above) sharpens the scope-fit verdict. Fill the sheet:
 
 ```csv
 journal,category (IF/JCR/local tier),review speed,scope fit,framing required,risks
@@ -73,17 +75,40 @@ journal,category (IF/JCR/local tier),review speed,scope fit,framing required,ris
 4. For each candidate write one **framing note** — which lens the manuscript must wear there (see Stage 5) — and one **risk note** — which known weakness that venue's editors probe first (evaluation breadth? scale? managerial insight?).
 5. Present the sheet; the user (and their advisor) pick the target. Never pick for them.
 
+## The Neighbor-Paper Search (Before Every Submission)
+
+Before every first submission and every transfer flip, search the target journal's own recent output for **neighbor papers** — published papers closely related to this manuscript's topic. Three consumers: the cover letter's "why this journal" argument (the strongest scope evidence it can carry), the candidate sheet's scope-fit column, and — where genuinely relevant — the manuscript's own citations. Editors desk-reject on scope; a record of the journal publishing this very kind of work is proof, not assertion.
+
+**Protocol — API facts, zero model recall** (the anti-hallucination discipline of `zotero-paper-fetching`; verified metadata only, never invented titles):
+
+1. Extract 3–5 keyword sets from the manuscript's title, abstract, and keywords (problem domain, method family, application instance).
+2. Query the journal's output of the last ~3 years with each set:
+   - OpenAlex — `api.openalex.org/works?filter=primary_location.source.issn:<ISSN>,from_publication_date:<YYYY-MM-DD>&search=<keywords>` (carries abstracts for Elsevier titles where Crossref does not; `has_abstract` flags coverage);
+   - Crossref as cross-check — `api.crossref.org/journals/<ISSN>/works?query=<keywords>&rows=20`.
+3. Screen titles + abstracts for genuine neighbors: shared problem domain, shared method family, or a comparison the manuscript could cite with a straight face. Record DOI, title, year, and a one-phrase similarity note for each.
+4. **Zero neighbors is a selection alarm, not a pass**: three years of output with nothing related means the manuscript likely sits outside the journal's live scope — re-examine the Stage-0 sheet before submitting.
+5. Write the list to `neighbor_papers.md` (one row per paper: DOI, title, year, similarity note, where used — letter / manuscript / both) — a strategy record, not an uploadable; it joins the round folder at Stage 1's assembly step. Backfill the candidate sheet's scope-fit column with the neighbor count.
+
+**Cover-letter use**: name 2–4 of the strongest in the "why this journal" paragraph — *"Recent publications in <Journal> on closely related questions — <Author> (<Year>) on <X>, <Author> (<Year>) on <Y> — confirm the manuscript sits within the journal's current scope."* One framing sentence plus the named papers; the list is scope evidence, not a literature review.
+
+**Manuscript-citation discipline (red line)**: citations serve the manuscript's argument, never the editor's favor.
+
+- Cite a neighbor only where it does real work — related-work positioning, a methodological comparison, a result contrast — woven into the prose, never mechanically inserted to flatter the venue; reviewers recognize citation stuffing, and it inverts the intended effect.
+- Working range: 2–5 citations; neighbors the manuscript already cites count.
+- Every added entry goes into the `.bib` from the verified API record and passes `reference-verifying` before upload.
+
 ## Stage 1 — Venue-Targeted Rewrite (Pre-Submission)
 
 Apply the chosen venue's lens **before** first submission — the same checklist as a transfer flip (Stage 5), run once:
 
-1. Rewrite the **cover letter**: first paragraph names the venue and answers "why this journal" concretely (scope keywords from the journal's own aims-and-scope page); pre-empt the one misfit an editor will notice ("the application domain is X, the contribution is Y").
-2. **Typeset the two one-pagers via the `dear-editor` skill** — cover letter and title page from its templates (public slot templates, git-ignored personal copies carrying the frozen identity), copied into `manuscript/` as `cover_letter.tex` / `title_page.tex`. Hand it: the venue name, article type, co-author signing order, this paper's funding award numbers, and any venue-specific declaration blocks. Its one-page compile gates apply.
-3. Adjust the **title skeleton, abstract opening (first 1–2 sentences), keywords, intro ¶1–2, contribution ordering, highlights** to lead with what that venue's editors scan for (the title page's title field follows the same flip).
+1. **Run the neighbor-paper search** (protocol above) against the chosen venue — its list feeds steps 2 and 4 and freezes into the round folder at step 8.
+2. Rewrite the **cover letter**: first paragraph names the venue and answers "why this journal" concretely (scope keywords from the journal's own aims-and-scope page, plus the named neighbor papers as published proof); pre-empt the one misfit an editor will notice ("the application domain is X, the contribution is Y").
+3. **Typeset the two one-pagers via the `dear-editor` skill** — cover letter and title page from its templates (public slot templates, git-ignored personal copies carrying the frozen identity), copied into `manuscript/` as `cover_letter.tex` / `title_page.tex`. Hand it: the venue name, article type, co-author signing order, this paper's funding award numbers, and any venue-specific declaration blocks. Its one-page compile gates apply.
+4. Adjust the **title skeleton, abstract opening (first 1–2 sentences), keywords, intro ¶1–2, contribution ordering, highlights** to lead with what that venue's editors scan for (the title page's title field follows the same flip); weave genuinely relevant neighbors into the manuscript under the citation discipline above.
 4. **Keep venue-specific text localized.** Anything venue-aimed belongs in title / abstract / intro / contribution list / highlights / cover letter / title page fields — never welded into deep method or results prose. This is what makes later flips cheap.
 5. Figures, tables, methods, and experiments do **not** change for venue fit — only for content reasons.
-6. Compile and verify — zero errors, zero unresolved references, and the cover letter and the title page each at exactly one page (gate mechanics owned by `dear-editor`: the title page fails compilation on overflow, the letter is checked via its log's `Output written on ... (N page` line — if either overflows, cut content or tighten spacing, never margins) — then confirm with the user before anything is uploaded.
-7. **Assemble the upload package** into this round's folder — create `paper/submissions/<venue>/vN/` now and copy in `cover_letter.pdf`, `title_page.pdf`, `highlights.txt` (when the venue asks for highlights; its source lives in `manuscript/`), and `manuscript.pdf` only when the compiled PDF is not git-tracked (when it is tracked, the Stage-2 tag carries it). This folder is the package handed to the uploader; Stage 2 seals it as the frozen record. **Layout gate**: uploadables have exactly two homes — `manuscript/` (sources) and the round folder (package copies); `ls` the manuscript root and the project root and confirm no ad-hoc `submission*/` or `upload*/` directory exists.
+7. Compile and verify — zero errors, zero unresolved references, and the cover letter and the title page each at exactly one page (gate mechanics owned by `dear-editor`: the title page fails compilation on overflow, the letter is checked via its log's `Output written on ... (N page` line — if either overflows, cut content or tighten spacing, never margins) — then confirm with the user before anything is uploaded.
+8. **Assemble the upload package** into this round's folder — create `paper/submissions/<venue>/vN/` now and copy in `cover_letter.pdf`, `title_page.pdf`, `highlights.txt` (when the venue asks for highlights; its source lives in `manuscript/`), `neighbor_papers.md` (the round's fit record — strategy evidence, not an uploadable), and `manuscript.pdf` only when the compiled PDF is not git-tracked (when it is tracked, the Stage-2 tag carries it). This folder is the package handed to the uploader; Stage 2 seals it as the frozen record. **Layout gate**: uploadables have exactly two homes — `manuscript/` (sources) and the round folder (package copies); `ls` the manuscript root and the project root and confirm no ad-hoc `submission*/` or `upload*/` directory exists.
 
 ## Stage 2 — Submission Snapshot (At Upload Time)
 
@@ -98,7 +123,7 @@ Immediately after the user uploads to the editorial system:
 
    Tag naming: `submission/<VENUE>-vN` — `v1` first submission, `v2` first revision, `v3` second revision; a new venue restarts at `v1` under its own name.
 3. Push the tag **to the private remote only**. If the repository has a public mirror (e.g. a code-release repo separate from the private working repo), never push submission tags there.
-4. **Seal the round folder** `paper/submissions/<venue>/vN/` (assembled in Stage 1, step 7): after the upload, verify every file still matches what was actually submitted — anything tweaked during the upload session is refreshed first, because the folder must capture the exact state the editor and reviewers saw. From `v2` on, the response letter answering the previous round's reviews is assembled there too. The round's verdict and reviews join the same folder when they arrive (Stage 3). Dates live in the log, not in folder files.
+4. **Seal the round folder** `paper/submissions/<venue>/vN/` (assembled in Stage 1, step 8; `neighbor_papers.md` is the round's strategy record, exempt from the submitted-state check): after the upload, verify every uploadable still matches what was actually submitted — anything tweaked during the upload session is refreshed first, because the folder must capture the exact state the editor and reviewers saw. From `v2` on, the response letter answering the previous round's reviews is assembled there too. The round's verdict and reviews join the same folder when they arrive (Stage 3). Dates live in the log, not in folder files.
 5. When the editorial manuscript number (MS # / EM ID) arrives, record it in the log.
 6. Append one row to `paper/submission_log.md`:
 
@@ -139,11 +164,12 @@ Re-aim the manuscript at the new venue. The core move is a **lens flip** — wha
 | Decision-support / IS journal | The decision process and human–AI collaboration | "<Decision process> support through <method>" |
 | Computational journal | The computational question (reliability, reproducibility) | "<Computational property> of <artifact>" |
 
-1. Rewrite in this order (each feeds the next): **title skeleton → abstract first 1–2 sentences → keywords → intro ¶1–2 → contribution ordering → highlights → cover letter** (rewritten from scratch per venue — keep the skeleton and the typesetting, change the "why this journal" core).
-2. Keep the claim–evidence calibration intact: a lens flip changes *what leads*, never *what is claimed*. Since rejection comments are never absorbed, a weakness that stayed open through a transfer stays open — no rewrite may quietly upgrade the corresponding claim.
-3. **Template check** before formatting: same-publisher family (e.g. Elsevier `cas-*`) usually means zero re-layout; cross-publisher moves (Springer `sn-article`, T&F, IEEE) cost a class swap — the `.bib` carries over, the `.bst` changes.
-4. Compile, verify (same gates as Stage 1, steps 6–7 — cover letter and title page stay at one page, and the package re-assembles into the new round folder; re-typeset via `dear-editor` if the flip touched their fields), confirm — then Stage 2 for the new submission (`v1` under the new venue's tag name).
-5. After tagging, record what changed for the transfer:
+1. **Re-run the neighbor-paper search** for the new venue — neighbors are venue-specific and never carry over: the new letter names the new venue's own neighbors, and any new manuscript citations re-pass the citation discipline.
+2. Rewrite in this order (each feeds the next): **title skeleton → abstract first 1–2 sentences → keywords → intro ¶1–2 → contribution ordering → highlights → cover letter** (rewritten from scratch per venue — keep the skeleton and the typesetting, change the "why this journal" core).
+3. Keep the claim–evidence calibration intact: a lens flip changes *what leads*, never *what is claimed*. Since rejection comments are never absorbed, a weakness that stayed open through a transfer stays open — no rewrite may quietly upgrade the corresponding claim.
+4. **Template check** before formatting: same-publisher family (e.g. Elsevier `cas-*`) usually means zero re-layout; cross-publisher moves (Springer `sn-article`, T&F, IEEE) cost a class swap — the `.bib` carries over, the `.bst` changes.
+5. Compile, verify (same gates as Stage 1, steps 7–8 — cover letter and title page stay at one page, and the package re-assembles into the new round folder; re-typeset via `dear-editor` if the flip touched their fields), confirm — then Stage 2 for the new submission (`v1` under the new venue's tag name).
+6. After tagging, record what changed for the transfer:
 
    ```bash
    git diff submission/<OLD>-v<N>..submission/<NEW>-v1 -- <paper-dir>/
@@ -153,6 +179,8 @@ Re-aim the manuscript at the new venue. The core move is a **lens flip** — wha
 
 - **→ `rebuttal`**: outcome is major/minor revision at the same venue. This skill resumes only on rejection after revision.
 - **→ `dear-editor`**: typesets the cover letter and title page whenever Stage 1/5 builds a submission package; this skill supplies the venue argument and the round's inputs.
+- **→ `reference-verifying`**: every neighbor citation added in Stage 1/5 is verified against official APIs before upload.
+- **→ `zotero-paper-fetching`**: pulling neighbor papers' full texts into Zotero when the user wants to read them.
 - **← `paper-review`**: its C/M/N issue list can seed the candidate sheet's risk notes before the *first* submission (pre-empting the desk scan).
 - **→ `figure-plotting` / `top-journal-writing` / `paper-polishing`**: when a Stage 1/5 rewrite needs figure or prose work beyond this skill's scope.
 

@@ -54,7 +54,7 @@ Copy the template (or the personal copy, when present) into the paper's manuscri
 1. **Standard layout**: the `.tex` containing `\begin{document}` under `paper/manuscript/` — the sources land next to it.
 2. **Legacy projects** predating the layout: search the whole project for the `.tex` containing `\begin{document}` (if several, the longest); hunt existing sources via `submission*/`, `paper*/`, `**/cover_letter*.tex`, `**/title_page*.tex` and refresh them in place.
 
-Never create a staging directory for uploadables — no `submission*/`, `upload*/`, or ad-hoc package folder at the LaTeX root or the project root. Sources and their compiled PDFs stay in the manuscript directory; the upload package assembles only via `venue-transfer` Stage 1 (step 7) into `paper/submissions/<venue>/vN/`. When invoked directly and the user wants a package, ask for the venue and round first, then apply that rule.
+Never create a staging directory for uploadables — no `submission*/`, `upload*/`, or ad-hoc package folder at the LaTeX root or the project root. Sources and their compiled PDFs stay in the manuscript directory; the upload package assembles only via `venue-transfer` Stage 1 (step 8) into `paper/submissions/<venue>/vN/`. When invoked directly and the user wants a package, ask for the venue and round first, then apply that rule.
 
 ## Compile Gates (Both Documents)
 
